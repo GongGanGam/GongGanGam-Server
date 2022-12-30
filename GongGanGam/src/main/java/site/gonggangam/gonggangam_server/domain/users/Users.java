@@ -2,69 +2,61 @@ package site.gonggangam.gonggangam_server.domain.users;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
+import site.gonggangam.gonggangam_server.domain.user_settings.UserSettings;
+import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
+import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
+@Builder
+@RequiredArgsConstructor
 @Entity
 public class Users extends BaseTimeEntity {
 
     @Id
+    @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userIdx;
+    private Long userId;
 
-    @Column(length = 45, nullable = false)
+    @Column(columnDefinition = "VARCHAR(45)", length = 45, nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
-    private int birthYear;
+    @Column(name = "BIRTH_YEAR", nullable = false)
+    private Integer birthYear;
 
-    @Column(nullable = false)
-    private char gender;
+    @Convert(converter = GenderType.Converter.class)
+    @Column(columnDefinition = "CHAR(1)", length = 1, nullable = false)
+    private GenderType genderType;
 
     @Column(columnDefinition = "TEXT", nullable = true)
     private String profImg;
 
-    @Column(length = 45, nullable = false)
+    @Column(columnDefinition = "VARCHAR(50)", length = 50, nullable = false)
     private String email;
 
-    @Column(length = 10, nullable = false)
-    private String type;
+    @Convert(converter = AuthType.Converter.class)
+    @Column(name = "AUTH_TYPE", columnDefinition = "CHAR(2)", length = 2, nullable = false)
+    private AuthType authType;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String identification;
-
-    @Column(nullable = false)
-    private char setAge;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(name = "DEVICE_TOKEN", columnDefinition = "TEXT", nullable = true)
     private String deviceToken;
 
-    @Column(length = 45, nullable = false)
-    private String status;
+    @Convert(converter = ActiveStatus.Converter.class)
+    @Column(name = "ACTIVE_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)
+    private ActiveStatus activeStatus;
 
-    @Builder
-    public Users(String nickname, int birthYear, char gender, String profImg, String email, String type, String identification, char setAge, String deviceToken, String status) {
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", optional = false, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private UserSettings settings;
+
+    public void update(String nickname, int birthYear, GenderType genderType) {
         this.nickname = nickname;
         this.birthYear = birthYear;
-        this.gender = gender;
-        this.profImg = profImg;
-        this.email = email;
-        this.type = type;
-        this.identification = identification;
-        this.setAge = setAge;
-        this.deviceToken = deviceToken;
-        this.status = status;
-    }
-
-    public void update(String nickname, int birthYear, char setAge, char gender) {
-        this.nickname = nickname;
-        this.birthYear = birthYear;
-        this.setAge = setAge;
-        this.gender = gender;
+        this.genderType = genderType;
     }
 
 }

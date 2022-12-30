@@ -1,29 +1,55 @@
 package site.gonggangam.gonggangam_server.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import site.gonggangam.gonggangam_server.dto.users.PatchUsersRequestDto;
+import site.gonggangam.gonggangam_server.domain.ActiveStatus;
+import site.gonggangam.gonggangam_server.domain.user_settings.UserSettings;
+import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
+import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
+import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 import site.gonggangam.gonggangam_server.domain.users.Users;
-import site.gonggangam.gonggangam_server.domain.users.UsersRepository;
+import site.gonggangam.gonggangam_server.repository.UserSettingsRepository;
+import site.gonggangam.gonggangam_server.repository.UsersRepository;
 
+@RequiredArgsConstructor
 @Service
 public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
+    private final UserSettingsRepository userSettingsRepository;
 
-    @Autowired
-    public UsersServiceImpl(UsersRepository userRepository) {
-        this.usersRepository = userRepository;
+    @Override
+    public Users create(UsersRequestDto.Post request, String email, AuthType authType) {
+        Users newUser = Users.builder()
+                .birthYear(request.getBirthYear())
+                .genderType(request.getGender())
+                .nickname(request.getNickname())
+                .email(email)
+                .authType(authType)
+                .activeStatus(ActiveStatus.ACTIVE)
+                .build();
+
+        UserSettings defaultSettings = UserSettings.builder()
+                .user(newUser)
+                .notifyChat(true)
+                .notifyDiary(true)
+                .notifyReply(true)
+                .shareType(ShareType.DEFAULT)
+                .build();
+
+        usersRepository.save(newUser);
+        userSettingsRepository.save(defaultSettings);
+
+        return newUser;
     }
 
     @Override
-    public Integer update(Integer userIdx, PatchUsersRequestDto requestDto) {
-        Users users = usersRepository.findById(userIdx)
-                .orElseThrow(() -> new IllegalArgumentException(""));
+    public void updateInfo(Long userId, UsersRequestDto.PatchInfo request) {
 
-        users.update(requestDto.getNickname(), requestDto.getBirthYear(), requestDto.getSetAge(), requestDto.getGender());
-        usersRepository.save(users);
+    }
 
-        return userIdx;
+    @Override
+    public void updateProfImg(Long userId, UsersRequestDto.PatchProfImg request) {
+
     }
 }
