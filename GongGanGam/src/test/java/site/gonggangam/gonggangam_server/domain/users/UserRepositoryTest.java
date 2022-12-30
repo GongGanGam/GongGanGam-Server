@@ -7,6 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
+<<<<<<< Updated upstream
+=======
+import site.gonggangam.gonggangam_server.domain.ActiveStatus;
+import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
+import site.gonggangam.gonggangam_server.domain.users.types.Gender;
+import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
+>>>>>>> Stashed changes
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,7 +43,11 @@ public class UserRepositoryTest {
         String identification = "test_identification";
         char setAge = 'F';
         String deviceToken = "test_device_token";
+<<<<<<< Updated upstream
         String status = "ACTIVE";
+=======
+        ActiveStatus activeStatus = ActiveStatus.ACTIVE;
+>>>>>>> Stashed changes
 
         userRepository.save(Users.builder()
                 .nickname(nickname)
@@ -47,7 +58,7 @@ public class UserRepositoryTest {
                 .identification(identification)
                 .setAge(setAge)
                 .deviceToken(deviceToken)
-                .status(status)
+                .status(activeStatus)
                 .build());
 
         List<Users> userList = userRepository.findAll();
@@ -61,7 +72,7 @@ public class UserRepositoryTest {
         assertEquals(user.getIdentification(), identification);
         assertEquals(user.getSetAge(), setAge);
         assertEquals(user.getDeviceToken(), deviceToken);
-        assertEquals(user.getStatus(), status);
+        assertEquals(user.getActiveStatus(), activeStatus);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -79,9 +90,15 @@ public class UserRepositoryTest {
                 .deviceToken("device_token")
                 .identification("ident")
                 .nickname("nickname_test")
+<<<<<<< Updated upstream
                 .setAge('T')
                 .status("ACTIVE")
                 .type("NAVER")
+=======
+                .shareType(ShareType.SIMILAR_AGE)
+                .status(ActiveStatus.ACTIVE)
+                .authType(AuthType.NAVER)
+>>>>>>> Stashed changes
                 .build());
 
         List<Users> usersList = userRepository.findAll();

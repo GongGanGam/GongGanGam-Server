@@ -6,7 +6,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+<<<<<<< Updated upstream
 import site.gonggangam.gonggangam_server.dto.users.PatchUsersRequestDto;
+=======
+import site.gonggangam.gonggangam_server.domain.ActiveStatus;
+import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
+import site.gonggangam.gonggangam_server.domain.users.types.Gender;
+import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
+import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
+>>>>>>> Stashed changes
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.domain.users.UsersRepository;
 
@@ -38,8 +46,13 @@ public class UsersServiceTest {
         char setAge = 'T';
         char gender = 'F';
 
+<<<<<<< Updated upstream
         usersService.update(user.getUserIdx(), new PatchUsersRequestDto(
                 nickname, birthYear, setAge, gender
+=======
+        usersService.update(user.getUserIdx(), new UsersRequestDto(
+                nickname, birthYear, shareType, gender
+>>>>>>> Stashed changes
         ));
 
         Users modifiedUser = usersRepository.findAll().get(0);
@@ -54,7 +67,7 @@ public class UsersServiceTest {
         assertEquals(user.getUserIdx(), modifiedUser.getUserIdx());
         assertEquals(user.getDeviceToken(), modifiedUser.getDeviceToken());
         assertEquals(user.getIdentification(), modifiedUser.getIdentification());
-        assertEquals(user.getStatus(), modifiedUser.getStatus());
+        assertEquals(user.getActiveStatus(), modifiedUser.getActiveStatus());
         assertEquals(user.getEmail(), modifiedUser.getEmail());
         assertEquals(user.getType(), modifiedUser.getType());
     }
@@ -78,8 +91,13 @@ public class UsersServiceTest {
     private static Users getDummyUsers() {
         return Users.builder()
                 .nickname("nickname")
+<<<<<<< Updated upstream
                 .type("KAKAO")
                 .status("ACTIVE")
+=======
+                .authType(AuthType.KAKAO)
+                .status(ActiveStatus.INACTIVE)
+>>>>>>> Stashed changes
                 .identification("identification")
                 .setAge('F')
                 .deviceToken("device_token")
