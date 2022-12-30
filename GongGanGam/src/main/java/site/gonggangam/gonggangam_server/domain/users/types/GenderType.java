@@ -7,7 +7,7 @@ import site.gonggangam.gonggangam_server.config.EntityEnumerableConverter;
 
 @Getter
 @AllArgsConstructor
-public enum Gender implements EntityEnumerable {
+public enum GenderType implements EntityEnumerable {
 
     UNKNOWN("U", "미선택"),
     MALE("M", "남성"),
@@ -16,9 +16,9 @@ public enum Gender implements EntityEnumerable {
     private final String key;
     private final String title;
 
-    public static class Converter extends EntityEnumerableConverter<Gender> {
+    public static class Converter extends EntityEnumerableConverter<GenderType> {
         public Converter() {
-            super(Gender.class);
+            super(GenderType.class);
         }
     }
 }

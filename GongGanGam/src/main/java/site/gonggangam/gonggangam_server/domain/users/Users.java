@@ -7,7 +7,7 @@ import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
 import site.gonggangam.gonggangam_server.domain.user_settings.UserSettings;
 import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
-import site.gonggangam.gonggangam_server.domain.users.types.Gender;
+import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 
 import javax.persistence.*;
 
@@ -28,9 +28,9 @@ public class Users extends BaseTimeEntity {
     @Column(name = "BIRTH_YEAR", nullable = false)
     private Integer birthYear;
 
-    @Convert(converter = Gender.Converter.class)
+    @Convert(converter = GenderType.Converter.class)
     @Column(columnDefinition = "CHAR(1)", length = 1, nullable = false)
-    private Gender gender;
+    private GenderType genderType;
 
     @Column(columnDefinition = "TEXT", nullable = true)
     private String profImg;
@@ -42,7 +42,7 @@ public class Users extends BaseTimeEntity {
     @Column(name = "AUTH_TYPE", columnDefinition = "CHAR(2)", length = 2, nullable = false)
     private AuthType authType;
 
-    @Column(name = "DEVICE_TOKEN", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "DEVICE_TOKEN", columnDefinition = "TEXT", nullable = true)
     private String deviceToken;
 
     @Convert(converter = ActiveStatus.Converter.class)
@@ -53,10 +53,10 @@ public class Users extends BaseTimeEntity {
     @PrimaryKeyJoinColumn
     private UserSettings settings;
 
-    public void update(String nickname, int birthYear, Gender gender) {
+    public void update(String nickname, int birthYear, GenderType genderType) {
         this.nickname = nickname;
         this.birthYear = birthYear;
-        this.gender = gender;
+        this.genderType = genderType;
     }
 
 }

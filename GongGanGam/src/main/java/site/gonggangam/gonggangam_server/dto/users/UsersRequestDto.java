@@ -2,25 +2,32 @@ package site.gonggangam.gonggangam_server.dto.users;
 
 import lombok.Builder;
 import lombok.Data;
-import site.gonggangam.gonggangam_server.domain.users.types.Gender;
-import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
+import site.gonggangam.gonggangam_server.domain.users.Users;
+import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 
-@Data
 public class UsersRequestDto {
 
     @Data
     @Builder
     public static class Post {
-
+        private final String nickname;
+        private final Integer birthYear;
+        private final GenderType gender;
     }
 
     @Data
     @Builder
-    public static class Patch {
-        private final String nickname;
-        private final int birthYear;
-        private final ShareType shareType;
-        private final Gender gender;
+    public static class PatchInfo {
+        private String nickname;
+        private Integer birthYear;
+        private String shareType;
+        private String gender;
+    }
+
+    @Data
+    @Builder
+    public static class PatchProfImg {
+        private String imgUrl;
     }
 
 }
