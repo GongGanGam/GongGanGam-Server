@@ -16,7 +16,7 @@ import site.gonggangam.gonggangam_server.repository.UsersRepository;
 public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
-    private final UserSettingsRepository userSettingsRepository;
+//    private final UserSettingsRepository userSettingsRepository;
 
     @Override
     public Users create(UsersRequestDto.Post request, String email, AuthType authType) {
@@ -29,16 +29,10 @@ public class UsersServiceImpl implements UsersService {
                 .activeStatus(ActiveStatus.ACTIVE)
                 .build();
 
-        UserSettings defaultSettings = UserSettings.builder()
-                .user(newUser)
-                .notifyChat(true)
-                .notifyDiary(true)
-                .notifyReply(true)
-                .shareType(ShareType.DEFAULT)
-                .build();
+        UserSettings settings = createDefaultSettings(newUser);
 
         usersRepository.save(newUser);
-        userSettingsRepository.save(defaultSettings);
+//        userSettingsRepository.save(settings);
 
         return newUser;
     }
@@ -51,5 +45,15 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void updateProfImg(Long userId, UsersRequestDto.PatchProfImg request) {
 
+    }
+
+    private UserSettings createDefaultSettings(Users user) {
+        return UserSettings.builder()
+                .user(user)
+                .notifyChat(true)
+                .notifyDiary(true)
+                .notifyReply(true)
+                .shareType(ShareType.DEFAULT)
+                .build();
     }
 }

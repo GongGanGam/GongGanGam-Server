@@ -5,15 +5,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
-import site.gonggangam.gonggangam_server.domain.user_settings.UserSettings;
 import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
 import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 
 import javax.persistence.*;
 
 @Getter
-@Builder
 @RequiredArgsConstructor
+@Table(name = "USERS")
 @Entity
 public class Users extends BaseTimeEntity {
 
@@ -49,9 +48,20 @@ public class Users extends BaseTimeEntity {
     @Column(name = "ACTIVE_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)
     private ActiveStatus activeStatus;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", optional = false, fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
-    private UserSettings settings;
+//    @OneToOne(mappedBy = "user")
+//    private UserSettings settings;
+
+    @Builder
+    public Users(String nickname, Integer birthYear, GenderType genderType, String profImg, String email, AuthType authType, String deviceToken, ActiveStatus activeStatus) {
+        this.nickname = nickname;
+        this.birthYear = birthYear;
+        this.genderType = genderType;
+        this.profImg = profImg;
+        this.email = email;
+        this.authType = authType;
+        this.deviceToken = deviceToken;
+        this.activeStatus = activeStatus;
+    }
 
     public void update(String nickname, int birthYear, GenderType genderType) {
         this.nickname = nickname;

@@ -18,16 +18,16 @@ public class UsersRequestDto {
     @Data
     @Builder
     public static class PatchInfo {
-        private String nickname;
-        private Integer birthYear;
-        private String shareType;
-        private String gender;
+        private final String nickname;
+        private final Integer birthYear;
+        private final String shareType;
+        private final String gender;
     }
 
     @Data
     @Builder
     public static class PatchProfImg {
-        private String imgUrl;
+        private final String imgUrl;
     }
 
 }
