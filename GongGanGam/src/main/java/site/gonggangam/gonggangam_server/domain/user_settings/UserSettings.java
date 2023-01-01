@@ -13,14 +13,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "USER_SETTINGS")
-@IdClass(UserSettings.UserSettingsPK.class)
 @Entity
 public class UserSettings extends BaseTimeEntity implements Serializable {
 
     @Id
-    @JoinColumn(name = "USER_ID")
-    @OneToOne(optional = false)
-    private Users user;
+    private Long userId;
 
     @Convert(converter = ShareType.Converter.class)
     @Column(name = "SHARE_TYPE", columnDefinition = "CHAR(1)", length = 1, nullable = false)
@@ -36,6 +33,11 @@ public class UserSettings extends BaseTimeEntity implements Serializable {
     @Column(name = "NOTIFY_CHAT", nullable = false)
     private Boolean notifyChat;
 
+    @MapsId("userId")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "USER_ID")
+    private Users user;
+
     public void update(ShareType shareType, Boolean notifyDiary, Boolean notifyReply, Boolean notifyChat) {
         this.shareType = shareType;
         this.notifyDiary = notifyDiary;
@@ -43,8 +45,4 @@ public class UserSettings extends BaseTimeEntity implements Serializable {
         this.notifyChat = notifyChat;
     }
 
-    @Data
-    public static class UserSettingsPK implements Serializable {
-        private Long userId;
-    }
 }

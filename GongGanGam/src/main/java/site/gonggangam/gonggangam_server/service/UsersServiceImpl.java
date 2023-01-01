@@ -29,7 +29,7 @@ public class UsersServiceImpl implements UsersService {
                 .activeStatus(ActiveStatus.ACTIVE)
                 .build();
 
-        UserSettings settings = createDefaultSettings(newUser);
+//        UserSettings settings = createDefaultSettings(newUser);
 
         usersRepository.save(newUser);
 //        userSettingsRepository.save(settings);
@@ -47,13 +47,13 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
-    private UserSettings createDefaultSettings(Users user) {
-        return UserSettings.builder()
-                .user(user)
-                .notifyChat(true)
-                .notifyDiary(true)
-                .notifyReply(true)
-                .shareType(ShareType.DEFAULT)
-                .build();
-    }
+//    private UserSettings createDefaultSettings(Users user) {
+//        return UserSettings.builder()
+//                .user(user)
+//                .notifyChat(true)
+//                .notifyDiary(true)
+//                .notifyReply(true)
+//                .shareType(ShareType.DEFAULT)
+//                .build();
+//    }
 }

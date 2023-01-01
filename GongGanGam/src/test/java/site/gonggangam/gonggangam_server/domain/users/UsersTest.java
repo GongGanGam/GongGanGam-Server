@@ -30,8 +30,8 @@ public class UsersTest {
     @Autowired
     private UsersRepository userRepository;
 
-//    @Autowired
-//    private UserSettingsRepository userSettingsRepository;
+    @Autowired
+    private UserSettingsRepository userSettingsRepository;
 
     @After
     public void cleanup() {
@@ -54,16 +54,17 @@ public class UsersTest {
                 .activeStatus(ActiveStatus.ACTIVE)
                 .build();
 
-//        UserSettings settings = UserSettings.builder()
-//                .user(user)
-//                .notifyChat(true)
-//                .notifyDiary(true)
-//                .notifyDiary(true)
-//                .shareType(ShareType.DEFAULT)
-//                .build();
+        UserSettings settings = UserSettings.builder()
+                .user(user)
+                .notifyChat(true)
+                .notifyDiary(true)
+                .notifyDiary(true)
+                .shareType(ShareType.DEFAULT)
+                .build();
 
         userRepository.save(user);
-//        userSettingsRepository.save(settings);
+        userSettingsRepository.save(settings);
+
     }
 
     @Test
