@@ -1,8 +1,6 @@
 package site.gonggangam.gonggangam_server.domain.users;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
 import site.gonggangam.gonggangam_server.domain.user_settings.UserSettings;
@@ -12,7 +10,7 @@ import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 import javax.persistence.*;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USERS")
 @Entity
 public class Users extends BaseTimeEntity {

@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.user_settings.UserSettings;
+import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
 import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
 import site.gonggangam.gonggangam_server.repository.UserSettingsRepository;
@@ -51,10 +52,12 @@ public class UsersTest {
                 .birthYear(birthYear)
                 .email(email)
                 .genderType(gender)
+                .authType(AuthType.APPLE)
                 .activeStatus(ActiveStatus.ACTIVE)
                 .build();
 
         UserSettings settings = UserSettings.builder()
+                .userId(user.getUserId())
                 .user(user)
                 .notifyChat(true)
                 .notifyDiary(true)
@@ -65,6 +68,7 @@ public class UsersTest {
         userRepository.save(user);
         userSettingsRepository.save(settings);
 
+        System.out.println("settings : " + userSettingsRepository.findById(1L));
     }
 
     @Test

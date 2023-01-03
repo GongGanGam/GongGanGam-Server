@@ -9,15 +9,19 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_SETTINGS")
 @Entity
 public class UserSettings extends BaseTimeEntity implements Serializable {
 
     @Id
     private Long userId;
+
+    @MapsId
+    @OneToOne(optional = false)
+    @JoinColumn(name = "USER_ID")
+    private Users user;
+
 
     @Convert(converter = ShareType.Converter.class)
     @Column(name = "SHARE_TYPE", columnDefinition = "CHAR(1)", length = 1, nullable = false)
@@ -33,10 +37,15 @@ public class UserSettings extends BaseTimeEntity implements Serializable {
     @Column(name = "NOTIFY_CHAT", nullable = false)
     private Boolean notifyChat;
 
-    @MapsId("userId")
-    @OneToOne(optional = false)
-    @JoinColumn(name = "USER_ID")
-    private Users user;
+    @Builder
+    public UserSettings(Long userId, Users user, ShareType shareType, Boolean notifyDiary, Boolean notifyReply, Boolean notifyChat) {
+        this.userId = userId;
+        this.user = user;
+        this.shareType = shareType;
+        this.notifyDiary = notifyDiary;
+        this.notifyReply = notifyReply;
+        this.notifyChat = notifyChat;
+    }
 
     public void update(ShareType shareType, Boolean notifyDiary, Boolean notifyReply, Boolean notifyChat) {
         this.shareType = shareType;
