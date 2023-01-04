@@ -19,7 +19,7 @@ import site.gonggangam.gonggangam_server.dto.users.UsersResponseDto;
 
 @Tag(name = "user", description = "사용자 관련 API")
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UsersController {
 
@@ -28,7 +28,7 @@ public class UsersController {
             value = {
                     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsersResponseDto.class))),
                     @ApiResponse(responseCode = "401", description ="인증에 실패하였습니다", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
-                    @ApiResponse(responseCode = "403", description ="권한이 없습니다.", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
+                    @ApiResponse(responseCode = "403", description ="만료된 토큰입니다.", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
                     @ApiResponse(responseCode = "404", description ="잘못된 접근입니다.", content = @Content(schema = @Schema(implementation = ResponseEntity.class)))
             }
     )

@@ -15,12 +15,21 @@ import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 @RequiredArgsConstructor
 public class AuthController {
 
-    @Operation(summary = "APPLE 로그인", description = "APPLE Oauth 로그인")
+    @Operation(summary = "Apple 로그인", description = "Apple Oauth 로그인")
     @ResponseBody
     @PostMapping("/login/apple")
     public ResponseEntity<OAuthResponseDto> loginApple(
             @RequestBody OAuthRequestDto body
             ) {
+        return null;
+    }
+
+    @Operation(summary = "Kakao 로그인", description = "Kakao OAuth 로그인")
+    @ResponseBody
+    @PostMapping("/login/kakao")
+    public ResponseEntity<OAuthResponseDto> loginKakao(
+            @RequestBody OAuthRequestDto body
+    ) {
         return null;
     }
 
