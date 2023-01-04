@@ -57,7 +57,7 @@ public class UsersTest {
                 .build();
 
         UserSettings settings = UserSettings.builder()
-                .userId(user.getUserId())
+//                .userId(user.getUserId())
                 .user(user)
                 .notifyChat(true)
                 .notifyDiary(true)
@@ -65,10 +65,10 @@ public class UsersTest {
                 .shareType(ShareType.DEFAULT)
                 .build();
 
-        userRepository.save(user);
-        userSettingsRepository.save(settings);
+//        userRepository.save(user);
+//        userSettingsRepository.save(settings);
 
-        System.out.println("settings : " + userSettingsRepository.findById(1L));
+        System.out.println("settings : " + userSettingsRepository.findAll());
     }
 
     @Test

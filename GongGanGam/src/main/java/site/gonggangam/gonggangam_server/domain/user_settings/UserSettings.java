@@ -22,7 +22,6 @@ public class UserSettings extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "USER_ID")
     private Users user;
 
-
     @Convert(converter = ShareType.Converter.class)
     @Column(name = "SHARE_TYPE", columnDefinition = "CHAR(1)", length = 1, nullable = false)
     private ShareType shareType;
