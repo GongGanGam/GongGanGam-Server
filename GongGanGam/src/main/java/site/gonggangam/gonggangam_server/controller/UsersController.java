@@ -59,16 +59,6 @@ public class UsersController {
         return null;
     }
 
-    @Operation(summary = "사용자 추가정보 입력", description = "회원가입을 위해 사용자 추가정보를 입력합니다.")
-    @ResponseBody
-    @PostMapping("/{userId}")
-    public ResponseEntity<String> postUser(
-            @PathVariable("userId") Long userId,
-            @RequestBody UsersRequestDto.Post body
-            ) {
-        return null;
-    }
-
     @Operation(summary = "회원정보 수정", description = "마이페이지에서 회원정보를 수정합니다.")
     @ResponseBody
     @PutMapping("/{userId}/info")
