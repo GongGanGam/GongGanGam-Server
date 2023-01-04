@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.posts.Post;
+import site.gonggangam.gonggangam_server.domain.users.Users;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,7 +32,8 @@ public class Diary extends Post {
     private Boolean shareAgreed;
 
     @Builder
-    public Diary(LocalDate date, String emoji, String imgUrl, Boolean shareAgreed) {
+    public Diary(Users writer, String content, ActiveStatus activeStatus, LocalDate date, String emoji, String imgUrl, Boolean shareAgreed) {
+        super(writer, content, activeStatus);
         this.date = date;
         this.emoji = emoji;
         this.imgUrl = imgUrl;
