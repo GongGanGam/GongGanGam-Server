@@ -81,4 +81,12 @@ public class ReplyController {
     ) {
         return null;
     }
+
+    @Operation(summary = "답장 거절하기", description = "수신된 답장을 거절합니다. 거절된 답장은 이후 목록에서 볼 수 없습니다.")
+    @PutMapping("/{replyId}/reject")
+    public ResponseEntity<String> rejectReply(
+            @PathVariable("replyId") Long replyId
+    ) {
+        return null;
+    }
 }

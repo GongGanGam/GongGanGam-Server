@@ -27,14 +27,14 @@ public class UserSettings extends BaseTimeEntity implements Serializable {
     private ShareType shareType;
 
 
-    @Column(name = "NOTIFY_DIARY", nullable = false)
-    private Boolean notifyDiary;
+    @Column(name = "NOTIFY_DIARY", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
+    private Boolean notifyDiary = true;
 
-    @Column(name = "NOTIFY_REPLY", nullable = false)
-    private Boolean notifyReply;
+    @Column(name = "NOTIFY_REPLY", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
+    private Boolean notifyReply = true;
 
-    @Column(name = "NOTIFY_CHAT", nullable = false)
-    private Boolean notifyChat;
+    @Column(name = "NOTIFY_CHAT", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
+    private Boolean notifyChat = true;
 
     @Builder
     public UserSettings(Long userId, Users user, ShareType shareType, Boolean notifyDiary, Boolean notifyReply, Boolean notifyChat) {

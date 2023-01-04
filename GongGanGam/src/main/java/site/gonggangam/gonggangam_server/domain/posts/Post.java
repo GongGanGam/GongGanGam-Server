@@ -1,9 +1,6 @@
 package site.gonggangam.gonggangam_server.domain.posts;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
 import site.gonggangam.gonggangam_server.domain.users.Users;
@@ -11,15 +8,15 @@ import site.gonggangam.gonggangam_server.domain.users.Users;
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "POST")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "POST_TYPE")
 public class Post extends BaseTimeEntity {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "POST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
@@ -34,7 +31,6 @@ public class Post extends BaseTimeEntity {
     @Column(name = "ACTIVE_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)
     protected ActiveStatus activeStatus;
 
-    @Builder
     public Post(Users writer, String content, ActiveStatus activeStatus) {
         this.writer = writer;
         this.content = content;

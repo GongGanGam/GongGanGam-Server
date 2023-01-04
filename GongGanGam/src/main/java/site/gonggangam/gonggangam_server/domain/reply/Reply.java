@@ -23,9 +23,13 @@ public class Reply extends Post {
     @JoinColumn(name = "DIARY_ID", referencedColumnName = "DIARY_ID")
     private Diary diary;
 
+    @Column(name = "REJECTED", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean rejected = false;
+
     @Builder
-    public Reply(Users writer, String content, ActiveStatus activeStatus, Diary diary) {
+    public Reply(Users writer, String content, ActiveStatus activeStatus, Diary diary, Boolean rejected) {
         super(writer, content, activeStatus);
         this.diary = diary;
+        this.rejected = rejected;
     }
 }
