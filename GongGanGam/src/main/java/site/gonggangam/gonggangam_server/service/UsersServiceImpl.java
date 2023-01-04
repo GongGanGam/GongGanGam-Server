@@ -2,13 +2,9 @@ package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import site.gonggangam.gonggangam_server.domain.ActiveStatus;
-import site.gonggangam.gonggangam_server.domain.user_settings.UserSettings;
 import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
-import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
 import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 import site.gonggangam.gonggangam_server.domain.users.Users;
-import site.gonggangam.gonggangam_server.repository.UserSettingsRepository;
 import site.gonggangam.gonggangam_server.repository.UsersRepository;
 
 @RequiredArgsConstructor
@@ -21,12 +17,12 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users create(UsersRequestDto.Post request, String email, AuthType authType) {
         Users newUser = Users.builder()
-                .birthYear(request.getBirthYear())
-                .genderType(request.getGender())
-                .nickname(request.getNickname())
-                .email(email)
-                .authType(authType)
-                .activeStatus(ActiveStatus.ACTIVE)
+//                .birthYear(Integer.parseInt(request.getBirthYear()))
+//                .genderType(request.getGender())
+//                .nickname(request.getNickname())
+//                .email(email)
+//                .authType(authType)
+//                .activeStatus(ActiveStatus.ACTIVE)
                 .build();
 
 //        UserSettings settings = createDefaultSettings(newUser);
@@ -38,14 +34,10 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public void updateInfo(Long userId, UsersRequestDto.PatchInfo request) {
+    public void updateInfo(Long userId, UsersRequestDto.PutInfo request) {
 
     }
 
-    @Override
-    public void updateProfImg(Long userId, UsersRequestDto.PatchProfImg request) {
-
-    }
 
 //    private UserSettings createDefaultSettings(Users user) {
 //        return UserSettings.builder()

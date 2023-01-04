@@ -3,7 +3,6 @@ package site.gonggangam.gonggangam_server.domain.users;
 import lombok.*;
 import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
-import site.gonggangam.gonggangam_server.domain.user_settings.UserSettings;
 import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
 import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 

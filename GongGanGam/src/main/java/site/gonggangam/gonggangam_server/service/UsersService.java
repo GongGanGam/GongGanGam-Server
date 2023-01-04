@@ -8,8 +8,7 @@ public interface UsersService {
 
     Users create(UsersRequestDto.Post request, String email, AuthType authType);
 
-    void updateInfo(Long userId, UsersRequestDto.PatchInfo request);
+    void updateInfo(Long userId, UsersRequestDto.PutInfo request);
 
-    void updateProfImg(Long userId, UsersRequestDto.PatchProfImg request);
 
 }

@@ -1,4 +1,4 @@
-package site.gonggangam.gonggangam_server.domain.user_settings;
+package site.gonggangam.gonggangam_server.domain.users;
 
 import lombok.*;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;

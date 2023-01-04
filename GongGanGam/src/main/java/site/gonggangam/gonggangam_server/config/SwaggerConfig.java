@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
+    public static final String TITLE = "GongGanGam API";
+    public static final String DESCRIPTION = "GongGanGam API 명세서입니다";
+    public static final String VERSION = "0.1";
+
     @Bean
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
@@ -25,9 +29,9 @@ public class SwaggerConfig {
     public OpenAPI springOpenAPI() {
 
         return new OpenAPI()
-                .info(new Info().title("Notechigima API")
-                        .description("Notechigima API 명세서입니다.")
-                        .version("v1.2.2"));
+                .info(new Info().title(TITLE)
+                        .description(DESCRIPTION)
+                        .version(VERSION));
     }
 
     public OpenApiCustomiser buildSecurityOpenApi() {
