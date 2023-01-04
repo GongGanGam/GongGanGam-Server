@@ -1,4 +1,4 @@
-package site.gonggangam.gonggangam_server.domain.reports;
+package site.gonggangam.gonggangam_server.domain.report;
 
 import lombok.AccessLevel;
 import lombok.Builder;
