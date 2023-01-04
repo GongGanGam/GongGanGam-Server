@@ -17,9 +17,9 @@ import site.gonggangam.gonggangam_server.dto.users.UserSettingsResponseDto;
 import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 import site.gonggangam.gonggangam_server.dto.users.UsersResponseDto;
 
-@Tag(name = "users", description = "사용자 관련 API")
+@Tag(name = "user", description = "사용자 관련 API")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UsersController {
 
@@ -33,27 +33,24 @@ public class UsersController {
             }
     )
     @ResponseBody
-    @GetMapping("/{userId}/info")
+    @GetMapping("/info")
     public ResponseEntity<UsersResponseDto> getUserInfo(
-            @PathVariable("userId") Long userId
     ) {
         return null;
     }
 
     @Operation(summary = "사용자 설정 조회", description = "마이페이지에서 사용자의 알림 설정을 조회힙니다.")
     @ResponseBody
-    @GetMapping("/{userId}/settings")
+    @GetMapping("/settings")
     public ResponseEntity<UserSettingsResponseDto> getUserSettings(
-            @PathVariable("userId") Long userId
     ) {
         return null;
     }
 
     @Operation(summary = "사용자 설정 변경", description = "마이페이지에서 사용자 알림 관련 설정을 변경합니다.")
     @ResponseBody
-    @PutMapping("/{userId}/settings")
+    @PutMapping("/settings")
     public ResponseEntity<String> putUserSettings(
-            @PathVariable("userId") Long userId,
             @RequestBody UserSettingsRequestDto body
             ) {
         return null;
@@ -61,9 +58,8 @@ public class UsersController {
 
     @Operation(summary = "회원정보 수정", description = "마이페이지에서 회원정보를 수정합니다.")
     @ResponseBody
-    @PutMapping("/{userId}/info")
+    @PutMapping("/info")
     public ResponseEntity<String> putUserInfo(
-            @PathVariable("userId") Long userId,
             @RequestBody UsersRequestDto.PutInfo body
     ) {
         return null;
@@ -71,10 +67,9 @@ public class UsersController {
 
     @Operation(summary = "프로필 이미지 수정", description = "마이페이지에서 사용자 프로필 이미지를 업로드합니다.")
     @ResponseBody
-    @PutMapping(value = "/{userId}/profImg",
+    @PutMapping(value = "/profImg",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> putUserProfImg(
-            @PathVariable("userId") Long userId,
             @Parameter(description = "프로필 이미지를 multipart/form-data 형식으로 받습니다.")
             @RequestPart(value = "imgFile", required = true) MultipartFile imgFile
             ) {
@@ -83,9 +78,8 @@ public class UsersController {
 
     @Operation(summary = "회원 탈퇴", description = "사용자를 회원 탈퇴 처리합니다.")
     @ResponseBody
-    @DeleteMapping("/{userId}")
+    @DeleteMapping
     public ResponseEntity<String> deleteUser(
-            @PathVariable("userId") Long userId
     ) {
         return null;
     }
