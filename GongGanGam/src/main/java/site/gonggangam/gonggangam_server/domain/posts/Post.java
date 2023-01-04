@@ -12,11 +12,11 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "POSTS")
+@Table(name = "POST")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "PTYPE")
-public class Posts extends BaseTimeEntity {
+@DiscriminatorColumn(name = "POST_TYPE")
+public class Post extends BaseTimeEntity {
 
     @Id
     @Column(name = "ID")
@@ -35,7 +35,7 @@ public class Posts extends BaseTimeEntity {
     protected ActiveStatus activeStatus;
 
     @Builder
-    public Posts(Users writer, String content, ActiveStatus activeStatus) {
+    public Post(Users writer, String content, ActiveStatus activeStatus) {
         this.writer = writer;
         this.content = content;
         this.activeStatus = activeStatus;

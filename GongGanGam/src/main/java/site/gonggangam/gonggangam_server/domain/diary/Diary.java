@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.gonggangam.gonggangam_server.domain.posts.Posts;
+import site.gonggangam.gonggangam_server.domain.posts.Post;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Entity
 @DiscriminatorValue("D")
 @PrimaryKeyJoinColumn(name = "DIARY_ID")
-public class Diary extends Posts {
+public class Diary extends Post {
 
     @Column(name = "DATE", nullable = false)
     private LocalDate date;
