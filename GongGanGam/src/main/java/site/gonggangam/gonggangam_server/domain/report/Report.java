@@ -1,7 +1,6 @@
 package site.gonggangam.gonggangam_server.domain.report;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
