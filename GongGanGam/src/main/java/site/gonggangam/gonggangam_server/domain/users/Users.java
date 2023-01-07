@@ -5,6 +5,7 @@ import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
 import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
 import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
+import site.gonggangam.gonggangam_server.domain.users.types.Role;
 
 import javax.persistence.*;
 
@@ -41,6 +42,10 @@ public class Users extends BaseTimeEntity {
 
     @Column(name = "DEVICE_TOKEN", columnDefinition = "TEXT", nullable = true)
     private String deviceToken;
+
+    @Convert(converter = Role.Converter.class)
+    @Column(name = "ROLE", columnDefinition = "CHAR(1) DEFAULT 'U'", length = 1, nullable = false)
+    private Role role;
 
     @Convert(converter = ActiveStatus.Converter.class)
     @Column(name = "ACTIVE_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)

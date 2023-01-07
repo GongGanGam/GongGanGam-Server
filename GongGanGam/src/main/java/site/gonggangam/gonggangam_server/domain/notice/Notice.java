@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
+import site.gonggangam.gonggangam_server.domain.users.Users;
 
 import javax.persistence.*;
 
@@ -20,6 +21,10 @@ public class Notice extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WRITER_ID", referencedColumnName = "USER_ID")
+    private Users writer;
+
     @Column(columnDefinition = "VARCHAR(100)", nullable = false)
     private String title;
 
@@ -31,7 +36,8 @@ public class Notice extends BaseTimeEntity {
     private ActiveStatus activeStatus;
 
     @Builder
-    public Notice(String title, String content, ActiveStatus activeStatus) {
+    public Notice(Users writer, String title, String content, ActiveStatus activeStatus) {
+        this.writer = writer;
         this.title = title;
         this.content = content;
         this.activeStatus = activeStatus;

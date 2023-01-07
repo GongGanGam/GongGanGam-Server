@@ -19,7 +19,7 @@ public class Report extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reportId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "REPORTER_ID", referencedColumnName = "USER_ID")
     private Users reporter;
 
