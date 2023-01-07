@@ -21,8 +21,8 @@ public class ReportDiary extends Report {
     private Diary diary;
 
     @Builder
-    public ReportDiary(Users reporter, String reason, Diary diary) {
-        super(reporter, reason);
+    public ReportDiary(Users reporter, String reason, ProcessType processType, Diary diary) {
+        super(reporter, reason, processType);
         this.diary = diary;
     }
 }

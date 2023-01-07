@@ -20,5 +20,6 @@ public class SharedDiaryResponseDto {
     private final String content;
     @Schema(description = "업로드된 이미지", defaultValue = "https://imgurl.com")
     private final String imgUrl;
+    @Schema(description = "일기 작성자")
     private final WriterDto writer;
 }

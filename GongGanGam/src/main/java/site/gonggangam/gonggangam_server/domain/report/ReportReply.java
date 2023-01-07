@@ -21,8 +21,8 @@ public class ReportReply extends Report {
     private Reply reply;
 
     @Builder
-    public ReportReply(Users reporter, String reason, Reply reply) {
-        super(reporter, reason);
+    public ReportReply(Users reporter, String reason, ProcessType processType, Reply reply) {
+        super(reporter, reason, processType);
         this.reply = reply;
     }
 }

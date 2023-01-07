@@ -21,8 +21,8 @@ public class ReportChat extends Report {
     private ChatRoom chatRoom;
 
     @Builder
-    public ReportChat(Users reporter, String reason, ChatRoom chatRoom) {
-        super(reporter, reason);
+    public ReportChat(Users reporter, String reason, ProcessType processType, ChatRoom chatRoom) {
+        super(reporter, reason, processType);
         this.chatRoom = chatRoom;
     }
 }
