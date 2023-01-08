@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 
@@ -31,15 +30,14 @@ public class Notice extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Convert(converter = ActiveStatus.Converter.class)
-    @Column(name = "ACTIVE_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)
-    private ActiveStatus activeStatus;
+    @Column(name = "IS_VISIBLE", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
+    protected Boolean isVisible;
 
     @Builder
-    public Notice(Users writer, String title, String content, ActiveStatus activeStatus) {
+    public Notice(Users writer, String title, String content, Boolean isVisible) {
         this.writer = writer;
         this.title = title;
         this.content = content;
-        this.activeStatus = activeStatus;
+        this.isVisible = isVisible;
     }
 }

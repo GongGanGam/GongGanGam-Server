@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.users.Users;
@@ -36,16 +35,15 @@ public class Reply extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Convert(converter = ActiveStatus.Converter.class)
-    @Column(name = "ACTIVE_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)
-    protected ActiveStatus activeStatus;
+    @Column(name = "IS_VISIBLE", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
+    protected Boolean isVisible;
 
     @Builder
-    public Reply(Diary diary, Boolean rejected, Users writer, String content, ActiveStatus activeStatus) {
+    public Reply(Diary diary, Boolean rejected, Users writer, String content, Boolean isVisible) {
         this.diary = diary;
         this.rejected = rejected;
         this.writer = writer;
         this.content = content;
-        this.activeStatus = activeStatus;
+        this.isVisible = isVisible;
     }
 }

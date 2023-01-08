@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEnti
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
-import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
 import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;

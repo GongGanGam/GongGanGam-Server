@@ -1,11 +1,11 @@
 package site.gonggangam.gonggangam_server.domain.users;
 
 import lombok.*;
-import site.gonggangam.gonggangam_server.domain.ActiveStatus;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
 import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
 import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 import site.gonggangam.gonggangam_server.domain.users.types.Role;
+import site.gonggangam.gonggangam_server.domain.users.types.UserStatus;
 
 import javax.persistence.*;
 
@@ -47,16 +47,16 @@ public class Users extends BaseTimeEntity {
     @Column(name = "ROLE", columnDefinition = "CHAR(1) DEFAULT 'U'", length = 1, nullable = false)
     private Role role;
 
-    @Convert(converter = ActiveStatus.Converter.class)
-    @Column(name = "ACTIVE_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)
-    private ActiveStatus activeStatus;
+    @Convert(converter = UserStatus.Converter.class)
+    @Column(name = "USER_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)
+    private UserStatus userStatus;
 
 //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OneToOne(mappedBy = "user")
     private UserSettings settings;
 
     @Builder
-    public Users(String nickname, Integer birthYear, GenderType genderType, String profImg, String email, AuthType authType, String deviceToken, ActiveStatus activeStatus) {
+    public Users(String nickname, Integer birthYear, GenderType genderType, String profImg, String email, AuthType authType, String deviceToken, Role role, UserStatus userStatus, UserSettings settings) {
         this.nickname = nickname;
         this.birthYear = birthYear;
         this.genderType = genderType;
@@ -64,7 +64,9 @@ public class Users extends BaseTimeEntity {
         this.email = email;
         this.authType = authType;
         this.deviceToken = deviceToken;
-        this.activeStatus = activeStatus;
+        this.role = role;
+        this.userStatus = userStatus;
+        this.settings = settings;
     }
 
     public void update(String nickname, int birthYear, GenderType genderType) {
