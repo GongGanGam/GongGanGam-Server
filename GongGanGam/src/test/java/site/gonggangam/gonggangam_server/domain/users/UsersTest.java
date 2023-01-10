@@ -44,23 +44,23 @@ public class UsersTest {
         String email = "testemail@naver.com";
         GenderType gender = GenderType.UNKNOWN;
 
-        Users user = Users.builder()
-                .nickname(nickname)
-                .birthYear(birthYear)
-                .email(email)
-                .genderType(gender)
-                .authType(AuthType.APPLE)
-                .activeStatus(ActiveStatus.ACTIVE)
-                .build();
-
-        UserSettings settings = UserSettings.builder()
-//                .userId(user.getUserId())
-                .user(user)
-                .notifyChat(true)
-                .notifyDiary(true)
-                .notifyDiary(true)
-                .shareType(ShareType.DEFAULT)
-                .build();
+//        Users user = Users.builder()
+//                .nickname(nickname)
+//                .birthYear(birthYear)
+//                .email(email)
+//                .genderType(gender)
+//                .authType(AuthType.APPLE)
+//                .activeStatus(ActiveStatus.ACTIVE)
+//                .build();
+//
+//        UserSettings settings = UserSettings.builder()
+////                .userId(user.getUserId())
+//                .user(user)
+//                .notifyChat(true)
+//                .notifyDiary(true)
+//                .notifyDiary(true)
+//                .shareType(ShareType.DEFAULT)
+//                .build();
 
 //        userRepository.save(user);
 //        userSettingsRepository.save(settings);

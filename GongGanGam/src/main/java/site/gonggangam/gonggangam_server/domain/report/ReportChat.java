@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class ReportChat extends Report {
 
     @ManyToOne
-    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID")
+    @JoinColumn(name = "CHAT_ROOM_ID", referencedColumnName = "CHAT_ROOM_ID")
     private ChatRoom chatRoom;
 
     @Builder

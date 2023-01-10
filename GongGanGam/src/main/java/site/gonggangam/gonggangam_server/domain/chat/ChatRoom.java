@@ -17,8 +17,8 @@ import java.util.UUID;
 public class ChatRoom extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID2")
-    @GenericGenerator(name = "UUID2", strategy = "UUID2")
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "CHAT_ROOM_ID", columnDefinition = "BINARY(16)")
     private UUID chatRoomId;
 

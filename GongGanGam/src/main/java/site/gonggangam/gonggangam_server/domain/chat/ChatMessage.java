@@ -20,7 +20,7 @@ public class ChatMessage extends BaseTimeEntity {
     private Long messageId;
 
     @ManyToOne
-    @JoinColumn(name = "CHAT_ROOM_ID", referencedColumnName = "ROOM_ID")
+    @JoinColumn(name = "CHAT_ROOM_ID", referencedColumnName = "CHAT_ROOM_ID")
     private ChatRoom chatRoom;
 
     @ManyToOne
