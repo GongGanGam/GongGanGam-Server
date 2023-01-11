@@ -33,11 +33,11 @@ public class AuthController {
         return null;
     }
 
-    @Operation(summary = "회원가입", description = "회원가입을 위해 사용자 추가정보를 입력합니다.")
+    @Operation(summary = "회원가입", description = "회원가입을 위해 사용자 추가정보를 입력합니다. gender = { unknown, female, male }")
     @ResponseBody
     @PostMapping("/signup")
     public ResponseEntity<String> signup(
-            @RequestBody UsersRequestDto.Post body
+            @RequestBody UsersRequestDto.PostUser body
     ) {
         return null;
     }

@@ -2,50 +2,77 @@ package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
+import site.gonggangam.gonggangam_server.domain.users.UserSettings;
+import site.gonggangam.gonggangam_server.domain.users.types.*;
+import site.gonggangam.gonggangam_server.dto.users.UserSettingsRequestDto;
 import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 import site.gonggangam.gonggangam_server.domain.users.Users;
+import site.gonggangam.gonggangam_server.repository.UserSettingsRepository;
 import site.gonggangam.gonggangam_server.repository.UsersRepository;
+
+import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
-//    private final UserSettingsRepository userSettingsRepository;
+    private final UserSettingsRepository userSettingsRepository;
 
     @Override
-    public Users create(UsersRequestDto.Post request, String email, AuthType authType) {
+    @Transactional
+    public Users createUser(UsersRequestDto.PostUser request, String email, AuthType authType, Role role) {
         Users newUser = Users.builder()
-//                .birthYear(Integer.parseInt(request.getBirthYear()))
-//                .genderType(request.getGender())
-//                .nickname(request.getNickname())
-//                .email(email)
-//                .authType(authType)
-//                .activeStatus(ActiveStatus.ACTIVE)
+                .nickname(request.getNickname())
+                .genderType(GenderType.valueOf(request.getGender()))
+                .birthYear(Integer.parseInt(request.getBirthYear()))
+                .role(role)
+                .userStatus(UserStatus.NORMAL)
+                .email(email)
+                .authType(authType)
                 .build();
 
-//        UserSettings settings = createDefaultSettings(newUser);
-
-        usersRepository.save(newUser);
-//        userSettingsRepository.save(settings);
-
+        UserSettings settings = createDefaultSettings(newUser);
+        userSettingsRepository.save(settings);
         return newUser;
     }
 
     @Override
-    public void updateInfo(Long userId, UsersRequestDto.PutInfo request) {
+    @Transactional
+    public void updateInfo(Long userId, UsersRequestDto.PutUserInfo request) {
+        Users user = usersRepository.findById(userId).orElseThrow();
+        user.update(request.getNickname(),
+                Integer.parseInt(request.getBirthYear()),
+                GenderType.valueOf(request.getGender())
+                );
+        user.getSettings()
+                .updateShareType(ShareType.valueOf(request.getShareType()));
 
+        usersRepository.save(user);
+    }
+
+    @Override
+    public void updateSettings(Long userId, UserSettingsRequestDto request) {
+        UserSettings settings = userSettingsRepository.findById(userId)
+                .orElseThrow();
+
+        settings.updateNotify(
+                request.getNotifyDiary(),
+                request.getNotifyReply(),
+                request.getNotifyChat()
+        );
+
+        userSettingsRepository.save(settings);
     }
 
 
-//    private UserSettings createDefaultSettings(Users user) {
-//        return UserSettings.builder()
-//                .user(user)
-//                .notifyChat(true)
-//                .notifyDiary(true)
-//                .notifyReply(true)
-//                .shareType(ShareType.DEFAULT)
-//                .build();
-//    }
+    private UserSettings createDefaultSettings(Users user) {
+        return UserSettings.builder()
+                .user(user)
+                .notifyChat(true)
+                .notifyDiary(true)
+                .notifyReply(true)
+                .shareType(ShareType.ALL)
+                .build();
+    }
 }

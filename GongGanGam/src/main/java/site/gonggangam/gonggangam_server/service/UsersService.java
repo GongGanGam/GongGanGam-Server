@@ -2,13 +2,16 @@ package site.gonggangam.gonggangam_server.service;
 
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
+import site.gonggangam.gonggangam_server.domain.users.types.Role;
+import site.gonggangam.gonggangam_server.dto.users.UserSettingsRequestDto;
 import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 
 public interface UsersService {
 
-    Users create(UsersRequestDto.Post request, String email, AuthType authType);
+    Users createUser(UsersRequestDto.PostUser request, String email, AuthType authType, Role role);
 
-    void updateInfo(Long userId, UsersRequestDto.PutInfo request);
+    void updateInfo(Long userId, UsersRequestDto.PutUserInfo request);
 
+    void updateSettings(Long userId, UserSettingsRequestDto request);
 
 }

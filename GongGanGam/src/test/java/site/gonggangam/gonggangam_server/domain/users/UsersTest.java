@@ -56,7 +56,7 @@ public class UsersTest {
                 .notifyChat(true)
                 .notifyDiary(true)
                 .notifyReply(true)
-                .shareType(ShareType.DEFAULT)
+                .shareType(ShareType.ALL)
                 .build();
 
         userSettingsRepository.save(settings);

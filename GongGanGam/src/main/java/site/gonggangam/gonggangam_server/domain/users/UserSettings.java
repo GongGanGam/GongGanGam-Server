@@ -2,11 +2,9 @@ package site.gonggangam.gonggangam_server.domain.users;
 
 import lombok.*;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
-import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.io.Serializable;
 
 @Getter
@@ -46,8 +44,11 @@ public class UserSettings extends BaseTimeEntity implements Serializable {
         this.notifyChat = notifyChat;
     }
 
-    public void update(ShareType shareType, Boolean notifyDiary, Boolean notifyReply, Boolean notifyChat) {
+    public void updateShareType(ShareType shareType) {
         this.shareType = shareType;
+    }
+
+    public void updateNotify(Boolean notifyDiary, Boolean notifyReply, Boolean notifyChat) {
         this.notifyDiary = notifyDiary;
         this.notifyReply = notifyReply;
         this.notifyChat = notifyChat;

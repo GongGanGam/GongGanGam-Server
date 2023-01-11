@@ -60,7 +60,7 @@ public class UsersController {
     @ResponseBody
     @PutMapping("/info")
     public ResponseEntity<String> putUserInfo(
-            @RequestBody UsersRequestDto.PutInfo body
+            @RequestBody UsersRequestDto.PutUserInfo body
     ) {
         return null;
     }
