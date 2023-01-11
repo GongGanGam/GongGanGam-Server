@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthRequestDto;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthResponseDto;
 import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
@@ -18,7 +19,7 @@ public class AuthController {
     @Operation(summary = "Apple 로그인", description = "Apple Oauth 로그인")
     @ResponseBody
     @PostMapping("/login/apple")
-    public ResponseEntity<OAuthResponseDto> loginApple(
+    public DataResponseDto<OAuthResponseDto> loginApple(
             @RequestBody OAuthRequestDto body
             ) {
         return null;
@@ -27,7 +28,7 @@ public class AuthController {
     @Operation(summary = "Kakao 로그인", description = "Kakao OAuth 로그인")
     @ResponseBody
     @PostMapping("/login/kakao")
-    public ResponseEntity<OAuthResponseDto> loginKakao(
+    public DataResponseDto<OAuthResponseDto> loginKakao(
             @RequestBody OAuthRequestDto body
     ) {
         return null;
@@ -36,7 +37,7 @@ public class AuthController {
     @Operation(summary = "회원가입", description = "회원가입을 위해 사용자 추가정보를 입력합니다. gender = { unknown, female, male }")
     @ResponseBody
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(
+    public DataResponseDto<String> signup(
             @RequestBody UsersRequestDto.PostUser body
     ) {
         return null;

@@ -1,8 +1,10 @@
 package site.gonggangam.gonggangam_server.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
+@Schema(description = "오류 발생 시 응답")
 public class ErrorResponseDto extends ResponseDto {
 
     private ErrorResponseDto(ResponseCode code) {

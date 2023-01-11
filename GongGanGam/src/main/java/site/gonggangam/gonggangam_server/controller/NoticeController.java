@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.gonggangam.gonggangam_server.dto.DataResponseDto;
+import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
+import site.gonggangam.gonggangam_server.dto.ResponseDto;
 import site.gonggangam.gonggangam_server.dto.notice.NoticeRequestDto;
 import site.gonggangam.gonggangam_server.dto.notice.NoticeResponseDto;
 
@@ -25,13 +28,13 @@ public class NoticeController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "작성 성공"),
-                    @ApiResponse(responseCode = "401", description = "인증에 실패했습니다.", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
-                    @ApiResponse(responseCode = "403", description = "권한이 없습니다.", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
-                    @ApiResponse(responseCode = "403", description = "만료된 토큰입니다.", content = @Content(schema = @Schema(implementation = ResponseEntity.class)))
+                    @ApiResponse(responseCode = "401", description = "인증에 실패했습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "권한이 없습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "만료된 토큰입니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
             }
     )
     @PostMapping
-    public ResponseEntity<String> postNotice(
+    public ResponseDto postNotice(
             @RequestBody NoticeRequestDto.PostNotice body
             ) {
         return null;
@@ -39,7 +42,7 @@ public class NoticeController {
 
     @Operation(summary = "공지사항 수정", description = "관리자 계정만 이용 가능합니다.")
     @PutMapping("/{noticeId}")
-    public ResponseEntity<String> putNotice(
+    public ResponseDto putNotice(
             @PathVariable("noticeId") Long noticeId
     ) {
         return null;
@@ -47,7 +50,7 @@ public class NoticeController {
 
     @Operation(summary = "공지사항 조회", description = "공지사항 목록을 조회합니다.")
     @GetMapping
-    public ResponseEntity<List<NoticeResponseDto>> getNoticeList(
+    public DataResponseDto<List<NoticeResponseDto>> getNoticeList(
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "pageSize") Integer pageSize
     ) {

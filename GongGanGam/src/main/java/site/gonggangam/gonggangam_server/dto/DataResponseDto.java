@@ -1,8 +1,10 @@
 package site.gonggangam.gonggangam_server.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
+@Schema(description = "데이터가 포함된 응답")
 public class DataResponseDto<T> extends ResponseDto {
     private final T data;
 
