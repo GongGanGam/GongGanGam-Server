@@ -48,11 +48,11 @@ public class Users extends BaseTimeEntity {
     private Role role;
 
     @Convert(converter = UserStatus.Converter.class)
-    @Column(name = "USER_STATUS", columnDefinition = "CHAR(1)", length = 1, nullable = false)
+    @Column(name = "USER_STATUS", columnDefinition = "CHAR(1) DEFAULT 'N'", length = 1, nullable = false)
     private UserStatus userStatus;
 
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, optional = false)
+    @PrimaryKeyJoinColumn
     private UserSettings settings;
 
     @Builder
@@ -75,4 +75,7 @@ public class Users extends BaseTimeEntity {
         this.genderType = genderType;
     }
 
+    public void setSettings(UserSettings settings) {
+        this.settings = settings;
+    }
 }

@@ -6,6 +6,7 @@ import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 
 @Getter
@@ -15,10 +16,10 @@ import java.io.Serializable;
 public class UserSettings extends BaseTimeEntity implements Serializable {
 
     @Id
-    private Long userId;
+    private Long id;
 
     @MapsId
-    @OneToOne(optional = false)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private Users user;
 
@@ -37,8 +38,7 @@ public class UserSettings extends BaseTimeEntity implements Serializable {
     private Boolean notifyChat = true;
 
     @Builder
-    public UserSettings(Long userId, Users user, ShareType shareType, Boolean notifyDiary, Boolean notifyReply, Boolean notifyChat) {
-        this.userId = userId;
+    public UserSettings(Users user, ShareType shareType, Boolean notifyDiary, Boolean notifyReply, Boolean notifyChat) {
         this.user = user;
         this.shareType = shareType;
         this.notifyDiary = notifyDiary;
