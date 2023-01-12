@@ -48,7 +48,7 @@ public class UsersTest {
                 .role(Role.USER)
                 .userStatus(UserStatus.NORMAL)
                 .genderType(gender)
-                .authType(AuthType.APPLE)
+                .authType(ProviderType.APPLE)
                 .build();
 
         UserSettings settings = UserSettings.builder()

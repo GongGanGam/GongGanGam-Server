@@ -3,6 +3,7 @@ package site.gonggangam.gonggangam_server.config.exceptions;
 import lombok.Getter;
 import site.gonggangam.gonggangam_server.dto.ResponseCode;
 
+
 @Getter
 public class GeneralException extends RuntimeException {
     private final ResponseCode errorCode;

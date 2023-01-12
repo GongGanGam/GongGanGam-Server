@@ -7,18 +7,18 @@ import site.gonggangam.gonggangam_server.config.EntityEnumerableConverter;
 
 @Getter
 @AllArgsConstructor
-public enum AuthType implements EntityEnumerable {
+public enum ProviderType implements EntityEnumerable {
 
-    NAVER("NA", "NAVER 로그인"),
-    KAKAO("KA", "KAKAO 로그인"),
-    APPLE("AP", "APPLE 로그인");
+    NAVER("naver", "NAVER 로그인"),
+    KAKAO("kakao", "KAKAO 로그인"),
+    APPLE("apple", "APPLE 로그인");
 
     private final String key;
     private final String title;
 
-    public static class Converter extends EntityEnumerableConverter<AuthType> {
+    public static class Converter extends EntityEnumerableConverter<ProviderType> {
         public Converter() {
-            super(AuthType.class);
+            super(ProviderType.class);
         }
     }
 }

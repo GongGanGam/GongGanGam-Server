@@ -2,7 +2,7 @@ package site.gonggangam.gonggangam_server.domain.users;
 
 import lombok.*;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
-import site.gonggangam.gonggangam_server.domain.users.types.AuthType;
+import site.gonggangam.gonggangam_server.domain.users.types.ProviderType;
 import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
 import site.gonggangam.gonggangam_server.domain.users.types.Role;
 import site.gonggangam.gonggangam_server.domain.users.types.UserStatus;
@@ -20,6 +20,8 @@ public class Users extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+
+
     @Column(columnDefinition = "VARCHAR(45)", length = 45, nullable = false)
     private String nickname;
 
@@ -33,12 +35,12 @@ public class Users extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = true)
     private String profImg;
 
-    @Column(columnDefinition = "VARCHAR(50)", length = 50, nullable = false)
+    @Column(name = "EMAIL", columnDefinition = "VARCHAR(50)", length = 50, nullable = false, unique = true)
     private String email;
 
-    @Convert(converter = AuthType.Converter.class)
-    @Column(name = "AUTH_TYPE", columnDefinition = "CHAR(2)", length = 2, nullable = false)
-    private AuthType authType;
+    @Convert(converter = ProviderType.Converter.class)
+    @Column(name = "PROVIDER", columnDefinition = "CHAR(10)", length = 10, nullable = false)
+    private ProviderType provider;
 
     @Column(name = "DEVICE_TOKEN", columnDefinition = "TEXT", nullable = true)
     private String deviceToken;
@@ -56,13 +58,13 @@ public class Users extends BaseTimeEntity {
     private UserSettings settings;
 
     @Builder
-    public Users(String nickname, Integer birthYear, GenderType genderType, String profImg, String email, AuthType authType, String deviceToken, Role role, UserStatus userStatus, UserSettings settings) {
+    public Users(String nickname, Integer birthYear, GenderType genderType, String profImg, String email, ProviderType provider, String deviceToken, Role role, UserStatus userStatus, UserSettings settings) {
         this.nickname = nickname;
         this.birthYear = birthYear;
         this.genderType = genderType;
         this.profImg = profImg;
         this.email = email;
-        this.authType = authType;
+        this.provider = provider;
         this.deviceToken = deviceToken;
         this.role = role;
         this.userStatus = userStatus;
@@ -73,9 +75,5 @@ public class Users extends BaseTimeEntity {
         this.nickname = nickname;
         this.birthYear = birthYear;
         this.genderType = genderType;
-    }
-
-    public void setSettings(UserSettings settings) {
-        this.settings = settings;
     }
 }

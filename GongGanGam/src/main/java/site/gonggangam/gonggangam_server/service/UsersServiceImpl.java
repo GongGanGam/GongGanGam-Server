@@ -21,7 +21,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     @Transactional
-    public Users createUser(UsersRequestDto.PostUser request, String email, AuthType authType, Role role) {
+    public Users createUser(UsersRequestDto.PostUser request, String email, ProviderType provider, Role role) {
         Users newUser = Users.builder()
                 .nickname(request.getNickname())
                 .genderType(GenderType.valueOf(request.getGender()))
@@ -29,7 +29,7 @@ public class UsersServiceImpl implements UsersService {
                 .role(role)
                 .userStatus(UserStatus.NORMAL)
                 .email(email)
-                .authType(authType)
+                .provider(provider)
                 .build();
 
         UserSettings settings = createDefaultSettings(newUser);

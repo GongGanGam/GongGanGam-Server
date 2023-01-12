@@ -28,6 +28,13 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    // spring security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // jdbc
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
     // junit4
     implementation 'junit:junit:4.13.1'
 
@@ -41,7 +48,7 @@ dependencies {
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    // h2
+    // h2 database
     implementation 'com.h2database:h2'
 
     // oauth2
@@ -49,6 +56,12 @@ dependencies {
 
     // swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+
+    // jwt
+    implementation 'com.auth0:java-jwt:4.2.1'
+
+    // log4j2
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 }
 
 tasks.named('test') {
