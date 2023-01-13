@@ -1,6 +1,8 @@
 package site.gonggangam.gonggangam_server.domain.users;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
 import site.gonggangam.gonggangam_server.domain.users.types.ProviderType;
 import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
@@ -8,19 +10,19 @@ import site.gonggangam.gonggangam_server.domain.users.types.Role;
 import site.gonggangam.gonggangam_server.domain.users.types.UserStatus;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USERS")
 @Entity
-public class Users extends BaseTimeEntity {
+public class Users extends BaseTimeEntity implements UserDetails {
 
     @Id
     @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
-
 
     @Column(columnDefinition = "VARCHAR(45)", length = 45, nullable = false)
     private String nickname;
@@ -39,7 +41,7 @@ public class Users extends BaseTimeEntity {
     private String email;
 
     @Convert(converter = ProviderType.Converter.class)
-    @Column(name = "PROVIDER", columnDefinition = "CHAR(10)", length = 10, nullable = false)
+    @Column(name = "PROVIDER", columnDefinition = "VARCHAR(10)", length = 10, nullable = false)
     private ProviderType provider;
 
     @Column(name = "DEVICE_TOKEN", columnDefinition = "TEXT", nullable = true)
@@ -75,5 +77,42 @@ public class Users extends BaseTimeEntity {
         this.nickname = nickname;
         this.birthYear = birthYear;
         this.genderType = genderType;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(() -> this.role.getKey());
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.userStatus != UserStatus.BLOCKED;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.userStatus == UserStatus.NORMAL;
     }
 }

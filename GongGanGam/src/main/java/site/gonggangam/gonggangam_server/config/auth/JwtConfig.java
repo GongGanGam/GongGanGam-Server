@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JwtConfig {
 
-    @Value("${spring.jwt.secret}")
-    public final String secretKey;
+    @Value("${jwt.secret}")
+    public String secretKey;
 
-    @Value("${spring.jwt.issuer}")
-    public final String issuer;
+    @Value("${jwt.issuer}")
+    public String issuer;
 
     @Bean
     public JWTVerifier tokenValidator() {

@@ -1,2 +1,3 @@
 .DS_Store
 GongGanGam/src/main/resources/application.properties
+*.yml

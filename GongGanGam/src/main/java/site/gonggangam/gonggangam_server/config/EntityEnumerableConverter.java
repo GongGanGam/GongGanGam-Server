@@ -31,7 +31,7 @@ public abstract class EntityEnumerableConverter<T extends EntityEnumerable> impl
                 return constant;
         }
 
-        throw new UnsupportedOperationException("지원하지 않는 enum 형식입니다.");
+        throw new UnsupportedOperationException("지원하지 않는 enum 형식입니다. : " + dbData);
     }
 
 }
