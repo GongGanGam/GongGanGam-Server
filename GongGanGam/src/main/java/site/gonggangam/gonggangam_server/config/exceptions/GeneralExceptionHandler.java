@@ -1,12 +1,11 @@
 package site.gonggangam.gonggangam_server.config.exceptions;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,22 +15,23 @@ import site.gonggangam.gonggangam_server.dto.ResponseCode;
 
 import java.nio.file.AccessDeniedException;
 
+@Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler
+    @ExceptionHandler(value = {ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e, WebRequest request) {
         return handleExceptionInternal(e, ResponseCode.VALIDATION_ERROR, request);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(value = {GeneralException.class})
     public ResponseEntity<Object> handleGeneralException(GeneralException e, WebRequest request) {
         return handleExceptionInternal(e, e.getErrorCode(), request);
     }
 
     // TODO : 유효하지 않은 토큰과 토큰 만료 구분
-    @ExceptionHandler(value = {AuthenticationServiceException.class })
-    public ResponseEntity<Object> handleAuthenticationException(AuthenticationServiceException e, WebRequest request) {
+    @ExceptionHandler(value = {AuthenticationException.class})
+    public ResponseEntity<Object> handleAuthentication(AuthenticationException e, WebRequest request) {
         return handleExceptionInternal(e, ResponseCode.TOKEN_INVALID, request);
     }
 
@@ -53,6 +53,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handleExceptionInternal(Exception e, ResponseCode errorCode,
                                                            WebRequest request) {
+
         return handleExceptionInternal(
                 e,
                 errorCode,
@@ -63,6 +64,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> handleExceptionInternal(Exception e, ResponseCode code, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.info("exception handled : " + e + " at request" + request);
         return super.handleExceptionInternal(
                 e,
                 code,
@@ -71,5 +73,4 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
                 request
         );
     }
-
 }

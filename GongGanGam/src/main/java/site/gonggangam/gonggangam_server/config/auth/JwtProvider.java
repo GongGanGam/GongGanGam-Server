@@ -22,6 +22,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtProvider implements AuthenticationProvider {
 
+    public static final String ACCESS_TOKEN_HEADER = "accessToken";
+    public static final String REFRESH_TOKEN_HEADER = "refreshToken";
+
     private static final long TOKEN_VALIDATION_TIME = 1000L * 60 * 30; // 30 minutes
     private static final long REFRESH_TOKEN_VALIDATION_TIME = 1000L * 60 * 60 * 24 * 60; // 60 days
 

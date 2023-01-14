@@ -1,5 +1,6 @@
 package site.gonggangam.gonggangam_server.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public enum ResponseCode {
     OK(2000, HttpStatus.OK, "요청이 완료되었습니다."),
 
