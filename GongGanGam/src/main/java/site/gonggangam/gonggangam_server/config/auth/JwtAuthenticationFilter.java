@@ -1,9 +1,19 @@
 package site.gonggangam.gonggangam_server.config.auth;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
+import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -12,21 +22,35 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final HandlerExceptionResolver resolver;
     private final JwtProvider jwtProvider;
+
+    public JwtAuthenticationFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver, JwtProvider jwtProvider) {
+        this.resolver = resolver;
+        this.jwtProvider = jwtProvider;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Authentication authentication;
+        String token = request.getHeader(JwtProvider.ACCESS_TOKEN_HEADER);
 
-//        try {
-//            String accessToken = request.getHeader(JwtProvider.ACCESS_TOKEN_HEADER);
-//            if (accessToken == null)
-//
-//
-//        }
+        try {
+            jwtProvider.validateToken(token);
+            String email = jwtProvider.getEmailFromToken(token);
+            Authentication authentication = jwtProvider.authenticate(new UsernamePasswordAuthenticationToken(email, ""));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } catch (TokenExpiredException ex) {
+            resolver.resolveException(request, response, null, new GeneralException(ResponseCode.TOKEN_EXPIRED));
+        } catch (JWTDecodeException ex) {
+            resolver.resolveException(request, response, null, new GeneralException(ResponseCode.TOKEN_CANT_NOT_DECODE));
+        } catch (JWTVerificationException ex) {
+            resolver.resolveException(request, response, null, new GeneralException(ResponseCode.TOKEN_INVALID));
+        } catch (Exception ex) {
+            resolver.resolveException(request, response, null, ex);
+        }
     }
-
 }

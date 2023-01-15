@@ -10,7 +10,10 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
+import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.service.UsersService;
 
@@ -32,12 +35,13 @@ public class JwtProvider implements AuthenticationProvider {
     private final JwtConfig jwtConfig;
     private final JWTVerifier tokenValidator;
 
-    public Long getUserIdFromToken(String token) throws JWTVerificationException {
+    public String getEmailFromToken(String token) throws JWTVerificationException {
         DecodedJWT verifiedToken = validateToken(token);
-        return verifiedToken.getClaim("userId").asLong();
+        return verifiedToken.getClaim("email").asString();
     }
 
-    public DecodedJWT validateToken(String token) throws JWTVerificationException {
+    public DecodedJWT validateToken(String token) throws JWTVerificationException, GeneralException {
+        if (token == null) throw new GeneralException(ResponseCode.TOKEN_IS_NULL);
         return tokenValidator.verify(token);
     }
 
@@ -62,7 +66,7 @@ public class JwtProvider implements AuthenticationProvider {
 
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException, UsernameNotFoundException {
         Users user = (Users) usersService.loadUserByUsername(authentication.getName());
 
         return new UsernamePasswordAuthenticationToken(

@@ -11,6 +11,8 @@ public interface UsersService extends UserDetailsService {
 
     Users createUser(UsersRequestDto.PostUser request, String email, ProviderType providerType, Role role);
 
+    String getAccessToken()
+
     void updateInfo(Long userId, UsersRequestDto.PutUserInfo request);
 
     void updateSettings(Long userId, UserSettingsRequestDto request);

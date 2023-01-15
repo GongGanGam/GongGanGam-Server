@@ -2,6 +2,7 @@ package site.gonggangam.gonggangam_server.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
 
 @Getter
 @Schema(description = "데이터가 포함된 응답")

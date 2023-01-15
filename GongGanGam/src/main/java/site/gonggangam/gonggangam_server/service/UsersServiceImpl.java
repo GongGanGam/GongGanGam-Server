@@ -2,13 +2,12 @@ package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.users.UserSettings;
 import site.gonggangam.gonggangam_server.domain.users.types.*;
-import site.gonggangam.gonggangam_server.dto.ResponseCode;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.users.UserSettingsRequestDto;
 import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 import site.gonggangam.gonggangam_server.domain.users.Users;

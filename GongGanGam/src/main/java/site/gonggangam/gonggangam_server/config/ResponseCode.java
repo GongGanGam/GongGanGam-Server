@@ -1,8 +1,7 @@
-package site.gonggangam.gonggangam_server.dto;
+package site.gonggangam.gonggangam_server.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 
@@ -18,9 +17,11 @@ public enum ResponseCode {
     BAD_REQUEST(4000, HttpStatus.BAD_REQUEST, "올바르지 않은 요청입니다."),
     VALIDATION_ERROR(4001, HttpStatus.BAD_REQUEST, "요청 값이 올바르지 않습니다."),
 
-    TOKEN_INVALID(4010, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰 형식입니다."),
+    TOKEN_INVALID(4010, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     TOKEN_EXPIRED(4011, HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
-
+    TOKEN_IS_NULL(4012, HttpStatus.UNAUTHORIZED, "토큰이 없습니다."),
+    TOKEN_CANT_NOT_DECODE(4013, HttpStatus.UNAUTHORIZED, "올바르지 않은 토큰 형식입니다."),
+    TOKEN_USER_INVALID(4014, HttpStatus.UNAUTHORIZED, "이용할 수 없는 사용자입니다."),
 
     PERMISSION_DENIED(4030, HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 

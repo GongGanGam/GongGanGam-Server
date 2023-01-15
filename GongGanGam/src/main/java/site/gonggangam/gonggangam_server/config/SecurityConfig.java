@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 import site.gonggangam.gonggangam_server.config.auth.DelegatedJwtHandler;
 import site.gonggangam.gonggangam_server.config.auth.JwtAuthenticationFilter;
 
@@ -20,7 +21,7 @@ import site.gonggangam.gonggangam_server.config.auth.JwtAuthenticationFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final DelegatedJwtHandler jwtHandler;
+    private final DelegatedJwtHandler jwtExceptionHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
@@ -47,10 +48,10 @@ public class SecurityConfig {
                 .antMatchers("/**").permitAll()
                 .and()
                 .exceptionHandling()
-//                .authenticationEntryPoint(jwtHandler)
-                .accessDeniedHandler(jwtHandler)
+                .authenticationEntryPoint(jwtExceptionHandler)
+                .accessDeniedHandler(jwtExceptionHandler)
                 .and()
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

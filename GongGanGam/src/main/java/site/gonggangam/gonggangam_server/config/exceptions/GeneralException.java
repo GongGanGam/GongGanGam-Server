@@ -1,7 +1,7 @@
 package site.gonggangam.gonggangam_server.config.exceptions;
 
 import lombok.Getter;
-import site.gonggangam.gonggangam_server.dto.ResponseCode;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
 
 
 @Getter
