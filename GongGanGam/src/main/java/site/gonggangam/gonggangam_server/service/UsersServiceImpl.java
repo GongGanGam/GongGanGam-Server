@@ -8,9 +8,12 @@ import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.users.UserSettings;
 import site.gonggangam.gonggangam_server.domain.users.types.*;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
+import site.gonggangam.gonggangam_server.dto.auth.OAuthRequestDto;
+import site.gonggangam.gonggangam_server.dto.auth.OAuthResponseDto;
 import site.gonggangam.gonggangam_server.dto.users.UserSettingsRequestDto;
 import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 import site.gonggangam.gonggangam_server.domain.users.Users;
+import site.gonggangam.gonggangam_server.dto.users.UsersResponseDto;
 import site.gonggangam.gonggangam_server.repository.UserSettingsRepository;
 import site.gonggangam.gonggangam_server.repository.UsersRepository;
 
@@ -25,7 +28,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     @Transactional
-    public Users createUser(UsersRequestDto.PostUser request, String email, ProviderType provider, Role role) {
+    public UsersResponseDto createUser(UsersRequestDto.PostUser request, String email, ProviderType provider, Role role) throws GeneralException{
         Users newUser = Users.builder()
                 .nickname(request.getNickname())
                 .genderType(GenderType.valueOf(request.getGender()))
@@ -38,7 +41,18 @@ public class UsersServiceImpl implements UsersService {
 
         UserSettings settings = createDefaultSettings(newUser);
         userSettingsRepository.save(settings);
-        return newUser;
+
+        return UsersResponseDto.toDto(newUser, settings);
+    }
+
+    @Override
+    public UsersResponseDto loadUser(String email) throws GeneralException {
+        Users user = usersRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    throw new GeneralException(ResponseCode.NOT_FOUND_USER);
+                });
+
+        return UsersResponseDto.toDto(user, user.getSettings());
     }
 
     @Override
@@ -55,7 +69,7 @@ public class UsersServiceImpl implements UsersService {
         usersRepository.save(user);
     }
 
-    @Override
+//    @Override
     public void updateSettings(Long userId, UserSettingsRequestDto request) {
         UserSettings settings = userSettingsRepository.findById(userId)
                 .orElseThrow();
@@ -69,6 +83,10 @@ public class UsersServiceImpl implements UsersService {
         userSettingsRepository.save(settings);
     }
 
+//    @Override
+    public OAuthResponseDto oauthLogin(OAuthRequestDto request) {
+        return null;
+    }
 
     private UserSettings createDefaultSettings(Users user) {
         return UserSettings.builder()
@@ -80,11 +98,4 @@ public class UsersServiceImpl implements UsersService {
                 .build();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usersRepository.findByEmail(username)
-                .orElseThrow(() -> {
-                    throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-                });
-    }
 }

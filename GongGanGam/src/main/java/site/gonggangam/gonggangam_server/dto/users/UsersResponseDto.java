@@ -3,6 +3,8 @@ package site.gonggangam.gonggangam_server.dto.users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import site.gonggangam.gonggangam_server.domain.users.UserSettings;
+import site.gonggangam.gonggangam_server.domain.users.Users;
 
 @Data
 @Builder
@@ -21,4 +23,15 @@ public class UsersResponseDto {
     private final String shareType;
     @Schema(description = "성별 (undefine : 미선택, male : 남성, female : 여성)", defaultValue = "undefine", allowableValues = {"undefine", "male", "female"})
     private final String gender;
+
+    public static UsersResponseDto toDto(Users user, UserSettings settings) {
+        return UsersResponseDto.builder()
+                .nickname(user.getNickname())
+                .birthYear(user.getBirthYear().toString())
+                .email(user.getEmail())
+                .gender(user.getGenderType().getTitle())
+                .profImg(user.getProfImg())
+                .shareType(settings.getShareType().getTitle())
+                .build();
+    }
 }

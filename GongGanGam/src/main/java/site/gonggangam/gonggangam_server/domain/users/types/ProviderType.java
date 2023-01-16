@@ -9,12 +9,13 @@ import site.gonggangam.gonggangam_server.config.EntityEnumerableConverter;
 @AllArgsConstructor
 public enum ProviderType implements EntityEnumerable {
 
-    NAVER("naver", "NAVER 로그인"),
-    KAKAO("kakao", "KAKAO 로그인"),
-    APPLE("apple", "APPLE 로그인");
+    NAVER("na", "naver",  "NAVER 로그인"),
+    KAKAO("ka", "kakao",  "KAKAO 로그인"),
+    APPLE("ap", "apple",  "APPLE 로그인");
 
     private final String key;
     private final String title;
+    private final String description;
 
     public static class Converter extends EntityEnumerableConverter<ProviderType> {
         public Converter() {

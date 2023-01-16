@@ -9,11 +9,12 @@ import site.gonggangam.gonggangam_server.config.EntityEnumerableConverter;
 @AllArgsConstructor
 public enum ShareType implements EntityEnumerable {
 
-    ALL("A", "전체 사용자 대상 공유"),
-    SIMILAR("S", "비슷한 연령대 공유");
+    ALL("A", "all",  "전체 사용자 대상 공유"),
+    SIMILAR("S", "similar",  "비슷한 연령대 공유");
 
     private final String key;
     private final String title;
+    private final String description;
 
     @javax.persistence.Converter
     public static class Converter extends EntityEnumerableConverter<ShareType> {

@@ -10,12 +10,12 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.users.Users;
-import site.gonggangam.gonggangam_server.service.UsersService;
+import site.gonggangam.gonggangam_server.service.OAuthService;
+import site.gonggangam.gonggangam_server.service.OAuthServiceImpl;
 
 import java.util.Date;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class JwtProvider implements AuthenticationProvider {
     private static final long TOKEN_VALIDATION_TIME = 1000L * 60 * 30; // 30 minutes
     private static final long REFRESH_TOKEN_VALIDATION_TIME = 1000L * 60 * 60 * 24 * 60; // 60 days
 
-    private final UsersService usersService;
+    private final OAuthService oAuthService;
     private final JwtConfig jwtConfig;
     private final JWTVerifier tokenValidator;
 
@@ -66,8 +66,8 @@ public class JwtProvider implements AuthenticationProvider {
 
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException, UsernameNotFoundException {
-        Users user = (Users) usersService.loadUserByUsername(authentication.getName());
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException, GeneralException {
+        Users user = (Users) oAuthService.loadUserByUsername(authentication.getName());
 
         return new UsernamePasswordAuthenticationToken(
                 user,

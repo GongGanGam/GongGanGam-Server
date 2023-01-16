@@ -9,12 +9,13 @@ import site.gonggangam.gonggangam_server.config.EntityEnumerableConverter;
 @AllArgsConstructor
 public enum GenderType implements EntityEnumerable {
 
-    UNKNOWN("U", "미선택"),
-    MALE("M", "남성"),
-    FEMALE("F", "여성");
+    UNKNOWN("U", "unknown", "미선택"),
+    MALE("M", "male", "남성"),
+    FEMALE("F", "female", "여성");
 
     private final String key;
     private final String title;
+    private final String description;
 
     public static class Converter extends EntityEnumerableConverter<GenderType> {
         public Converter() {

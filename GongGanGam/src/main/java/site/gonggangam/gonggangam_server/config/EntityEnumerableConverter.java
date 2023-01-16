@@ -20,6 +20,12 @@ public abstract class EntityEnumerableConverter<T extends EntityEnumerable> impl
         return attribute.getKey();
     }
 
+    public String convertToTitle(T attribute) {
+        if (Objects.isNull(attribute))
+            return null;
+        return attribute.getTitle();
+    }
+
     @Override
     public T convertToEntityAttribute(String dbData) {
         if (StringUtils.isNullOrEmpty(dbData))

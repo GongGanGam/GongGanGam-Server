@@ -9,15 +9,15 @@ import site.gonggangam.gonggangam_server.config.ResponseCode;
 public class ErrorResponseDto extends ResponseDto {
 
     private ErrorResponseDto(ResponseCode code) {
-        super(false, code.getCode(), code.getMessage());
+        super(false, code.getHttpStatus().value(), code.getCode(), code.getMessage());
     }
 
     private ErrorResponseDto(ResponseCode code, Exception e) {
-        super(false, code.getCode(), code.getMessage(e));
+        super(false, code.getHttpStatus().value(), code.getCode(), code.getMessage(e));
     }
 
     private ErrorResponseDto(ResponseCode code, String message) {
-        super(false, code.getCode(), code.getMessage(message));
+        super(false, code.getHttpStatus().value(), code.getCode(), code.getMessage(message));
     }
 
     public static ErrorResponseDto of(ResponseCode code) {

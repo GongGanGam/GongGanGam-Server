@@ -41,7 +41,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private String email;
 
     @Convert(converter = ProviderType.Converter.class)
-    @Column(name = "PROVIDER", columnDefinition = "VARCHAR(10)", length = 10, nullable = false)
+    @Column(name = "PROVIDER", columnDefinition = "CHAR(2)", length = 2, nullable = false)
     private ProviderType provider;
 
     @Column(name = "DEVICE_TOKEN", columnDefinition = "TEXT", nullable = true)

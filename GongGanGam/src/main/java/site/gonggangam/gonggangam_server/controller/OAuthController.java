@@ -3,7 +3,6 @@ package site.gonggangam.gonggangam_server.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthRequestDto;
@@ -14,7 +13,7 @@ import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class OAuthController {
 
     @Operation(summary = "Apple 로그인", description = "Apple Oauth 로그인")
     @ResponseBody

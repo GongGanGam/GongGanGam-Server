@@ -4,5 +4,6 @@ public interface EntityEnumerable {
 
     String getKey();
     String getTitle();
+    String getDescription();
 
 }
