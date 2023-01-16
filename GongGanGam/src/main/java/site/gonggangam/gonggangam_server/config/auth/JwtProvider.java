@@ -15,7 +15,6 @@ import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.service.OAuthService;
-import site.gonggangam.gonggangam_server.service.OAuthServiceImpl;
 
 import java.util.Date;
 import java.util.Map;

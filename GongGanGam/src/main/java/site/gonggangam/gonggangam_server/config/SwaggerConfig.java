@@ -8,9 +8,11 @@ import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class SwaggerConfig {
+public class SwaggerConfig implements WebMvcConfigurer {
 
     public static final String TITLE = "GongGanGam API";
     public static final String DESCRIPTION = "GongGanGam API 명세서입니다";
@@ -46,4 +48,5 @@ public class SwaggerConfig {
                 .addSecurityItem(new SecurityRequirement().addList("access_token"))
                 .getComponents().addSecuritySchemes("access_token", securityScheme);
     }
+
 }

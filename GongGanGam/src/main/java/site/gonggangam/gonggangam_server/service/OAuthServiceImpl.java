@@ -14,7 +14,6 @@ public class OAuthServiceImpl implements OAuthService {
 
     private final UsersRepository usersRepository;
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return usersRepository.findByEmail(username)
