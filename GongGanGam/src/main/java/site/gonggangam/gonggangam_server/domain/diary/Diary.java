@@ -53,4 +53,14 @@ public class Diary extends BaseTimeEntity {
         this.content = content;
         this.isVisible = isVisible;
     }
+
+    public void update(String emoji, String content, Boolean shareAgreed) {
+        this.emoji = emoji;
+        this.content = content;
+        this.shareAgreed = shareAgreed;
+    }
+
+    public void delete() {
+        this.isVisible = false;
+    }
 }

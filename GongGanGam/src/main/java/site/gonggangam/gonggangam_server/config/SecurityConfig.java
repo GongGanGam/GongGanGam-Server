@@ -22,13 +22,13 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-ui/**",
-            "/error",
+            "/error/**",
             "/api/auth/**"
     };
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().mvcMatchers(AUTH_WHITELIST);
+        return (web) -> web.ignoring().antMatchers(AUTH_WHITELIST);
     }
 
     @Bean
@@ -49,8 +49,8 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
+//                    .antMatchers("/admin/**").hasRole("ADMIN")
+//                    .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
                     .anyRequest().permitAll()
                     .and()
                 .exceptionHandling()

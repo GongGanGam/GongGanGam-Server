@@ -28,6 +28,8 @@ public class DiaryRequestDto {
     @Builder
     @Schema(description = "일기 수정")
     public static class Put {
+        @Schema(description = "일기 ID", defaultValue = "12", required = true)
+        private final Long diaryId;
         @Schema(description = "이모지", defaultValue = "happy", required = true)
         private final String emoji;
         @Schema(description = "내용", defaultValue = "내 손 잡아준 너 매일 아침 눈을 뜰 때면", required = true)

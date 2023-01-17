@@ -3,6 +3,7 @@ package site.gonggangam.gonggangam_server.dto.diary;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import site.gonggangam.gonggangam_server.domain.diary.ShareDiary;
 
 import java.time.LocalDate;
 
@@ -22,4 +23,15 @@ public class SharedDiaryResponseDto {
     private final String imgUrl;
     @Schema(description = "일기 작성자")
     private final WriterDto writer;
+
+    public static SharedDiaryResponseDto toDto(ShareDiary entity) {
+        return SharedDiaryResponseDto.builder()
+                .diaryId(entity.getDiary().getDiaryId())
+                .date(entity.getDiary().getWritingDate())
+                .emoji(entity.getDiary().getEmoji())
+                .content(entity.getDiary().getContent())
+                .imgUrl(entity.getDiary().getImgUrl())
+                .writer(WriterDto.toDto(entity.getReceiver()))
+                .build();
+    }
 }

@@ -3,6 +3,7 @@ package site.gonggangam.gonggangam_server.dto.diary;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import site.gonggangam.gonggangam_server.domain.users.Users;
 
 @Data
 @Builder
@@ -14,4 +15,12 @@ public class WriterDto {
     private final String nickname;
     @Schema(description = "프로필 이미지", defaultValue = "https://imgurl.com")
     private final String profImg;
+
+    public static WriterDto toDto(Users entity) {
+        return WriterDto.builder()
+                .userId(entity.getUserId())
+                .nickname(entity.getNickname())
+                .profImg(entity.getProfImg())
+                .build();
+    }
 }

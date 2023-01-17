@@ -27,6 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DiaryController {
 
+
+
     @Operation(summary = "일기 작성", description = "원하는 날짜에 일기를 작성합니다. request body 형식은 application/json을 선택해서 참조해주세요.")
     @ApiResponses(
             value = {

@@ -3,6 +3,7 @@ package site.gonggangam.gonggangam_server.dto.diary;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import site.gonggangam.gonggangam_server.domain.diary.Diary;
 
 import java.time.LocalDate;
 
@@ -16,4 +17,12 @@ public class DiaryPreviewResponseDto {
     private final LocalDate date;
     @Schema(description = "이모지", defaultValue = "happy")
     private final String emoji;
+
+    public static DiaryPreviewResponseDto toDto(Diary entity) {
+        return DiaryPreviewResponseDto.builder()
+                .diaryId(entity.getDiaryId())
+                .date(entity.getWritingDate())
+                .emoji(entity.getEmoji())
+                .build();
+    }
 }

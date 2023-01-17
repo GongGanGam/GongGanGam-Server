@@ -51,6 +51,7 @@ dependencies {
 
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'mysql:mysql-connector-java'
 
     // h2 database
     implementation 'com.h2database:h2'
@@ -64,8 +65,6 @@ dependencies {
     // jwt
     implementation 'com.auth0:java-jwt:4.2.1'
 
-    // log4j2
-    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 }
 
 tasks.named('test') {
