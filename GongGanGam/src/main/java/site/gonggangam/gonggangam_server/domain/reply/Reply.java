@@ -46,4 +46,16 @@ public class Reply extends BaseTimeEntity {
         this.content = content;
         this.isVisible = isVisible;
     }
+
+    public void update(String content) {
+        this.content = content;
+    }
+
+    public void reject() {
+        this.rejected = true;
+    }
+
+    public void delete() {
+        this.isVisible = false;
+    }
 }

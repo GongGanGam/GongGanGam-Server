@@ -3,10 +3,11 @@ package site.gonggangam.gonggangam_server.dto.reply;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import site.gonggangam.gonggangam_server.domain.reply.Reply;
 import site.gonggangam.gonggangam_server.dto.diary.DiaryResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.WriterDto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -21,7 +22,18 @@ public class ReplyResponseDto {
     @Schema(description = "작성자")
     private final WriterDto writer;
     @Schema(description = "답장 생성시간", defaultValue = "2023-01-05")
-    private final LocalDate createdAt;
+    private final LocalDateTime createdAt;
     @Schema(description = "답장 최종수정 시간", defaultValue = "2023-01-06")
-    private final LocalDate updatedAt;
+    private final LocalDateTime updatedAt;
+
+    public static ReplyResponseDto toDto(Reply entity) {
+        return ReplyResponseDto.builder()
+                .diary(DiaryResponseDto.toDto(entity.getDiary()))
+                .replyId(entity.getReplyId())
+                .content(entity.getContent())
+                .writer(WriterDto.toDto(entity.getWriter()))
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
 }

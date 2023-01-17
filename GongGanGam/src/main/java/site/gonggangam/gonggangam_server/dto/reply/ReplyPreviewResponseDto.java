@@ -3,9 +3,10 @@ package site.gonggangam.gonggangam_server.dto.reply;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import site.gonggangam.gonggangam_server.domain.reply.Reply;
 import site.gonggangam.gonggangam_server.dto.diary.WriterDto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -18,7 +19,17 @@ public class ReplyPreviewResponseDto {
     @Schema(description = "답장 내용", defaultValue = "기억하니 우리가 했던 이별")
     private final String content;
     @Schema(description = "답장 생성시간", defaultValue = "2023-01-05")
-    private final LocalDate createdAt;
+    private final LocalDateTime createdAt;
     @Schema(description = "답장 최종수정 시간", defaultValue = "2023-01-06")
-    private final LocalDate updatedAt;
+    private final LocalDateTime updatedAt;
+
+    public static ReplyPreviewResponseDto toDto(Reply entity) {
+        return ReplyPreviewResponseDto.builder()
+                .replyId(entity.getReplyId())
+                .writer(WriterDto.toDto(entity.getWriter()))
+                .content(entity.getContent())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
 }
