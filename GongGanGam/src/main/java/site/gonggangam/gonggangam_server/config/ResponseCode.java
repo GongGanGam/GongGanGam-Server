@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 @AllArgsConstructor
 public enum ResponseCode {
     OK(20000, HttpStatus.OK, "요청이 완료되었습니다."),
+    CREATED(20100, HttpStatus.CREATED, "요청이 완료되었습니다."),
 
     BAD_REQUEST(40000, HttpStatus.BAD_REQUEST, "올바르지 않은 요청입니다."),
     VALIDATION_ERROR(40001, HttpStatus.BAD_REQUEST, "요청 값이 올바르지 않습니다."),

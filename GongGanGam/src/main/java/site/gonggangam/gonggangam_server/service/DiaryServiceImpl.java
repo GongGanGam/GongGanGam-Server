@@ -85,7 +85,7 @@ public class DiaryServiceImpl implements DiaryService {
         Diary diary = diaryRepository.findByDiaryIdAndIsVisible(request.getDiaryId(), true).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND);
         });
-        
+
         // TODO : shared agree 변경시 로직 추가
         diary.update(request.getEmoji(), request.getContent(), request.getShareAgreed());
 

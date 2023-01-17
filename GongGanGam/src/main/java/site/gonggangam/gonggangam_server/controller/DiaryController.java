@@ -12,12 +12,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
+import site.gonggangam.gonggangam_server.dto.ResponseDto;
+import site.gonggangam.gonggangam_server.dto.SuccessResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.CalendarResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.DiaryRequestDto;
 import site.gonggangam.gonggangam_server.dto.diary.DiaryResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.SharedDiaryResponseDto;
+import site.gonggangam.gonggangam_server.service.DiaryService;
 
 import java.util.List;
 
@@ -25,9 +29,11 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/diary", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+
+// TODO : userid
 public class DiaryController {
 
-
+    private final DiaryService diaryService;
 
     @Operation(summary = "일기 작성", description = "원하는 날짜에 일기를 작성합니다. request body 형식은 application/json을 선택해서 참조해주세요.")
     @ApiResponses(
@@ -45,7 +51,8 @@ public class DiaryController {
             @Parameter(description = "일기 상세 내용을 application/json 형식으로 입력 받습니다.", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Post.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
             @ModelAttribute DiaryRequestDto.Post data
             ) {
-        return null;
+
+        return DataResponseDto.of(diaryService.postDiary(1L, data));
     }
 
     @Operation(summary = "공유받은 일기 목록", description = "다른 사용자에게 공유 받은 일기 목록을 조회합니다.")
@@ -54,7 +61,8 @@ public class DiaryController {
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "pageSize") Integer pageSize
     ) {
-        return null;
+
+        return DataResponseDto.of(diaryService.getSharedDiaries(1L, page, pageSize));
     }
 
     @Operation(summary = "나의 일기 상세조회", description = "일기의 내용을 상세조회합니다.")
@@ -70,16 +78,16 @@ public class DiaryController {
     public DataResponseDto<DiaryResponseDto> getDiary(
             @PathVariable("diaryId") Long diaryId
     ) {
-        return null;
+        return DataResponseDto.of(diaryService.getDiary(diaryId));
     }
 
     @Operation(summary = "캘린더에서 일기 목록 조회하기", description = "연도, 월에 해당하는 일기 목록을 조회합니다.")
     @GetMapping
-    public DataResponseDto<List<CalendarResponseDto>> getDiaries(
+    public DataResponseDto<CalendarResponseDto> getDiaries(
             @RequestParam Integer year,
             @RequestParam Integer month
     ) {
-        return null;
+        return DataResponseDto.of(diaryService.getDiaries(1L, year, month));
     }
 
     @Operation(summary = "일기 수정", description = "작성된 일기의 내용을 수정합니다. request body 형식은 application/json을 선택해서 참조해주세요.")
@@ -90,7 +98,7 @@ public class DiaryController {
             @Parameter(description = "일기 상세 내용을 application/json 형식으로 입력 받습니다.", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Put.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
             @ModelAttribute DiaryRequestDto.Put data
     ) {
-        return null;
+        return DataResponseDto.of(diaryService.putDiary(data));
     }
 
     @Operation(summary = "일기 삭제", description = "일기를 삭제합니다.")
@@ -104,10 +112,11 @@ public class DiaryController {
             }
     )
     @DeleteMapping("/{diaryId}")
-    public DataResponseDto<String> deleteDiary(
+    public SuccessResponseDto deleteDiary(
             @PathVariable("diaryId") Long diaryId
     ) {
-        return null;
+        diaryService.deleteDiary(diaryId);
+        return new SuccessResponseDto(ResponseCode.OK);
     }
 
 }
