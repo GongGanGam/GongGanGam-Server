@@ -33,7 +33,7 @@ public abstract class EntityEnumerableConverter<T extends EntityEnumerable> impl
         T[] enumConstants = clazz.getEnumConstants();
 
         for (T constant : enumConstants) {
-            if (constant.getKey().equals(dbData))
+            if (constant.getTitle().equals(dbData))
                 return constant;
         }
 

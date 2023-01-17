@@ -1,5 +1,6 @@
 package site.gonggangam.gonggangam_server.domain.users;
 
+import com.nimbusds.openid.connect.sdk.claims.Gender;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,10 +25,10 @@ public class Users extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(columnDefinition = "VARCHAR(45)", length = 45, nullable = false)
+    @Column(columnDefinition = "VARCHAR(45)", length = 45, nullable = true)
     private String nickname;
 
-    @Column(name = "BIRTH_YEAR", nullable = false)
+    @Column(name = "BIRTH_YEAR", nullable = true)
     private Integer birthYear;
 
     @Convert(converter = GenderType.Converter.class)
@@ -37,7 +38,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
     @Column(columnDefinition = "TEXT", nullable = true)
     private String profImg;
 
-    @Column(name = "EMAIL", columnDefinition = "VARCHAR(50)", length = 50, nullable = false, unique = true)
+    @Column(name = "EMAIL", columnDefinition = "VARCHAR(50)", length = 50, nullable = true, unique = true)
     private String email;
 
     @Convert(converter = ProviderType.Converter.class)
@@ -73,7 +74,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
         this.settings = settings;
     }
 
-    public void update(String nickname, int birthYear, GenderType genderType) {
+    public void update(String nickname, Integer birthYear, GenderType genderType) {
         this.nickname = nickname;
         this.birthYear = birthYear;
         this.genderType = genderType;

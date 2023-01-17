@@ -28,21 +28,15 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     @Transactional
-    public UsersResponseDto createUser(UsersRequestDto.PostUser request, String email, ProviderType provider, Role role) throws GeneralException{
-        Users newUser = Users.builder()
-                .nickname(request.getNickname())
-                .genderType(GenderType.valueOf(request.getGender()))
-                .birthYear(Integer.parseInt(request.getBirthYear()))
-                .role(role)
-                .userStatus(UserStatus.NORMAL)
-                .email(email)
-                .provider(provider)
-                .build();
+    public UsersResponseDto createUser(UsersRequestDto.PostUser request, Long userId) throws GeneralException {
+        Users user = usersRepository.findById(userId).orElseThrow(() -> {
+            throw new GeneralException(ResponseCode.NOT_FOUND_USER);
+        });
 
-        UserSettings settings = createDefaultSettings(newUser);
-        userSettingsRepository.save(settings);
+        user.update(request.getNickname(), Integer.parseInt(request.getBirthYear()), request.getGender());
+        usersRepository.save(user);
 
-        return UsersResponseDto.toDto(newUser, settings);
+        return UsersResponseDto.toDto(user, user.getSettings());
     }
 
     @Override
@@ -61,10 +55,10 @@ public class UsersServiceImpl implements UsersService {
         Users user = usersRepository.findById(userId).orElseThrow();
         user.update(request.getNickname(),
                 Integer.parseInt(request.getBirthYear()),
-                GenderType.valueOf(request.getGender())
+                request.getGender()
                 );
         user.getSettings()
-                .updateShareType(ShareType.valueOf(request.getShareType()));
+                .updateShareType(request.getShareType());
 
         usersRepository.save(user);
     }
@@ -86,16 +80,6 @@ public class UsersServiceImpl implements UsersService {
 //    @Override
     public OAuthResponseDto oauthLogin(OAuthRequestDto request) {
         return null;
-    }
-
-    private UserSettings createDefaultSettings(Users user) {
-        return UserSettings.builder()
-                .user(user)
-                .notifyChat(true)
-                .notifyDiary(true)
-                .notifyReply(true)
-                .shareType(ShareType.ALL)
-                .build();
     }
 
 }

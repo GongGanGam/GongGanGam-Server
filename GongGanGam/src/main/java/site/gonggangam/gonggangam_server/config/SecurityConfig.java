@@ -15,6 +15,7 @@ import site.gonggangam.gonggangam_server.config.auth.DelegatedAccessDeniedHandle
 import site.gonggangam.gonggangam_server.config.auth.DelegatedAuthenticationEntryPoint;
 import site.gonggangam.gonggangam_server.config.auth.JwtAuthenticationFilter;
 import site.gonggangam.gonggangam_server.config.auth.JwtProvider;
+import site.gonggangam.gonggangam_server.service.OAuthService;
 
 @EnableWebSecurity
 public class SecurityConfig {
@@ -25,7 +26,6 @@ public class SecurityConfig {
             "/api/auth/**"
     };
 
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().mvcMatchers(AUTH_WHITELIST);
@@ -34,8 +34,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http,
-            @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
-            JwtProvider jwtProvider
+//            @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
+            JwtProvider jwtProvider,
+            OAuthService oAuthService
     ) throws Exception {
         return http
                 .httpBasic()
@@ -53,12 +54,12 @@ public class SecurityConfig {
                     .anyRequest().permitAll()
                     .and()
                 .exceptionHandling()
-                    .authenticationEntryPoint(new DelegatedAuthenticationEntryPoint(resolver))
-                    .accessDeniedHandler(new DelegatedAccessDeniedHandler(resolver))
-                    .and()
+                    .authenticationEntryPoint(new DelegatedAuthenticationEntryPoint())
+                    .accessDeniedHandler(new DelegatedAccessDeniedHandler())
+                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-//                .addFilterBefore(new JwtAuthenticationFilter(resolver, jwtProvider), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, oAuthService), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

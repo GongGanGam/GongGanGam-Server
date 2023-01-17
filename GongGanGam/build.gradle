@@ -31,6 +31,10 @@ dependencies {
     // spring security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    // Oauth
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     // jdbc
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'

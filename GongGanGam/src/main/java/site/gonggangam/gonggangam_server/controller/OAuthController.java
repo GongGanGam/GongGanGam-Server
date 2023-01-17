@@ -8,12 +8,15 @@ import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthRequestDto;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthResponseDto;
 import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
+import site.gonggangam.gonggangam_server.service.OAuthService;
 
 @Tag(name = "auth", description = "인증 관련 API")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class OAuthController {
+
+    private final OAuthService oAuthService;
 
     @Operation(summary = "Apple 로그인", description = "Apple Oauth 로그인")
     @ResponseBody
