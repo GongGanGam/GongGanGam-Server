@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import site.gonggangam.gonggangam_server.config.auth.JwtProvider;
 
 @Configuration
 public class SwaggerConfig implements WebMvcConfigurer {
@@ -37,16 +38,25 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     public OpenApiCustomiser buildSecurityOpenApi() {
-        SecurityScheme securityScheme = new SecurityScheme()
-                .name("access_token")
+        SecurityScheme accessTokenScheme = new SecurityScheme()
+                .name(JwtProvider.ACCESS_TOKEN_HEADER)
+                .type(SecurityScheme.Type.HTTP)
+                .in(SecurityScheme.In.HEADER)
+                .bearerFormat("JWT");
+//                .scheme("bearer");
+
+        SecurityScheme refreshTokenScheme = new SecurityScheme()
+                .name(JwtProvider.REFRESH_TOKEN_HEADER)
                 .type(SecurityScheme.Type.HTTP)
                 .in(SecurityScheme.In.HEADER)
                 .bearerFormat("JWT")
                 .scheme("bearer");
 
         return OpenApi -> OpenApi
-                .addSecurityItem(new SecurityRequirement().addList("access_token"))
-                .getComponents().addSecuritySchemes("access_token", securityScheme);
+                .addSecurityItem(new SecurityRequirement().addList(JwtProvider.ACCESS_TOKEN_HEADER).addList(JwtProvider.REFRESH_TOKEN_HEADER))
+                .getComponents()
+                    .addSecuritySchemes(JwtProvider.ACCESS_TOKEN_HEADER, accessTokenScheme)
+                    .addSecuritySchemes(JwtProvider.REFRESH_TOKEN_HEADER, refreshTokenScheme);
     }
 
 }

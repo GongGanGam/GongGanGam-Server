@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -34,7 +33,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http,
-//            @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
+            @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,
             JwtProvider jwtProvider,
             OAuthService oAuthService
     ) throws Exception {
@@ -49,17 +48,17 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-//                    .antMatchers("/admin/**").hasRole("ADMIN")
-//                    .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
                     .anyRequest().permitAll()
                     .and()
                 .exceptionHandling()
-                    .authenticationEntryPoint(new DelegatedAuthenticationEntryPoint())
-                    .accessDeniedHandler(new DelegatedAccessDeniedHandler())
+                    .authenticationEntryPoint(new DelegatedAuthenticationEntryPoint(resolver))
+                    .accessDeniedHandler(new DelegatedAccessDeniedHandler(resolver))
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, oAuthService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, oAuthService), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

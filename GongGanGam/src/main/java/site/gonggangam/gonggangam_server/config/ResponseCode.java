@@ -17,6 +17,7 @@ public enum ResponseCode {
 
     BAD_REQUEST(40000, HttpStatus.BAD_REQUEST, "올바르지 않은 요청입니다."),
     VALIDATION_ERROR(40001, HttpStatus.BAD_REQUEST, "요청 값이 올바르지 않습니다."),
+    REQUIRE_VALUE(40002, HttpStatus.BAD_REQUEST, "누락된 값이 있습니다."),
 
     TOKEN_INVALID(40100, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     TOKEN_EXPIRED(40101, HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),

@@ -15,11 +15,10 @@ import java.io.IOException;
 @AllArgsConstructor
 public class DelegatedAccessDeniedHandler implements AccessDeniedHandler {
 
-//    private final HandlerExceptionResolver resolver;
+    private final HandlerExceptionResolver resolver;
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        log.info("authorization 싳패");
-//        resolver.resolveException(request, response, null, accessDeniedException);
+        resolver.resolveException(request, response, null, accessDeniedException);
     }
 }

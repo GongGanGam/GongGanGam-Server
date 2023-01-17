@@ -3,10 +3,8 @@ package site.gonggangam.gonggangam_server.config.auth;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -14,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
-import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
 import site.gonggangam.gonggangam_server.service.OAuthService;
 
 import javax.servlet.FilterChain;
@@ -26,6 +23,8 @@ import java.io.IOException;
 @Slf4j
 @AllArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    public static final String HEADER_EXCEPTION = "jwt_exception";
 
     private final JwtProvider jwtProvider;
     private final OAuthService oAuthService;
@@ -43,22 +42,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } catch (TokenExpiredException ex) {
-            setErrorResponse(response, ResponseCode.TOKEN_EXPIRED);
+            delegateError(request, ResponseCode.TOKEN_EXPIRED);
         } catch (JWTDecodeException ex) {
-            setErrorResponse(response, ResponseCode.TOKEN_CANT_NOT_DECODE);
+            delegateError(request, ResponseCode.TOKEN_CANT_NOT_DECODE);
         } catch (JWTVerificationException | AuthenticationException ex) {
-            setErrorResponse(response, ResponseCode.TOKEN_INVALID);
+            delegateError(request, ResponseCode.TOKEN_INVALID);
         } catch (GeneralException ex) {
-            setErrorResponse(response, ex.getErrorCode());
+            delegateError(request, ex.getErrorCode());
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private void setErrorResponse(HttpServletResponse response, ResponseCode errCode) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.setStatus(errCode.getHttpStatus().value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        objectMapper.writeValue(response.getOutputStream(), ErrorResponseDto.of(errCode));
+    private void delegateError(HttpServletRequest request, ResponseCode errCode) throws IOException {
+        request.setAttribute(HEADER_EXCEPTION, errCode);
     }
 }

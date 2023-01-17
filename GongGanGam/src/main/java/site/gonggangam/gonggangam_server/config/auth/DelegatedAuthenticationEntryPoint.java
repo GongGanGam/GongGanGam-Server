@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
+import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,13 +17,17 @@ import java.io.IOException;
 @AllArgsConstructor
 public class DelegatedAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-//    private final HandlerExceptionResolver resolver;
+    private final HandlerExceptionResolver resolver;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        ResponseCode code = (ResponseCode) request.getAttribute(JwtAuthenticationFilter.HEADER_EXCEPTION);
 
-        log.info("authentication 실패");
-//        resolver.resolveException(request, response, null, authException);
+        if (code == null) {
+            resolver.resolveException(request, response, null, authException);
+        } else {
+            resolver.resolveException(request, response, null, new GeneralException(code));
+        }
     }
 
 }
