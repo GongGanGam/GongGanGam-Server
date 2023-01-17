@@ -69,7 +69,7 @@ public class DiaryServiceImpl implements DiaryService {
     public CalendarResponseDto getDiaries(Long userId, Integer year, Integer month) {
         // TODO 수정
         LocalDate after = LocalDate.of(year, month, 1);
-        LocalDate before = LocalDate.of(year, month + 1, 1);
+        LocalDate before = after.plusMonths(1);
 
         List<Diary> diaries = diaryRepository.findAllByWriter_UserIdAndWritingDateIsAfterAndWritingDateIsBeforeAndIsVisible(userId, after, before, true);
         List<DiaryPreviewResponseDto> destMonth = diaries.stream()
