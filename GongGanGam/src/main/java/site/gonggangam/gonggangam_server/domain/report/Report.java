@@ -35,4 +35,8 @@ public class Report extends BaseTimeEntity {
         this.reason = reason;
         this.processType = processType;
     }
+
+    public void updateProcess(ProcessType processType) {
+        this.processType = processType;
+    }
 }

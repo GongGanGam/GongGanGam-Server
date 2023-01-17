@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "신고 내역")
-public class ReportResponseDto {
-    @Schema(description = "신고된 대상 ID", defaultValue = "14")
-    private Long targetId;
+public abstract class ReportResponseDto {
+    @Schema(description = "신고내역 ID", defaultValue = "14")
+    private Long reportId;
     @Schema(description = "신고 사유", defaultValue = "욕설, 비방")
     private String reason;
     @Schema(description = "처리진행 상황", allowableValues = {"before", "processing", "completed"}, defaultValue = "before")
