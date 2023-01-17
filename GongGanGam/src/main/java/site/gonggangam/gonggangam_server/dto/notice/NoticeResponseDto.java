@@ -3,6 +3,7 @@ package site.gonggangam.gonggangam_server.dto.notice;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import site.gonggangam.gonggangam_server.domain.notice.Notice;
 
 import java.time.LocalDateTime;
 
@@ -20,4 +21,14 @@ public class NoticeResponseDto {
     private final LocalDateTime createdAt;
     @Schema(description = "최종 수정시간", defaultValue = "2023-01-03 13:11:05")
     private final LocalDateTime updatedAt;
+
+    public static NoticeResponseDto of(Notice entity) {
+        return NoticeResponseDto.builder()
+                .noticeId(entity.getNoticeId())
+                .title(entity.getTitle())
+                .content(entity.getContent())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
 }
