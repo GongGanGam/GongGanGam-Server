@@ -32,8 +32,6 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIR
 @RestController
 @RequestMapping(value = "/api/diary", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-
-// TODO : userid
 public class DiaryController {
 
     private final DiaryService diaryService;
@@ -90,10 +88,13 @@ public class DiaryController {
     @Operation(summary = "캘린더에서 일기 목록 조회하기", description = "연도, 월에 해당하는 일기 목록을 조회합니다.")
     @GetMapping
     public DataResponseDto<CalendarResponseDto> getDiaries(
+            HttpServletRequest request,
             @RequestParam Integer year,
             @RequestParam Integer month
     ) {
-        return DataResponseDto.of(diaryService.getDiaries(1L, year, month));
+        return DataResponseDto.of(
+                diaryService.getDiaries(HttpServletUtils.getUserId(request), year, month)
+        );
     }
 
     @Operation(summary = "일기 수정", description = "작성된 일기의 내용을 수정합니다. (스웨거에서 file 첨부를 하지 않을 때는 'send empty value' 체크를 해제해주세요.)")

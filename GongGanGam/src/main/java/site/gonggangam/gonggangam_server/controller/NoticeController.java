@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.gonggangam.gonggangam_server.config.HttpServletUtils;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
 import site.gonggangam.gonggangam_server.dto.ResponseDto;
@@ -18,14 +19,13 @@ import site.gonggangam.gonggangam_server.dto.notice.NoticeRequestDto;
 import site.gonggangam.gonggangam_server.dto.notice.NoticeResponseDto;
 import site.gonggangam.gonggangam_server.service.NoticeService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Tag(name = "notice", description = "공지사항 관련 API")
 @RestController
 @RequestMapping(value = "/api/notice", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-
-// TODO : userId 구현
 public class NoticeController {
 
     private final NoticeService noticeService;
@@ -41,9 +41,12 @@ public class NoticeController {
     )
     @PostMapping
     public DataResponseDto<NoticeResponseDto> postNotice(
+            HttpServletRequest request,
             @RequestBody NoticeRequestDto.PostNotice body
             ) {
-        return DataResponseDto.of(noticeService.postNotice(1L, body));
+        return DataResponseDto.of(
+                noticeService.postNotice(HttpServletUtils.getUserId(request), body)
+        );
     }
 
     @Operation(summary = "공지사항 수정", description = "관리자 계정만 이용 가능합니다.")

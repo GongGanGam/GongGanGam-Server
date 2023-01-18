@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.gonggangam.gonggangam_server.config.HttpServletUtils;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
@@ -20,14 +21,13 @@ import site.gonggangam.gonggangam_server.dto.reply.ReplyRequestDto;
 import site.gonggangam.gonggangam_server.dto.reply.ReplyResponseDto;
 import site.gonggangam.gonggangam_server.service.ReplyService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Tag(name = "reply", description = "일기 답장 관련 API")
 @RestController
 @RequestMapping(value = "/api/reply", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-
-// TODO : userId 구현
 public class ReplyController {
 
     private final ReplyService replyService;
@@ -43,10 +43,13 @@ public class ReplyController {
     @Operation(summary = "받은 답장목록 조회", description = "받은 답장 목록을 조회합니다. ")
     @GetMapping
     public DataResponseDto<List<ReplyPreviewResponseDto>> getReplies(
+            HttpServletRequest request,
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "pageSize") Integer pageSize
             ) {
-        return DataResponseDto.of(replyService.getReplies(1L, page, pageSize));
+        return DataResponseDto.of(
+                replyService.getReplies(HttpServletUtils.getUserId(request), page, pageSize)
+        );
     }
 
     @Operation(summary = "답장 작성하기", description = "공유받은 일기에 답장을 작성합니다.")
