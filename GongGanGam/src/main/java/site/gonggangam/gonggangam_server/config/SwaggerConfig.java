@@ -16,8 +16,8 @@ import site.gonggangam.gonggangam_server.config.auth.JwtProvider;
 public class SwaggerConfig implements WebMvcConfigurer {
 
     public static final String TITLE = "GongGanGam API";
-    public static final String DESCRIPTION = "GongGanGam API 명세서입니다";
-    public static final String VERSION = "0.2";
+    public static final String DESCRIPTION = "GongGanGam API 명세서입니다. refreshToken은 현재 아무거나 입력하시면 됩니다. 테스트용 계정 (userId = 1) accessToken: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWNhdGlvbiI6IjIzNTQ2NDg4MjQiLCJyb2xlIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJnb25nZ2FuZ2FtIiwiaWQiOjEsImV4cCI6MTcwNTYwMDcwNSwiaWF0IjoxNjc0MDY0NzA1fQ.ACuGk-k9jNAbI-9GJxy0ZnPuAgrR3xjh3pLzi_2roI8";
+    public static final String VERSION = "0.3.1";
 
     @Bean
     public GroupedOpenApi publicApi() {
