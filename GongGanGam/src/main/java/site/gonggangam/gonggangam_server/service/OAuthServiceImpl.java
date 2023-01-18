@@ -41,14 +41,6 @@ public class OAuthServiceImpl implements OAuthService {
     private final UserSettingsRepository userSettingsRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String identification) throws UsernameNotFoundException {
-        return usersRepository.findByIdentification(identification)
-                .orElseThrow(() -> {
-                    throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-                });
-    }
-
-    @Override
     @Transactional
     public OAuthResponseDto kakaoLogin(OAuthRequestDto request) throws GeneralException {
         Users user = getUserByToken(Provider.KAKAO, request);
@@ -107,13 +99,16 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        try {
-            Users user = (Users) loadUserByUsername(authentication.getName());
+        return authenticateByUsername(authentication.getName());
+    }
 
-            return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
-        } catch (UsernameNotFoundException ex) {
+    @Override
+    public Authentication authenticateByUsername(String userName) throws AuthenticationException {
+        Users user = usersRepository.findByIdentification(userName).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-        }
+        });
+
+        return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 
     @Override

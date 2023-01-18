@@ -10,8 +10,8 @@ import site.gonggangam.gonggangam_server.config.EntityEnumerableConverter;
 @AllArgsConstructor
 public enum Role implements EntityEnumerable, GrantedAuthority {
 
-    USER("U", "user",  "일반 사용자"),
-    ADMIN("A", "admin",  "관리자");
+    USER("U", "ROLE_USER",  "일반 사용자"),
+    ADMIN("A", "ROLE_ADMIN",  "관리자");
 
     private final String key;
     private final String title;
