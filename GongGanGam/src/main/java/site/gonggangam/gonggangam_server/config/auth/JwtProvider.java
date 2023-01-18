@@ -9,15 +9,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -34,15 +31,14 @@ public class JwtProvider {
     private final JWTVerifier tokenValidator;
 
     // TODO : social 별로 분리하기 (identification 겹칠 수 있음)
-    public String getIdentificationFromToken(String token) throws GeneralException {
+    public AccessTokenClaims getClaimsFromAccessToken(String token) throws GeneralException {
         DecodedJWT verifiedToken = validateToken(token);
-        return verifiedToken.getClaim("identification").asString();
+        return AccessTokenClaims.builder()
+                .id(verifiedToken.getClaim("id").asLong())
+                .identification(verifiedToken.getClaim("identification").asString())
+                .build();
     }
 
-    public Long getUserIdFromToken(String token) throws GeneralException {
-        DecodedJWT verifiedToken = validateToken(token);
-        return verifiedToken.getClaim("id").asLong();
-    }
     public DecodedJWT validateToken(String token) throws GeneralException {
         if (token == null) throw new GeneralException(ResponseCode.TOKEN_IS_NULL);
         try {

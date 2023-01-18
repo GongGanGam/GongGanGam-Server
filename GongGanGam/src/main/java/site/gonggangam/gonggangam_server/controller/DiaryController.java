@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import site.gonggangam.gonggangam_server.config.HttpServletUtils;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
@@ -24,6 +25,7 @@ import site.gonggangam.gonggangam_server.dto.diary.DiaryResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.SharedDiaryResponseDto;
 import site.gonggangam.gonggangam_server.service.DiaryService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Tag(name = "diary", description = "일기 관련 API")
@@ -47,22 +49,28 @@ public class DiaryController {
     )
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public DataResponseDto<DiaryResponseDto> postDiary(
+            HttpServletRequest request,
             @Parameter(description = "일기에 업로드할 이미지 파일을 multipart/form-data 형식으로 받습니다.", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
             @RequestParam(value = "imgFile", required = false) MultipartFile imgFile,
             @Parameter(description = "일기 상세 내용을 application/json 형식으로 입력 받습니다.", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Post.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
             @ModelAttribute DiaryRequestDto.Post data
             ) {
 
-        return DataResponseDto.of(diaryService.postDiary(1L, data));
+        return DataResponseDto.of(
+                diaryService.postDiary(HttpServletUtils.getUserId(request), data)
+        );
     }
 
     @Operation(summary = "공유받은 일기 목록", description = "다른 사용자에게 공유 받은 일기 목록을 조회합니다.")
     @GetMapping("/shared")
     public DataResponseDto<List<SharedDiaryResponseDto>> getSharedDiaries(
+            HttpServletRequest request,
             Pageable pageable
     ) {
 
-        return DataResponseDto.of(diaryService.getSharedDiaries(1L, pageable));
+        return DataResponseDto.of(
+                diaryService.getSharedDiaries(HttpServletUtils.getUserId(request), pageable)
+        );
     }
 
     @Operation(summary = "나의 일기 상세조회", description = "일기의 내용을 상세조회합니다.")
