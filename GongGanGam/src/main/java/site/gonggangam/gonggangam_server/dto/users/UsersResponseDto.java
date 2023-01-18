@@ -26,10 +26,10 @@ public class UsersResponseDto {
 
     public static UsersResponseDto toDto(Users user, UserSettings settings) {
         return UsersResponseDto.builder()
-                .nickname(user.getNickname())
-                .birthYear(user.getBirthYear().toString())
+                .nickname(user.getUserInfo().getNickname())
+                .birthYear(user.getUserInfo().getBirthYear().toString())
                 .email(user.getEmail())
-                .gender(user.getGenderType().getTitle())
+                .gender(user.getUserInfo().getGenderType().getTitle())
                 .profImg(user.getProfImg())
                 .shareType(settings.getShareType().getTitle())
                 .build();

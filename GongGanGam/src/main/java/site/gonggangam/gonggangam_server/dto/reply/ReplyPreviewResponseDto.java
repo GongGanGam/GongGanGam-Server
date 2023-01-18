@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import site.gonggangam.gonggangam_server.domain.reply.Reply;
-import site.gonggangam.gonggangam_server.dto.diary.WriterDto;
+import site.gonggangam.gonggangam_server.dto.users.WriterDto;
 
 import java.time.LocalDateTime;
 

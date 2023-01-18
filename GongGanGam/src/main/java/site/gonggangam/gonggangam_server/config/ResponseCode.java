@@ -28,7 +28,7 @@ public enum ResponseCode {
     AUTHENTICATION_INVALID_USER(-40104, HttpStatus.UNAUTHORIZED, "이용할 수 없는 사용자입니다."),
 
     PERMISSION_DENIED(-40300, HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
-    REQUIRED_SIGNUP(-40301, HttpStatus.UNAUTHORIZED, "추가 회원가입이 필요한 사용자입니다."),
+    REQUIRED_SIGNUP(-40301, HttpStatus.FORBIDDEN, "추가 회원가입이 필요한 사용자입니다."),
 
     NOT_FOUND(-40400, HttpStatus.NOT_FOUND, "요청과 일치하는 자원이 없습니다."),
     NOT_FOUND_USER(-40401, HttpStatus.NOT_FOUND, "일치하는 사용자가 없습니다."),

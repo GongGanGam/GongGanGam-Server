@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.gonggangam.gonggangam_server.domain.report.ReportDiary;
 import site.gonggangam.gonggangam_server.dto.diary.SharedDiaryResponseDto;
-import site.gonggangam.gonggangam_server.dto.diary.WriterDto;
+import site.gonggangam.gonggangam_server.dto.users.WriterDto;
 
 import java.time.LocalDateTime;
 

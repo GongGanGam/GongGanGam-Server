@@ -1,4 +1,4 @@
-package site.gonggangam.gonggangam_server.dto.diary;
+package site.gonggangam.gonggangam_server.dto.users;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -19,7 +19,7 @@ public class WriterDto {
     public static WriterDto toDto(Users entity) {
         return WriterDto.builder()
                 .userId(entity.getUserId())
-                .nickname(entity.getNickname())
+                .nickname(entity.getUserInfo().getNickname())
                 .profImg(entity.getProfImg())
                 .build();
     }

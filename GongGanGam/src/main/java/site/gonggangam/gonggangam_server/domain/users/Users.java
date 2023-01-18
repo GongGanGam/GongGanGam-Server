@@ -25,20 +25,13 @@ public class Users extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(columnDefinition = "VARCHAR(45)", length = 45, nullable = true)
-    private String nickname;
-
-    @Column(name = "BIRTH_YEAR", nullable = true)
-    private Integer birthYear;
-
-    @Convert(converter = GenderType.Converter.class)
-    @Column(columnDefinition = "CHAR(1)", length = 1, nullable = true)
-    private GenderType genderType;
+    @Column(name = "IDENTIFICATION", columnDefinition = "VARCHAR(15)", unique = true, nullable = false)
+    private String identification;
 
     @Column(columnDefinition = "TEXT", nullable = true)
     private String profImg;
 
-    @Column(name = "EMAIL", columnDefinition = "VARCHAR(50)", length = 50, nullable = false, unique = true)
+    @Column(name = "EMAIL", columnDefinition = "VARCHAR(50)", length = 50)
     private String email;
 
     @Convert(converter = ProviderType.Converter.class)
@@ -60,11 +53,13 @@ public class Users extends BaseTimeEntity implements UserDetails {
     @PrimaryKeyJoinColumn
     private UserSettings settings;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, optional = true)
+    @PrimaryKeyJoinColumn
+    private UserInfo userInfo;
+
     @Builder
-    public Users(String nickname, Integer birthYear, GenderType genderType, String profImg, String email, ProviderType provider, String deviceToken, Role role, UserStatus userStatus, UserSettings settings) {
-        this.nickname = nickname;
-        this.birthYear = birthYear;
-        this.genderType = genderType;
+    public Users(String identification, String profImg, String email, ProviderType provider, String deviceToken, Role role, UserStatus userStatus, UserSettings settings, UserInfo userInfo) {
+        this.identification = identification;
         this.profImg = profImg;
         this.email = email;
         this.provider = provider;
@@ -72,12 +67,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
         this.role = role;
         this.userStatus = userStatus;
         this.settings = settings;
-    }
-
-    public void update(String nickname, Integer birthYear, GenderType genderType) {
-        this.nickname = nickname;
-        this.birthYear = birthYear;
-        this.genderType = genderType;
+        this.userInfo = userInfo;
     }
 
     @Override
@@ -94,7 +84,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.identification;
     }
 
     @Override

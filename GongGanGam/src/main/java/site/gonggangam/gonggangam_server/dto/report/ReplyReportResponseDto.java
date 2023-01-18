@@ -5,10 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.gonggangam.gonggangam_server.domain.report.ReportReply;
-import site.gonggangam.gonggangam_server.dto.diary.SharedDiaryResponseDto;
-import site.gonggangam.gonggangam_server.dto.diary.WriterDto;
+import site.gonggangam.gonggangam_server.dto.users.WriterDto;
 import site.gonggangam.gonggangam_server.dto.reply.ReplyResponseDto;
-import site.gonggangam.gonggangam_server.repository.ReplyRepository;
 
 import java.time.LocalDateTime;
 

@@ -41,8 +41,8 @@ public class OAuthServiceImpl implements OAuthService {
     private final UserSettingsRepository userSettingsRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usersRepository.findByEmail(username)
+    public UserDetails loadUserByUsername(String identification) throws UsernameNotFoundException {
+        return usersRepository.findByIdentification(identification)
                 .orElseThrow(() -> {
                     throw new GeneralException(ResponseCode.NOT_FOUND_USER);
                 });
@@ -51,7 +51,7 @@ public class OAuthServiceImpl implements OAuthService {
     @Override
     @Transactional
     public OAuthResponseDto kakaoLogin(OAuthRequestDto request) throws GeneralException {
-        Users user = getUserProfileByToken(Provider.KAKAO, request.getToken());
+        Users user = getUserByToken(Provider.KAKAO, request);
 
         String accessToken = jwtProvider.generateAccessToken(user);
         String refreshToken = jwtProvider.generateRefreshToken(user);
@@ -75,25 +75,24 @@ public class OAuthServiceImpl implements OAuthService {
                 .block();
     }
 
-    private Users getUserProfileByToken(Provider provider, String token) throws IllegalArgumentException, GeneralException {
+    private Users getUserByToken(Provider provider, OAuthRequestDto request) throws IllegalArgumentException, GeneralException {
         if (provider == Provider.KAKAO) {
-            Map<String, Object> userAttributes = getUserAttributesByToken(provider.OAUTH_URI, token);
+            Map<String, Object> userAttributes = getUserAttributesByToken(provider.OAUTH_URI, request.getToken());
             KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userAttributes);
-            Long kakaoId = kakaoUserInfo.getId();
+            String kakaoId = kakaoUserInfo.getId().toString();
             String email = kakaoUserInfo.getEmail();
             String nickname = kakaoUserInfo.getNickname();
-            log.info(kakaoId + " " + email + " " + nickname);
 
-            if (email == null || email.isEmpty()) throw new GeneralException(ResponseCode.REQUIRE_OAUTH_EMAIL);
-
-            Optional<Users> user = usersRepository.findByEmail(email);
-            log.info("123 " + user.isPresent() + " " + user);
-
+log.info("abc");
+            Optional<Users> user = usersRepository.findByIdentification(kakaoId);
+log.info("dcd");
             if (user.isPresent()) {
                 return user.get();
             } else {
                 Users newUser = Users.builder()
+                        .identification(kakaoId)
                         .email(email)
+                        .deviceToken(request.getDeviceToken())
                         .role(Role.USER)
                         .userStatus(UserStatus.NORMAL)
                         .provider(ProviderType.KAKAO)

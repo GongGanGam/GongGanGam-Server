@@ -8,8 +8,8 @@ import lombok.Data;
 @Builder
 @Schema()
 public class OAuthRequestDto {
-    @Schema(description = "OAuth에서 발급받은 토큰", defaultValue = "aaa.bbb.ccc")
+    @Schema(description = "OAuth에서 발급받은 토큰", defaultValue = "oauthtoken")
     private final String token;
-    @Schema(description = "사용자 디바이스 토큰", defaultValue = "aaa.bbb.ccc")
+    @Schema(description = "사용자 디바이스 토큰", defaultValue = "devicetoken")
     private final String deviceToken;
 }

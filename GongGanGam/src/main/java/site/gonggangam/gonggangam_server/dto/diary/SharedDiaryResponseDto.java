@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.diary.ShareDiary;
+import site.gonggangam.gonggangam_server.dto.users.WriterDto;
 
 import java.time.LocalDate;
 

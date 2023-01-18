@@ -25,7 +25,6 @@ public class UserSettings extends BaseTimeEntity implements Serializable {
     @Column(name = "SHARE_TYPE", columnDefinition = "CHAR(1)", length = 1, nullable = false)
     private ShareType shareType;
 
-
     @Column(name = "NOTIFY_DIARY", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
     private Boolean notifyDiary = true;
 
