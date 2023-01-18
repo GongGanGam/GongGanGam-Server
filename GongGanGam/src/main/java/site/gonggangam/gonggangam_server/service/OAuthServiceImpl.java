@@ -83,10 +83,9 @@ public class OAuthServiceImpl implements OAuthService {
             String email = kakaoUserInfo.getEmail();
             String nickname = kakaoUserInfo.getNickname();
 
-log.info("abc");
             Optional<Users> user = usersRepository.findByIdentification(kakaoId);
-log.info("dcd");
             if (user.isPresent()) {
+                user.get().updateDeviceToken(request.getDeviceToken());
                 return user.get();
             } else {
                 Users newUser = Users.builder()

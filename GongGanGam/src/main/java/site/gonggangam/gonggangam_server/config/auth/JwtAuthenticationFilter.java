@@ -1,15 +1,11 @@
 package site.gonggangam.gonggangam_server.config.auth;
 
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
@@ -37,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             jwtProvider.validateToken(token);
-            String email = jwtProvider.getEmailFromToken(token);
+            String email = jwtProvider.getIdentificationFromToken(token);
             Authentication authentication = oAuthService.authenticate(new UsernamePasswordAuthenticationToken(email, ""));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);

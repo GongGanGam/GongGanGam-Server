@@ -70,10 +70,14 @@ public class Users extends BaseTimeEntity implements UserDetails {
         this.userInfo = userInfo;
     }
 
+    public void updateDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(() -> this.role.getKey());
+        authorities.add(this.role);
         return authorities;
     }
 
@@ -89,7 +93,7 @@ public class Users extends BaseTimeEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

@@ -37,6 +37,11 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, ResponseCode.TOKEN_INVALID, request);
     }
 
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException e, WebRequest request) {
+        return handleExceptionInternal(e, ResponseCode.PERMISSION_DENIED, request);
+    }
+
     @Override
     public ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return handleExceptionInternal(e, ResponseCode.NOT_FOUND, request);
