@@ -24,7 +24,9 @@ public class JwtProvider {
     public static final String ACCESS_TOKEN_HEADER = "accessToken";
     public static final String REFRESH_TOKEN_HEADER = "refreshToken";
 
-    private static final long TOKEN_VALIDATION_TIME = 1000L * 60 * 30; // 30 minutes
+    // TODO : 디벨롭환경이라 임시로 긴 만료시간
+    private static final long TOKEN_VALIDATION_TIME = 1000L * 60 * 60 * 24 * 365;
+//    private static final long TOKEN_VALIDATION_TIME = 1000L * 60 * 30; // 30 minutes
     private static final long REFRESH_TOKEN_VALIDATION_TIME = 1000L * 60 * 60 * 24 * 60; // 60 days
 
     private final JwtConfig jwtConfig;

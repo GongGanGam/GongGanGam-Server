@@ -1,7 +1,6 @@
 package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,8 +81,8 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public DiaryResponseDto putDiary(DiaryRequestDto.Put request) throws GeneralException{
-        Diary diary = diaryRepository.findByDiaryIdAndIsVisible(request.getDiaryId(), true).orElseThrow(() -> {
+    public DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.Put request) throws GeneralException{
+        Diary diary = diaryRepository.findByDiaryIdAndIsVisible(diaryId, true).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND);
         });
 

@@ -18,7 +18,7 @@ public interface DiaryService {
 
     CalendarResponseDto getDiaries(Long userId, Integer year, Integer month);
 
-    DiaryResponseDto putDiary(DiaryRequestDto.Put request);
+    DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.Put request);
 
     void deleteDiary(Long diaryId);
 }

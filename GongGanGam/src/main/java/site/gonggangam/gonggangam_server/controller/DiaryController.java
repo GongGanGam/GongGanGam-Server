@@ -10,14 +10,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import site.gonggangam.gonggangam_server.config.HttpServletUtils;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
-import site.gonggangam.gonggangam_server.dto.ResponseDto;
 import site.gonggangam.gonggangam_server.dto.SuccessResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.CalendarResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.DiaryRequestDto;
@@ -27,6 +25,8 @@ import site.gonggangam.gonggangam_server.service.DiaryService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 
 @Tag(name = "diary", description = "일기 관련 API")
 @RestController
@@ -38,7 +38,7 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-    @Operation(summary = "일기 작성", description = "원하는 날짜에 일기를 작성합니다. request body 형식은 application/json을 선택해서 참조해주세요.")
+    @Operation(summary = "일기 작성", description = "원하는 날짜에 일기를 작성합니다. (스웨거에서 file 첨부를 하지 않을 때는 'send empty value' 체크를 해제해주세요.)")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "작성 성공"),
@@ -50,14 +50,12 @@ public class DiaryController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public DataResponseDto<DiaryResponseDto> postDiary(
             HttpServletRequest request,
-            @Parameter(description = "일기에 업로드할 이미지 파일을 multipart/form-data 형식으로 받습니다.", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
-            @RequestParam(value = "imgFile", required = false) MultipartFile imgFile,
-            @Parameter(description = "일기 상세 내용을 application/json 형식으로 입력 받습니다.", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Post.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
-            @ModelAttribute DiaryRequestDto.Post data
+            @Parameter(description = "일기 상세 내용을 입력 받습니다.", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Post.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @ModelAttribute DiaryRequestDto.Post body
             ) {
 
         return DataResponseDto.of(
-                diaryService.postDiary(HttpServletUtils.getUserId(request), data)
+                diaryService.postDiary(HttpServletUtils.getUserId(request), body)
         );
     }
 
@@ -98,15 +96,14 @@ public class DiaryController {
         return DataResponseDto.of(diaryService.getDiaries(1L, year, month));
     }
 
-    @Operation(summary = "일기 수정", description = "작성된 일기의 내용을 수정합니다. request body 형식은 application/json을 선택해서 참조해주세요.")
+    @Operation(summary = "일기 수정", description = "작성된 일기의 내용을 수정합니다. (스웨거에서 file 첨부를 하지 않을 때는 'send empty value' 체크를 해제해주세요.)")
     @PutMapping(value = "/{diaryId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public DataResponseDto<DiaryResponseDto> putDiary(
-            @Parameter(description = "일기에 업로드할 이미지 파일을 multipart/form-data 형식으로 받습니다.", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
-            @RequestParam(value = "imgFile", required = false) MultipartFile imgFile,
-            @Parameter(description = "일기 상세 내용을 application/json 형식으로 입력 받습니다.", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Put.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
-            @ModelAttribute DiaryRequestDto.Put data
+            @PathVariable("diaryId") Long diaryId,
+            @Parameter(description = "일기 상세 내용", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Put.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @ModelAttribute DiaryRequestDto.Put body
     ) {
-        return DataResponseDto.of(diaryService.putDiary(data));
+        return DataResponseDto.of(diaryService.putDiary(diaryId, body));
     }
 
     @Operation(summary = "일기 삭제", description = "일기를 삭제합니다.")
