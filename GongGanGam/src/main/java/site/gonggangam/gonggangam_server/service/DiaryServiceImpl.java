@@ -2,6 +2,7 @@ package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.asm.Advice;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
@@ -47,7 +48,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public List<SharedDiaryResponseDto> getSharedDiaries(Long userId, Integer page, Integer pageSize) {
+    public List<SharedDiaryResponseDto> getSharedDiaries(Long userId, Pageable pageable) {
         // TODO : paging 구현
         List<ShareDiary> diaries = shareDiaryRepository.findAllByReceiver_UserIdAndDiary_IsVisible(userId, true);
 

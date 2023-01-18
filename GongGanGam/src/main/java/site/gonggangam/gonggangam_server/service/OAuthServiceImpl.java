@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.auth.JwtProvider;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
@@ -49,11 +51,10 @@ public class OAuthServiceImpl implements OAuthService {
     @Override
     @Transactional
     public OAuthResponseDto kakaoLogin(OAuthRequestDto request) throws GeneralException {
-        String email = jwtProvider.getEmailFromToken(request.getToken());
-        UserDetails account = loadUserByUsername(email);
+        Users user = getUserProfileByToken(Provider.KAKAO, request.getToken());
 
-        String accessToken = jwtProvider.generateAccessToken(account);
-        String refreshToken = jwtProvider.generateRefreshToken(account);
+        String accessToken = jwtProvider.generateAccessToken(user);
+        String refreshToken = jwtProvider.generateRefreshToken(user);
         return OAuthResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -66,25 +67,33 @@ public class OAuthServiceImpl implements OAuthService {
                 .uri(requestUri)
                 .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
                 .retrieve()
+                .onStatus(HttpStatus::isError, clientResponse -> Mono.error(() -> {
+                    throw new GeneralException(ResponseCode.WRONG_OAUTH_TOKEN);
+                }))
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
                 })
                 .block();
     }
 
-    private Users getUserProfileByToken(Provider provider, String token) throws IllegalArgumentException {
+    private Users getUserProfileByToken(Provider provider, String token) throws IllegalArgumentException, GeneralException {
         if (provider == Provider.KAKAO) {
             Map<String, Object> userAttributes = getUserAttributesByToken(provider.OAUTH_URI, token);
             KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userAttributes);
             Long kakaoId = kakaoUserInfo.getId();
             String email = kakaoUserInfo.getEmail();
             String nickname = kakaoUserInfo.getNickname();
+            log.info(kakaoId + " " + email + " " + nickname);
+
+            if (email == null || email.isEmpty()) throw new GeneralException(ResponseCode.REQUIRE_OAUTH_EMAIL);
+
             Optional<Users> user = usersRepository.findByEmail(email);
+            log.info("123 " + user.isPresent() + " " + user);
 
             if (user.isPresent()) {
                 return user.get();
             } else {
-
                 Users newUser = Users.builder()
+                        .email(email)
                         .role(Role.USER)
                         .userStatus(UserStatus.NORMAL)
                         .provider(ProviderType.KAKAO)
@@ -92,6 +101,7 @@ public class OAuthServiceImpl implements OAuthService {
 
                 UserSettings settings = createDefaultSettings(newUser);
                 userSettingsRepository.save(settings);
+                return newUser;
             }
         }
         throw new IllegalArgumentException("잘못된 provider입니다.");
@@ -99,9 +109,13 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        Users user = (Users) loadUserByUsername(authentication.getName());
+        try {
+            Users user = (Users) loadUserByUsername(authentication.getName());
 
-        return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
+            return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
+        } catch (UsernameNotFoundException ex) {
+            throw new GeneralException(ResponseCode.NOT_FOUND_USER);
+        }
     }
 
     @Override

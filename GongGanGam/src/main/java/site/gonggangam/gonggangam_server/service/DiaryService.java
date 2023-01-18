@@ -1,5 +1,6 @@
 package site.gonggangam.gonggangam_server.service;
 
+import org.springframework.data.domain.Pageable;
 import site.gonggangam.gonggangam_server.dto.diary.CalendarResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.DiaryRequestDto;
 import site.gonggangam.gonggangam_server.dto.diary.DiaryResponseDto;
@@ -11,7 +12,7 @@ public interface DiaryService {
 
     DiaryResponseDto postDiary(Long userId, DiaryRequestDto.Post request);
 
-    List<SharedDiaryResponseDto> getSharedDiaries(Long userId, Integer page, Integer pageSize);
+    List<SharedDiaryResponseDto> getSharedDiaries(Long userId, Pageable pageable);
 
     DiaryResponseDto getDiary(Long diaryId);
 

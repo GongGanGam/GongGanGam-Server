@@ -32,13 +32,13 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private Integer birthYear;
 
     @Convert(converter = GenderType.Converter.class)
-    @Column(columnDefinition = "CHAR(1)", length = 1, nullable = false)
+    @Column(columnDefinition = "CHAR(1)", length = 1, nullable = true)
     private GenderType genderType;
 
     @Column(columnDefinition = "TEXT", nullable = true)
     private String profImg;
 
-    @Column(name = "EMAIL", columnDefinition = "VARCHAR(50)", length = 50, nullable = true, unique = true)
+    @Column(name = "EMAIL", columnDefinition = "VARCHAR(50)", length = 50, nullable = false, unique = true)
     private String email;
 
     @Convert(converter = ProviderType.Converter.class)

@@ -17,7 +17,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     public static final String TITLE = "GongGanGam API";
     public static final String DESCRIPTION = "GongGanGam API 명세서입니다";
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "0.2";
 
     @Bean
     public GroupedOpenApi publicApi() {
@@ -40,20 +40,24 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public OpenApiCustomiser buildSecurityOpenApi() {
         SecurityScheme accessTokenScheme = new SecurityScheme()
                 .name(JwtProvider.ACCESS_TOKEN_HEADER)
-                .type(SecurityScheme.Type.HTTP)
-                .in(SecurityScheme.In.HEADER)
-                .bearerFormat("JWT");
+                .type(SecurityScheme.Type.APIKEY)
+                .in(SecurityScheme.In.HEADER);
+//                .bearerFormat("JWT")
 //                .scheme("bearer");
 
         SecurityScheme refreshTokenScheme = new SecurityScheme()
                 .name(JwtProvider.REFRESH_TOKEN_HEADER)
-                .type(SecurityScheme.Type.HTTP)
-                .in(SecurityScheme.In.HEADER)
-                .bearerFormat("JWT")
-                .scheme("bearer");
+                .type(SecurityScheme.Type.APIKEY)
+                .in(SecurityScheme.In.HEADER);
+//                .bearerFormat("JWT")
+//                .scheme("bearer");
 
         return OpenApi -> OpenApi
-                .addSecurityItem(new SecurityRequirement().addList(JwtProvider.ACCESS_TOKEN_HEADER).addList(JwtProvider.REFRESH_TOKEN_HEADER))
+                .addSecurityItem(
+                        new SecurityRequirement()
+                                .addList(JwtProvider.ACCESS_TOKEN_HEADER)
+                                .addList(JwtProvider.REFRESH_TOKEN_HEADER)
+                )
                 .getComponents()
                     .addSecuritySchemes(JwtProvider.ACCESS_TOKEN_HEADER, accessTokenScheme)
                     .addSecuritySchemes(JwtProvider.REFRESH_TOKEN_HEADER, refreshTokenScheme);

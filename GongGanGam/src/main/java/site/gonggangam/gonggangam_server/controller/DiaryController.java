@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,11 +59,10 @@ public class DiaryController {
     @Operation(summary = "공유받은 일기 목록", description = "다른 사용자에게 공유 받은 일기 목록을 조회합니다.")
     @GetMapping("/shared")
     public DataResponseDto<List<SharedDiaryResponseDto>> getSharedDiaries(
-            @RequestParam(value = "page") Integer page,
-            @RequestParam(value = "pageSize") Integer pageSize
+            Pageable pageable
     ) {
 
-        return DataResponseDto.of(diaryService.getSharedDiaries(1L, page, pageSize));
+        return DataResponseDto.of(diaryService.getSharedDiaries(1L, pageable));
     }
 
     @Operation(summary = "나의 일기 상세조회", description = "일기의 내용을 상세조회합니다.")

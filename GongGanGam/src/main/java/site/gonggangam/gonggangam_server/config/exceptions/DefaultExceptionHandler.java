@@ -44,7 +44,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     public ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return handleExceptionInternal(e, ResponseCode.BAD_REQUEST, request);
+        return handleExceptionInternal(e, ResponseCode.METHOD_NOT_ALLOWED, request);
     }
 
     @Override

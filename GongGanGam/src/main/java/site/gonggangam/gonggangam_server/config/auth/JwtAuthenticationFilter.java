@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
@@ -41,14 +42,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        } catch (TokenExpiredException ex) {
-            delegateError(request, ResponseCode.TOKEN_EXPIRED);
-        } catch (JWTDecodeException ex) {
-            delegateError(request, ResponseCode.TOKEN_CANT_NOT_DECODE);
-        } catch (JWTVerificationException | AuthenticationException ex) {
-            delegateError(request, ResponseCode.TOKEN_INVALID);
         } catch (GeneralException ex) {
             delegateError(request, ex.getErrorCode());
+        } catch (AuthenticationException ex) {
+            delegateError(request, ResponseCode.AUTHENTICATION_INVALID_USER);
         }
 
         filterChain.doFilter(request, response);
