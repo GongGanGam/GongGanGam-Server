@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DiaryServiceImpl implements DiaryService {
 
+    private static final Long CALENDAR_SCOPE_WEEKS = 2L;
+
     private final UsersRepository usersRepository;
     private final DiaryRepository diaryRepository;
     private final ShareDiaryRepository shareDiaryRepository;
@@ -50,7 +52,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public Page<SharedDiaryResponseDto> getSharedDiaries(Long userId, Pageable pageable) {
-        Page<ShareDiary> diaries = shareDiaryRepository.findByReceiverUserIdAndDiary_IsVisible(userId, true, pageable);
+        Page<ShareDiary> diaries = shareDiaryRepository.findByReceiverUserId(userId, pageable);
 
         return new PageImpl<>(
                 diaries.stream()
@@ -61,7 +63,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public DiaryResponseDto getDiary(Long diaryId) throws GeneralException {
-        Diary diary = diaryRepository.findByDiaryIdAndIsVisible(diaryId, true).orElseThrow(() -> {
+        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
                     throw new GeneralException(ResponseCode.NOT_FOUND);
                 });
 
@@ -70,26 +72,33 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public CalendarResponseDto getDiaries(Long userId, Integer year, Integer month) {
-        // TODO 수정
-        LocalDate after = LocalDate.of(year, month, 1);
-        LocalDate before = after.plusMonths(1);
+        LocalDate dest = LocalDate.of(year, month, 1);
+        LocalDate start = dest.minusWeeks(CALENDAR_SCOPE_WEEKS);
+        LocalDate end = dest.plusMonths(1).plusWeeks(CALENDAR_SCOPE_WEEKS);
 
-        List<Diary> diaries = diaryRepository.findAllByWriter_UserIdAndWritingDateIsAfterAndWritingDateIsBeforeAndIsVisible(userId, after, before, true);
-        List<DiaryPreviewResponseDto> destMonth = diaries.stream()
-                .map(DiaryPreviewResponseDto::toDto).toList();
+        List<Diary> diaries = diaryRepository.getByUserIdAndBetweenDate(userId, start, end);
 
         return CalendarResponseDto.builder()
-                .destMonth(destMonth)
+                .prevMonth(getCalendarResponseByMonth(diaries, start.getMonthValue()))
+                .destMonth(getCalendarResponseByMonth(diaries, dest.getMonthValue()))
+                .nextMonth(getCalendarResponseByMonth(diaries, end.getMonthValue()))
                 .build();
+    }
+
+    private static List<DiaryPreviewResponseDto> getCalendarResponseByMonth(List<Diary> diaries, int month) {
+        return diaries
+                .stream()
+                .filter(diary -> diary.getWritingDate().getMonthValue() == month)
+                .map(DiaryPreviewResponseDto::toDto)
+                .toList();
     }
 
     @Override
     public DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.Put request) throws GeneralException{
-        Diary diary = diaryRepository.findByDiaryIdAndIsVisible(diaryId, true).orElseThrow(() -> {
+        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND);
         });
 
-        // TODO : shared agree 변경시 로직 추가
         diary.update(request.getEmoji(), request.getContent(), request.getShareAgreed());
 
         diaryRepository.save(diary);
@@ -98,7 +107,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public void deleteDiary(Long diaryId) throws GeneralException {
-        Diary diary = diaryRepository.findByDiaryIdAndIsVisible(diaryId, true).orElseThrow(() -> {
+        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND);
         });
 

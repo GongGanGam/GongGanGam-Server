@@ -48,7 +48,7 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     @Transactional
     public ReplyResponseDto postReply(Long userId, ReplyRequestDto.Post body) throws GeneralException {
-        Diary targetDiary = diaryRepository.findByDiaryIdAndIsVisible(body.getDiaryId(), true).orElseThrow(() -> {
+        Diary targetDiary = diaryRepository.getByDiaryId(body.getDiaryId()).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND);
         });
 
