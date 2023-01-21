@@ -1,5 +1,6 @@
 package site.gonggangam.gonggangam_server.service;
 
+import org.springframework.data.domain.Pageable;
 import site.gonggangam.gonggangam_server.dto.notice.NoticeRequestDto;
 import site.gonggangam.gonggangam_server.dto.notice.NoticeResponseDto;
 
@@ -11,5 +12,5 @@ public interface NoticeService {
 
     NoticeResponseDto putNotice(Long noticeId, NoticeRequestDto.PutNotice request);
 
-    List<NoticeResponseDto> getNoticeList(Integer page, Integer pageSize);
+    List<NoticeResponseDto> getNoticeList(Pageable pageable);
 }
