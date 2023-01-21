@@ -12,8 +12,6 @@ import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.notice.NoticeResponseDto;
 import site.gonggangam.gonggangam_server.service.NoticeService;
 
-import java.util.List;
-
 @Tag(name = "notice", description = "공지사항 관련 API")
 @RestController
 @RequestMapping(value = "/api/notice", produces = MediaType.APPLICATION_JSON_VALUE)

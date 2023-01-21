@@ -1,6 +1,8 @@
 package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,13 +49,14 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public List<SharedDiaryResponseDto> getSharedDiaries(Long userId, Pageable pageable) {
-        // TODO : paging 구현
-        List<ShareDiary> diaries = shareDiaryRepository.findAllByReceiver_UserIdAndDiary_IsVisible(userId, true);
+    public Page<SharedDiaryResponseDto> getSharedDiaries(Long userId, Pageable pageable) {
+        Page<ShareDiary> diaries = shareDiaryRepository.findByReceiverUserIdAndDiary_IsVisible(userId, true, pageable);
 
-        return diaries.stream()
+        return new PageImpl<>(
+                diaries.stream()
                 .map(SharedDiaryResponseDto::toDto)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+        );
     }
 
     @Override
