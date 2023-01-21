@@ -2,6 +2,7 @@ package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,13 +57,13 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<NoticeResponseDto> getNoticeList(Pageable pageable) {
-        // TODO : paging 구현
+    public Page<NoticeResponseDto> getNoticeList(Pageable pageable) {
         Page<Notice> notices = noticeRepository.findByIsVisible(true, pageable);
 
-        return notices
-                .stream()
+        return new PageImpl<>(
+                notices.stream()
                 .map(NoticeResponseDto::of)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+        );
     }
 }
