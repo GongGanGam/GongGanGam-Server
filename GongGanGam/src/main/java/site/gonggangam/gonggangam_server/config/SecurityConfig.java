@@ -49,7 +49,7 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("USER")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/api/**").access("hasRole('ADMIN') or hasRole('USER')")
                     .anyRequest().permitAll()
                     .and()

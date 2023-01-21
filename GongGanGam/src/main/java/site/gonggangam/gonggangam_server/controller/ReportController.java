@@ -37,22 +37,6 @@ public class ReportController {
         );
     }
 
-    @Operation(summary = "신고 내역 조회", description = "관리자 계정만 이용 가능. 조회할 신고 타입 type = { all, diary, reply, chat }")
-    @GetMapping
-    public DataResponseDto<List<ReportResponseDto>> getReport(
-            @Schema(defaultValue = "diary")
-            @RequestParam("type") String type
-    ) {
-        return DataResponseDto.of(reportService.getReports(type));
-    }
 
-    @Operation(summary = "신고 처리상태 변경", description = "신고 내역의 처리 상태를 변경합니다. 관리자 계정만 이용 가능합니다. 처리 상태 progress = { before, processing, completed }")
-    @PutMapping("/{reportId}")
-    public ResponseDto putReport(
-            @RequestBody ReportRequestDto.PutReport body
-    ) {
-        reportService.putReport(body);
-        return new SuccessResponseDto(ResponseCode.OK);
-    }
 
 }
