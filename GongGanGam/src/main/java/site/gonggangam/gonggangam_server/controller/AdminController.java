@@ -49,6 +49,7 @@ public class AdminController {
             @RequestBody NoticeRequestDto.PostNotice body
     ) {
         return DataResponseDto.of(
+                ResponseCode.CREATED,
                 noticeService.postNotice(HttpServletUtils.getUserId(request), body)
         );
     }

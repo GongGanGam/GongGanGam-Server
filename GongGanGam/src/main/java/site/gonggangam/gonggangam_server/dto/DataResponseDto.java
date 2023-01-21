@@ -14,6 +14,11 @@ public class DataResponseDto<T> extends ResponseDto {
         this.data = data;
     }
 
+    private DataResponseDto(ResponseCode code, T data) {
+        super(true, code.getHttpStatus().value(), code.getCode(), code.getMessage());
+        this.data = data;
+    }
+
     private DataResponseDto(T data, String message) {
         super(true, ResponseCode.OK.getHttpStatus().value(), ResponseCode.OK.getCode(), message);
         this.data = data;
@@ -21,6 +26,10 @@ public class DataResponseDto<T> extends ResponseDto {
 
     public static <T> DataResponseDto<T> of(T data) {
         return new DataResponseDto<>(data);
+    }
+
+    public static <T> DataResponseDto<T> of(ResponseCode code, T data) {
+        return new DataResponseDto<>(code, data);
     }
 
     public static <T> DataResponseDto<T> of(T data, String message) {
