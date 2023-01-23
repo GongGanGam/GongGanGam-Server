@@ -13,8 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import site.gonggangam.gonggangam_server.config.HttpServletUtils;
+import site.gonggangam.gonggangam_server.config.HttpServletUtil;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
@@ -26,9 +25,6 @@ import site.gonggangam.gonggangam_server.dto.diary.SharedDiaryResponseDto;
 import site.gonggangam.gonggangam_server.service.DiaryService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 
 @Tag(name = "diary", description = "일기 관련 API")
 @RestController
@@ -55,7 +51,7 @@ public class DiaryController {
             ) {
 
         return DataResponseDto.of(
-                diaryService.postDiary(HttpServletUtils.getUserId(request), body)
+                diaryService.postDiary(HttpServletUtil.getUserId(request), body)
         );
     }
 
@@ -67,7 +63,7 @@ public class DiaryController {
     ) {
 
         return DataResponseDto.of(
-                diaryService.getSharedDiaries(HttpServletUtils.getUserId(request), pageable)
+                diaryService.getSharedDiaries(HttpServletUtil.getUserId(request), pageable)
         );
     }
 
@@ -95,7 +91,7 @@ public class DiaryController {
             @RequestParam Integer month
     ) {
         return DataResponseDto.of(
-                diaryService.getDiaries(HttpServletUtils.getUserId(request), year, month)
+                diaryService.getDiaries(HttpServletUtil.getUserId(request), year, month)
         );
     }
 

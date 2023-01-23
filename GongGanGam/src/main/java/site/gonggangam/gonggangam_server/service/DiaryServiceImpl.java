@@ -47,7 +47,7 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
 
         diaryRepository.save(diary);
-        return DiaryResponseDto.toDto(diary);
+        return DiaryResponseDto.of(diary);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class DiaryServiceImpl implements DiaryService {
 
         return new PageImpl<>(
                 diaries.stream()
-                .map(SharedDiaryResponseDto::toDto)
+                .map(SharedDiaryResponseDto::of)
                 .collect(Collectors.toList())
         );
     }
@@ -66,7 +66,7 @@ public class DiaryServiceImpl implements DiaryService {
         Diary diary = diaryRepository.getByDiaryId(diaryId)
                 .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
-        return DiaryResponseDto.toDto(diary);
+        return DiaryResponseDto.of(diary);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class DiaryServiceImpl implements DiaryService {
         return diaries
                 .stream()
                 .filter(diary -> diary.getWritingDate().getMonthValue() == month)
-                .map(DiaryPreviewResponseDto::toDto)
+                .map(DiaryPreviewResponseDto::of)
                 .toList();
     }
 
@@ -100,7 +100,7 @@ public class DiaryServiceImpl implements DiaryService {
         diary.update(request.getEmoji(), request.getContent(), request.getShareAgreed());
 
         diaryRepository.save(diary);
-        return DiaryResponseDto.toDto(diary);
+        return DiaryResponseDto.of(diary);
     }
 
     @Override

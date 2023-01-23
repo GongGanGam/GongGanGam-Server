@@ -51,7 +51,7 @@ public class ReportServiceImpl implements ReportService {
 
             reportRepository.save(report);
 
-            return DiaryReportResponseDto.toDto(report);
+            return DiaryReportResponseDto.of(report);
         }
         else if (body.getType() == ReportType.REPLY) {
             Reply reply = replyRepository.findById(body.getTargetId())
@@ -66,7 +66,7 @@ public class ReportServiceImpl implements ReportService {
 
             reportRepository.save(report);
 
-            return ReplyReportResponseDto.toDto(report);
+            return ReplyReportResponseDto.of(report);
         }
 
         throw new GeneralException(ResponseCode.BAD_REQUEST);
@@ -78,10 +78,10 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.findAll().stream()
                 .map(entity -> {
                     if (entity instanceof ReportDiary) {
-                        return DiaryReportResponseDto.toDto((ReportDiary) entity);
+                        return DiaryReportResponseDto.of((ReportDiary) entity);
                     }
                     else if (entity instanceof ReportReply) {
-                        return ReplyReportResponseDto.toDto((ReportReply) entity);
+                        return ReplyReportResponseDto.of((ReportReply) entity);
                     }
                     throw new GeneralException(ResponseCode.INTERNAL_ERROR);
                 }).collect(Collectors.toList());

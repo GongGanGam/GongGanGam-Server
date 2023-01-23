@@ -1,13 +1,9 @@
 package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
-import site.gonggangam.gonggangam_server.domain.users.UserInfo;
 import site.gonggangam.gonggangam_server.domain.users.UserSettings;
-import site.gonggangam.gonggangam_server.domain.users.types.*;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthRequestDto;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthResponseDto;
@@ -48,7 +44,7 @@ public class UsersServiceImpl implements UsersService {
         Users user = usersRepository.findByEmail(email)
                 .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND_USER));
 
-        return UsersResponseDto.toDto(user, user.getSettings());
+        return UsersResponseDto.of(user, user.getSettings());
     }
 
     @Override

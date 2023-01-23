@@ -24,7 +24,7 @@ public class UsersResponseDto {
     @Schema(description = "성별 (undefine : 미선택, male : 남성, female : 여성)", defaultValue = "undefine", allowableValues = {"undefine", "male", "female"})
     private final String gender;
 
-    public static UsersResponseDto toDto(Users user, UserSettings settings) {
+    public static UsersResponseDto of(Users user, UserSettings settings) {
         return UsersResponseDto.builder()
                 .nickname(user.getUserInfo().getNickname())
                 .birthYear(user.getUserInfo().getBirthYear().toString())

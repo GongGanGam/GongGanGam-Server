@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import site.gonggangam.gonggangam_server.config.HttpServletUtils;
+import site.gonggangam.gonggangam_server.config.HttpServletUtil;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.service.OAuthService;
@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             AccessTokenClaims accessTokenClaims = jwtProvider.getClaimsFromAccessToken(token);
             Authentication authentication = oAuthService.authenticateByUsername(accessTokenClaims.getIdentification());
-            HttpServletUtils.setUserId(request, accessTokenClaims.getId());
+            HttpServletUtil.setUserId(request, accessTokenClaims.getId());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (GeneralException ex) {

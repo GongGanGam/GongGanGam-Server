@@ -31,7 +31,7 @@ public class ReplyServiceImpl implements ReplyService {
         Reply reply = replyRepository.getReplyById(replyId)
                 .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
-        return ReplyResponseDto.toDto(reply);
+        return ReplyResponseDto.of(reply);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ReplyServiceImpl implements ReplyService {
         List<Reply> replies = replyRepository.getNotRejectedRepliesByReceiverId(userId);
 
         return replies.stream()
-                .map(ReplyPreviewResponseDto::toDto)
+                .map(ReplyPreviewResponseDto::of)
                 .collect(Collectors.toList());
     }
 
@@ -60,7 +60,7 @@ public class ReplyServiceImpl implements ReplyService {
                 .build();
 
         replyRepository.save(newReply);
-        return ReplyResponseDto.toDto(newReply);
+        return ReplyResponseDto.of(newReply);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ReplyServiceImpl implements ReplyService {
         reply.update(body.getContent());
         replyRepository.save(reply);
 
-        return ReplyResponseDto.toDto(reply);
+        return ReplyResponseDto.of(reply);
     }
 
     @Override

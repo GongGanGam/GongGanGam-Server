@@ -18,7 +18,7 @@ public class DiaryPreviewResponseDto {
     @Schema(description = "이모지", defaultValue = "happy")
     private final String emoji;
 
-    public static DiaryPreviewResponseDto toDto(Diary entity) {
+    public static DiaryPreviewResponseDto of(Diary entity) {
         return DiaryPreviewResponseDto.builder()
                 .diaryId(entity.getDiaryId())
                 .date(entity.getWritingDate())

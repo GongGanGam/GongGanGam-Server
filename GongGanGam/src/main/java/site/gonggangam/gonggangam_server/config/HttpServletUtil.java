@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
-public class HttpServletUtils {
+public final class HttpServletUtil {
 
     public static final String HEADER_USER_ID = "userId";
 
