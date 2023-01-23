@@ -63,9 +63,8 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public DiaryResponseDto getDiary(Long diaryId) throws GeneralException {
-        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
-                    throw new GeneralException(ResponseCode.NOT_FOUND);
-                });
+        Diary diary = diaryRepository.getByDiaryId(diaryId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         return DiaryResponseDto.toDto(diary);
     }
@@ -95,9 +94,8 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.Put request) throws GeneralException{
-        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Diary diary = diaryRepository.getByDiaryId(diaryId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         diary.update(request.getEmoji(), request.getContent(), request.getShareAgreed());
 
@@ -107,9 +105,8 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public void deleteDiary(Long diaryId) throws GeneralException {
-        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Diary diary = diaryRepository.getByDiaryId(diaryId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         diary.delete();
         diaryRepository.save(diary);

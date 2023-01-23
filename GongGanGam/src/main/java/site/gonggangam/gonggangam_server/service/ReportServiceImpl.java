@@ -35,14 +35,12 @@ public class ReportServiceImpl implements ReportService {
     @Override
     @Transactional
     public ReportResponseDto postReport(Long userId, ReportRequestDto.PostReport body) throws GeneralException {
-        Users reporter = usersRepository.findById(userId).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-        });
+        Users reporter = usersRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND_USER));
 
         if (body.getType() == ReportType.DIARY) {
-            Diary diary = diaryRepository.findById(body.getTargetId()).orElseThrow(() -> {
-                throw new GeneralException(ResponseCode.NOT_FOUND);
-            });
+            Diary diary = diaryRepository.findById(body.getTargetId())
+                    .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
             ReportDiary report = ReportDiary.builder()
                     .diary(diary)
@@ -56,9 +54,8 @@ public class ReportServiceImpl implements ReportService {
             return DiaryReportResponseDto.toDto(report);
         }
         else if (body.getType() == ReportType.REPLY) {
-            Reply reply = replyRepository.findById(body.getTargetId()).orElseThrow(() -> {
-                throw new GeneralException(ResponseCode.NOT_FOUND);
-            });
+            Reply reply = replyRepository.findById(body.getTargetId())
+                    .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
             ReportReply report = ReportReply.builder()
                     .reply(reply)
@@ -93,9 +90,8 @@ public class ReportServiceImpl implements ReportService {
     @Override
     @Transactional
     public void putReport(ReportRequestDto.PutReport body) throws GeneralException {
-        Report report = reportRepository.findById(body.getReportId()).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Report report = reportRepository.findById(body.getReportId())
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         report.updateProcess(convert(body.getProgress()));
         reportRepository.save(report);

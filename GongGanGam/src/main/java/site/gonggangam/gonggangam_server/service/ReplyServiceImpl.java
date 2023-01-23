@@ -8,7 +8,6 @@ import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.reply.Reply;
 import site.gonggangam.gonggangam_server.domain.users.Users;
-import site.gonggangam.gonggangam_server.dto.diary.DiaryResponseDto;
 import site.gonggangam.gonggangam_server.dto.reply.ReplyPreviewResponseDto;
 import site.gonggangam.gonggangam_server.dto.reply.ReplyRequestDto;
 import site.gonggangam.gonggangam_server.dto.reply.ReplyResponseDto;
@@ -29,16 +28,15 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public ReplyResponseDto getReply(Long replyId) throws GeneralException {
-        Reply reply = replyRepository.findByReplyIdAndRejectedAndIsVisible(replyId, false, true).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Reply reply = replyRepository.getReplyById(replyId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         return ReplyResponseDto.toDto(reply);
     }
 
     @Override
     public List<ReplyPreviewResponseDto> getReplies(Long userId, Integer page, Integer pageSize) {
-        List<Reply> replies = replyRepository.findAllByWriter_UserIdAndRejectedAndIsVisible(userId, false, true);
+        List<Reply> replies = replyRepository.getNotRejectedRepliesByReceiverId(userId);
 
         return replies.stream()
                 .map(ReplyPreviewResponseDto::toDto)
@@ -48,13 +46,11 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     @Transactional
     public ReplyResponseDto postReply(Long userId, ReplyRequestDto.Post body) throws GeneralException {
-        Diary targetDiary = diaryRepository.getByDiaryId(body.getDiaryId()).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Diary targetDiary = diaryRepository.getByDiaryId(body.getDiaryId())
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
-        Users writer = usersRepository.findById(userId).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-        });
+        Users writer = usersRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND_USER));
 
         Reply newReply = Reply.builder()
                 .diary(targetDiary)
@@ -70,9 +66,8 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     @Transactional
     public ReplyResponseDto putReply(Long replyId, ReplyRequestDto.Put body) throws GeneralException {
-        Reply reply = replyRepository.findByReplyIdAndRejectedAndIsVisible(replyId, false, true).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Reply reply = replyRepository.getReplyById(replyId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         reply.update(body.getContent());
         replyRepository.save(reply);
@@ -83,9 +78,8 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     @Transactional
     public void rejectReply(Long replyId) {
-        Reply reply = replyRepository.findByReplyIdAndRejectedAndIsVisible(replyId, false, true).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Reply reply = replyRepository.getNotRejectedReplyById(replyId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         reply.reject();
         replyRepository.save(reply);
@@ -94,7 +88,7 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     @Transactional
     public void deleteReply(Long replyId) {
-        Reply reply = replyRepository.findByReplyIdAndIsVisible(replyId, true).orElseThrow(() -> {
+        Reply reply = replyRepository.getReplyById(replyId).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND);
         });
 

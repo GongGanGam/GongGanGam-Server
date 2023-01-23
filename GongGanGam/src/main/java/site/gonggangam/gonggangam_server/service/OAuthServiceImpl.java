@@ -59,9 +59,9 @@ public class OAuthServiceImpl implements OAuthService {
                 .uri(requestUri)
                 .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
                 .retrieve()
-                .onStatus(HttpStatus::isError, clientResponse -> Mono.error(() -> {
-                    throw new GeneralException(ResponseCode.WRONG_OAUTH_TOKEN);
-                }))
+                .onStatus(HttpStatus::isError, clientResponse ->
+                        Mono.error(() -> new GeneralException(ResponseCode.WRONG_OAUTH_TOKEN)
+                        ))
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
                 })
                 .block();
@@ -104,9 +104,8 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public Authentication authenticateByUsername(String userName) throws AuthenticationException {
-        Users user = usersRepository.findByIdentification(userName).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-        });
+        Users user = usersRepository.findByIdentification(userName)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND_USER));
 
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
