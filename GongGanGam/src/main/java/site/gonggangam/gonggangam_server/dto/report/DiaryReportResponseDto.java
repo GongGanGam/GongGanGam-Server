@@ -24,15 +24,15 @@ public class DiaryReportResponseDto extends ReportResponseDto {
         this.diary = diary;
     }
 
-    public static DiaryReportResponseDto toDto(ReportDiary entity) {
+    public static DiaryReportResponseDto of(ReportDiary entity) {
         return DiaryReportResponseDto.builder()
                 .reportId(entity.getReportId())
                 .reason(entity.getReason())
                 .progress(entity.getProcessType().getTitle())
-                .reporter(WriterDto.toDto(entity.getReporter()))
+                .reporter(WriterDto.of(entity.getReporter()))
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
-                .diary(SharedDiaryResponseDto.toDto(entity.getDiary()))
+                .diary(SharedDiaryResponseDto.of(entity.getDiary()))
                 .build();
     }
 }

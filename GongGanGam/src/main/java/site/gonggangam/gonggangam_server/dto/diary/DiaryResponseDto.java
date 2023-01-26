@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
-import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 
 import java.time.LocalDate;
 
@@ -25,7 +24,7 @@ public class DiaryResponseDto {
     @Schema(description = "공유 허용 여부", defaultValue = "true")
     private final Boolean shareAgreed;
 
-    public static DiaryResponseDto toDto(Diary entity) {
+    public static DiaryResponseDto of(Diary entity) {
         return DiaryResponseDto.builder()
                 .diaryId(entity.getDiaryId())
                 .date(entity.getWritingDate())

@@ -16,7 +16,7 @@ public class WriterDto {
     @Schema(description = "프로필 이미지", defaultValue = "https://imgurl.com")
     private final String profImg;
 
-    public static WriterDto toDto(Users entity) {
+    public static WriterDto of(Users entity) {
         return WriterDto.builder()
                 .userId(entity.getUserId())
                 .nickname(entity.getUserInfo().getNickname())

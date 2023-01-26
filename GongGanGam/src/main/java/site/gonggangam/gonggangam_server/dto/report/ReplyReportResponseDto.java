@@ -24,15 +24,15 @@ public class ReplyReportResponseDto extends ReportResponseDto {
         this.reply = reply;
     }
 
-    public static ReplyReportResponseDto toDto(ReportReply entity) {
+    public static ReplyReportResponseDto of(ReportReply entity) {
         return ReplyReportResponseDto.builder()
                 .reportId(entity.getReportId())
                 .reason(entity.getReason())
                 .progress(entity.getProcessType().getTitle())
-                .reporter(WriterDto.toDto(entity.getReporter()))
+                .reporter(WriterDto.of(entity.getReporter()))
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
-                .reply(ReplyResponseDto.toDto(entity.getReply()))
+                .reply(ReplyResponseDto.of(entity.getReply()))
                 .build();
     }
 }

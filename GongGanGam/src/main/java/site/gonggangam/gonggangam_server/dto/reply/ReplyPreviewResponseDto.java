@@ -23,10 +23,10 @@ public class ReplyPreviewResponseDto {
     @Schema(description = "답장 최종수정 시간", defaultValue = "2023-01-06")
     private final LocalDateTime updatedAt;
 
-    public static ReplyPreviewResponseDto toDto(Reply entity) {
+    public static ReplyPreviewResponseDto of(Reply entity) {
         return ReplyPreviewResponseDto.builder()
                 .replyId(entity.getReplyId())
-                .writer(WriterDto.toDto(entity.getWriter()))
+                .writer(WriterDto.of(entity.getWriter()))
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())

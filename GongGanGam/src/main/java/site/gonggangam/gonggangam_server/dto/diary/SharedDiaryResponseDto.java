@@ -26,25 +26,25 @@ public class SharedDiaryResponseDto {
     @Schema(description = "일기 작성자")
     private final WriterDto writer;
 
-    public static SharedDiaryResponseDto toDto(ShareDiary entity) {
+    public static SharedDiaryResponseDto of(ShareDiary entity) {
         return SharedDiaryResponseDto.builder()
                 .diaryId(entity.getDiary().getDiaryId())
                 .date(entity.getDiary().getWritingDate())
                 .emoji(entity.getDiary().getEmoji())
                 .content(entity.getDiary().getContent())
                 .imgUrl(entity.getDiary().getImgUrl())
-                .writer(WriterDto.toDto(entity.getReceiver()))
+                .writer(WriterDto.of(entity.getReceiver()))
                 .build();
     }
 
-    public static SharedDiaryResponseDto toDto(Diary entity) {
+    public static SharedDiaryResponseDto of(Diary entity) {
         return SharedDiaryResponseDto.builder()
                 .diaryId(entity.getDiaryId())
                 .date(entity.getWritingDate())
                 .emoji(entity.getEmoji())
                 .content(entity.getContent())
                 .imgUrl(entity.getImgUrl())
-                .writer(WriterDto.toDto(entity.getWriter())).
+                .writer(WriterDto.of(entity.getWriter())).
                 build();
     }
 }

@@ -26,12 +26,12 @@ public class ReplyResponseDto {
     @Schema(description = "답장 최종수정 시간", defaultValue = "2023-01-06")
     private final LocalDateTime updatedAt;
 
-    public static ReplyResponseDto toDto(Reply entity) {
+    public static ReplyResponseDto of(Reply entity) {
         return ReplyResponseDto.builder()
-                .diary(DiaryResponseDto.toDto(entity.getDiary()))
+                .diary(DiaryResponseDto.of(entity.getDiary()))
                 .replyId(entity.getReplyId())
                 .content(entity.getContent())
-                .writer(WriterDto.toDto(entity.getWriter()))
+                .writer(WriterDto.of(entity.getWriter()))
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();

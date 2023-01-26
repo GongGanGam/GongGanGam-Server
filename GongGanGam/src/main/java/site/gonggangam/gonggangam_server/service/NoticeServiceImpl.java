@@ -28,9 +28,8 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public NoticeResponseDto postNotice(Long userId, NoticeRequestDto.PostNotice request) throws GeneralException {
-        Users writer = usersRepository.findById(userId).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-        });
+        Users writer = usersRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND_USER));
 
         Notice notice = Notice.builder()
                 .content(request.getContent())
@@ -46,9 +45,8 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public NoticeResponseDto putNotice(Long noticeId, NoticeRequestDto.PutNotice request) throws GeneralException {
-        Notice notice = noticeRepository.findByNoticeIdAndIsVisible(noticeId, true).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Notice notice = noticeRepository.findByNoticeIdAndIsVisible(noticeId, true)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         notice.update(request.getTitle(), request.getContent());
         noticeRepository.save(notice);

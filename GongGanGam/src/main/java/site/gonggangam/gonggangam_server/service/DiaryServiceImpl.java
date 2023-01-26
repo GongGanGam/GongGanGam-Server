@@ -1,6 +1,7 @@
 package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.diary.ShareDiary;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.dto.diary.*;
+import site.gonggangam.gonggangam_server.dto.upload_file.UploadFileDto;
 import site.gonggangam.gonggangam_server.repository.DiaryRepository;
 import site.gonggangam.gonggangam_server.repository.ShareDiaryRepository;
 import site.gonggangam.gonggangam_server.repository.UsersRepository;
@@ -22,9 +24,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DiaryServiceImpl implements DiaryService {
 
+    // TODO : 이후 날짜 작성 방지 & 중복 날짜 방지 추가
+
     private static final Long CALENDAR_SCOPE_WEEKS = 2L;
+
+    private final UploadFileService uploadFileService;
 
     private final UsersRepository usersRepository;
     private final DiaryRepository diaryRepository;
@@ -37,6 +44,12 @@ public class DiaryServiceImpl implements DiaryService {
             throw new GeneralException(ResponseCode.NOT_FOUND_USER);
         });
 
+        UploadFileDto uploadFileDto = null;
+
+        if (request.getImgFile() != null) {
+            uploadFileDto = uploadFileService.save(request.getImgFile());
+        }
+
         Diary diary = Diary.builder()
                 .content(request.getContent())
                 .emoji(request.getEmoji())
@@ -44,10 +57,11 @@ public class DiaryServiceImpl implements DiaryService {
                 .shareAgreed(request.getShareAgreed())
                 .writer(writer)
                 .writingDate(request.getDate())
+                .imgUrl(uploadFileDto != null ? uploadFileDto.getUploadedUrl() : null)
                 .build();
 
         diaryRepository.save(diary);
-        return DiaryResponseDto.toDto(diary);
+        return DiaryResponseDto.of(diary);
     }
 
     @Override
@@ -56,18 +70,17 @@ public class DiaryServiceImpl implements DiaryService {
 
         return new PageImpl<>(
                 diaries.stream()
-                .map(SharedDiaryResponseDto::toDto)
+                .map(SharedDiaryResponseDto::of)
                 .collect(Collectors.toList())
         );
     }
 
     @Override
     public DiaryResponseDto getDiary(Long diaryId) throws GeneralException {
-        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
-                    throw new GeneralException(ResponseCode.NOT_FOUND);
-                });
+        Diary diary = diaryRepository.getByDiaryId(diaryId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
-        return DiaryResponseDto.toDto(diary);
+        return DiaryResponseDto.of(diary);
     }
 
     @Override
@@ -89,27 +102,25 @@ public class DiaryServiceImpl implements DiaryService {
         return diaries
                 .stream()
                 .filter(diary -> diary.getWritingDate().getMonthValue() == month)
-                .map(DiaryPreviewResponseDto::toDto)
+                .map(DiaryPreviewResponseDto::of)
                 .toList();
     }
 
     @Override
     public DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.Put request) throws GeneralException{
-        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Diary diary = diaryRepository.getByDiaryId(diaryId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         diary.update(request.getEmoji(), request.getContent(), request.getShareAgreed());
 
         diaryRepository.save(diary);
-        return DiaryResponseDto.toDto(diary);
+        return DiaryResponseDto.of(diary);
     }
 
     @Override
     public void deleteDiary(Long diaryId) throws GeneralException {
-        Diary diary = diaryRepository.getByDiaryId(diaryId).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND);
-        });
+        Diary diary = diaryRepository.getByDiaryId(diaryId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
         diary.delete();
         diaryRepository.save(diary);

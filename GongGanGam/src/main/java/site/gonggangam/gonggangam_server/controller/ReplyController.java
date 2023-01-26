@@ -8,9 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.gonggangam.gonggangam_server.config.HttpServletUtils;
+import site.gonggangam.gonggangam_server.config.HttpServletUtil;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
@@ -48,7 +47,7 @@ public class ReplyController {
             @RequestParam(value = "pageSize") Integer pageSize
             ) {
         return DataResponseDto.of(
-                replyService.getReplies(HttpServletUtils.getUserId(request), page, pageSize)
+                replyService.getReplies(HttpServletUtil.getUserId(request), page, pageSize)
         );
     }
 

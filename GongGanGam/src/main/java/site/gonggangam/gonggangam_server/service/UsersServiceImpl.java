@@ -1,13 +1,9 @@
 package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
-import site.gonggangam.gonggangam_server.domain.users.UserInfo;
 import site.gonggangam.gonggangam_server.domain.users.UserSettings;
-import site.gonggangam.gonggangam_server.domain.users.types.*;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthRequestDto;
 import site.gonggangam.gonggangam_server.dto.auth.OAuthResponseDto;
@@ -46,19 +42,16 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UsersResponseDto loadUser(String email) throws GeneralException {
         Users user = usersRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-                });
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND_USER));
 
-        return UsersResponseDto.toDto(user, user.getSettings());
+        return UsersResponseDto.of(user, user.getSettings());
     }
 
     @Override
     @Transactional
     public void updateInfo(Long userId, UsersRequestDto.PutUserInfo request) throws GeneralException {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> {
-            throw new GeneralException(ResponseCode.NOT_FOUND_USER);
-        });
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND_USER));
 
         user.getUserInfo().update(request.getNickname(),
                 Integer.parseInt(request.getBirthYear()),
@@ -71,9 +64,9 @@ public class UsersServiceImpl implements UsersService {
     }
 
 //    @Override
-    public void updateSettings(Long userId, UserSettingsRequestDto request) {
+    public void updateSettings(Long userId, UserSettingsRequestDto request) throws GeneralException {
         UserSettings settings = userSettingsRepository.findById(userId)
-                .orElseThrow();
+                .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND_USER));
 
         settings.updateNotify(
                 request.getNotifyDiary(),

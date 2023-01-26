@@ -1,22 +1,17 @@
 package site.gonggangam.gonggangam_server.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import site.gonggangam.gonggangam_server.config.HttpServletUtils;
-import site.gonggangam.gonggangam_server.config.ResponseCode;
+import site.gonggangam.gonggangam_server.config.HttpServletUtil;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
-import site.gonggangam.gonggangam_server.dto.ResponseDto;
-import site.gonggangam.gonggangam_server.dto.SuccessResponseDto;
 import site.gonggangam.gonggangam_server.dto.report.ReportRequestDto;
 import site.gonggangam.gonggangam_server.dto.report.ReportResponseDto;
 import site.gonggangam.gonggangam_server.service.ReportService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Tag(name = "report", description = "신고 관련 API")
 @RestController
@@ -33,7 +28,7 @@ public class ReportController {
             @RequestBody ReportRequestDto.PostReport body
             ) {
         return DataResponseDto.of(
-                reportService.postReport(HttpServletUtils.getUserId(request), body)
+                reportService.postReport(HttpServletUtil.getUserId(request), body)
         );
     }
 

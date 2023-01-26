@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
+// TODO : abstract로 바꾸기
 public class DiaryRequestDto {
 
     @Data

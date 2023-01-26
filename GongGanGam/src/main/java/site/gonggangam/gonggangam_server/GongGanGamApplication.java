@@ -12,7 +12,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 @EnableJpaAuditing
 @SpringBootApplication
 public class GongGanGamApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(GongGanGamApplication.class, args);
     }

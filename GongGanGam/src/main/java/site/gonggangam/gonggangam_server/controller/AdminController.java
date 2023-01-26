@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import site.gonggangam.gonggangam_server.config.HttpServletUtils;
+import site.gonggangam.gonggangam_server.config.HttpServletUtil;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
@@ -50,7 +50,7 @@ public class AdminController {
     ) {
         return DataResponseDto.of(
                 ResponseCode.CREATED,
-                noticeService.postNotice(HttpServletUtils.getUserId(request), body)
+                noticeService.postNotice(HttpServletUtil.getUserId(request), body)
         );
     }
 

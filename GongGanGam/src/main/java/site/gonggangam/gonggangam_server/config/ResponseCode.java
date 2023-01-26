@@ -36,7 +36,9 @@ public enum ResponseCode {
     METHOD_NOT_ALLOWED(-40500, HttpStatus.METHOD_NOT_ALLOWED, "수행할 수 없는 요청 경로입니다."),
 
     INTERNAL_ERROR(-50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
-    DATA_ACCESS_ERROR(-50001, HttpStatus.INTERNAL_SERVER_ERROR, "데이터 접근 중 오류가 발생했습니다.");
+    DATA_ACCESS_ERROR(-50001, HttpStatus.INTERNAL_SERVER_ERROR, "데이터 접근 중 오류가 발생했습니다."),
+    FILE_UPLOAD_ERROR(-50002, HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드 중 문제가 발생했습니다."),
+    FILE_IO_ERROR(-50003, HttpStatus.INTERNAL_SERVER_ERROR, "IO 과정에서 문제가 발생했습니다.");
 
     public String getMessage(Throwable e) {
         return this.getMessage(this.getMessage() + " - " + e.getMessage());
