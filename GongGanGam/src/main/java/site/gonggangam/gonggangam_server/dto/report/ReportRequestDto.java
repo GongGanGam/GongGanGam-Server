@@ -4,12 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
-public class ReportRequestDto {
+public interface ReportRequestDto {
 
     @Data
     @Builder
     @Schema(description = "신고 등록")
-    public static class PostReport {
+    class PostReport {
         @Schema(description = "신고 대상 ID", defaultValue = "12")
         private final Long targetId;
         @Schema(description = "타입", defaultValue = "diary", allowableValues = {"diary", "reply", "chat"})
@@ -21,7 +21,7 @@ public class ReportRequestDto {
     @Data
     @Builder
     @Schema(description = "신고 상태 변경")
-    public static class PutReport {
+    class PutReport {
         @Schema(description = "신고내역 ID", defaultValue = "31")
         private final Long reportId;
         @Schema(description = "신고 상태", allowableValues = {"before", "processing", "completed"}, defaultValue = "completed")

@@ -39,7 +39,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     @Transactional
-    public DiaryResponseDto postDiary(Long userId, DiaryRequestDto.Post request) throws GeneralException {
+    public DiaryResponseDto postDiary(Long userId, DiaryRequestDto.PostDiary request) throws GeneralException {
         Users writer = usersRepository.findById(userId).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND_USER);
         });
@@ -107,7 +107,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.Put request) throws GeneralException{
+    public DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.PutDiary request) throws GeneralException{
         Diary diary = diaryRepository.getByDiaryId(diaryId)
                 .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 

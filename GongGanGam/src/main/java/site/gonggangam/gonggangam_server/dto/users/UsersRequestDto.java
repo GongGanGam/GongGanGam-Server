@@ -8,12 +8,12 @@ import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
 
 import javax.validation.constraints.NotNull;
 
-public class UsersRequestDto {
+public interface UsersRequestDto {
 
     @Data
     @Builder
     @Schema(description = "사용자 추가정보")
-    public static class PostUser {
+    class PostUser {
         @Schema(description = "닉네임", defaultValue = "오늘도맑음")
         @NotNull
         private final String nickname;
@@ -27,7 +27,7 @@ public class UsersRequestDto {
     @Data
     @Builder
     @Schema(description = "사용자 정보 수정")
-    public static class PutUserInfo {
+    class PutUserInfo {
         @Schema(description = "닉네임", defaultValue = "오늘도맑음")
         private final String nickname;
         @Schema(description = "출생년도", defaultValue = "1997")

@@ -7,11 +7,9 @@ import site.gonggangam.gonggangam_server.dto.diary.DiaryRequestDto;
 import site.gonggangam.gonggangam_server.dto.diary.DiaryResponseDto;
 import site.gonggangam.gonggangam_server.dto.diary.SharedDiaryResponseDto;
 
-import java.util.List;
-
 public interface DiaryService {
 
-    DiaryResponseDto postDiary(Long userId, DiaryRequestDto.Post request);
+    DiaryResponseDto postDiary(Long userId, DiaryRequestDto.PostDiary request);
 
     Page<SharedDiaryResponseDto> getSharedDiaries(Long userId, Pageable pageable);
 
@@ -19,7 +17,7 @@ public interface DiaryService {
 
     CalendarResponseDto getDiaries(Long userId, Integer year, Integer month);
 
-    DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.Put request);
+    DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.PutDiary request);
 
     void deleteDiary(Long diaryId);
 }

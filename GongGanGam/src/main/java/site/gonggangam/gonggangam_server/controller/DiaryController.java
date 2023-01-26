@@ -46,8 +46,8 @@ public class DiaryController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public DataResponseDto<DiaryResponseDto> postDiary(
             HttpServletRequest request,
-            @Parameter(description = "일기 상세 내용을 입력 받습니다.", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Post.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
-            @ModelAttribute DiaryRequestDto.Post body
+            @Parameter(description = "일기 상세 내용을 입력 받습니다.", content = @Content(schema = @Schema(implementation = DiaryRequestDto.PostDiary.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @ModelAttribute DiaryRequestDto.PostDiary body
             ) {
 
         return DataResponseDto.of(
@@ -99,8 +99,8 @@ public class DiaryController {
     @PutMapping(value = "/{diaryId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public DataResponseDto<DiaryResponseDto> putDiary(
             @PathVariable("diaryId") Long diaryId,
-            @Parameter(description = "일기 상세 내용", content = @Content(schema = @Schema(implementation = DiaryRequestDto.Put.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
-            @ModelAttribute DiaryRequestDto.Put body
+            @Parameter(description = "일기 상세 내용", content = @Content(schema = @Schema(implementation = DiaryRequestDto.PutDiary.class), mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @ModelAttribute DiaryRequestDto.PutDiary body
     ) {
         return DataResponseDto.of(diaryService.putDiary(diaryId, body));
     }
