@@ -1,6 +1,7 @@
 package site.gonggangam.gonggangam_server.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.diary.ShareDiary;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.dto.diary.*;
+import site.gonggangam.gonggangam_server.dto.upload_file.UploadFileDto;
 import site.gonggangam.gonggangam_server.repository.DiaryRepository;
 import site.gonggangam.gonggangam_server.repository.ShareDiaryRepository;
 import site.gonggangam.gonggangam_server.repository.UsersRepository;
@@ -22,9 +24,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DiaryServiceImpl implements DiaryService {
 
+    // TODO : 이후 날짜 작성 방지 & 중복 날짜 방지 추가
+
     private static final Long CALENDAR_SCOPE_WEEKS = 2L;
+
+    private final UploadFileService uploadFileService;
 
     private final UsersRepository usersRepository;
     private final DiaryRepository diaryRepository;
@@ -36,6 +43,14 @@ public class DiaryServiceImpl implements DiaryService {
         Users writer = usersRepository.findById(userId).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND_USER);
         });
+
+        UploadFileDto uploadFileDto = null;
+
+        // TODO : S3 저장된 경로 반환하도록
+        if (request.getImgFile() != null) {
+            uploadFileDto = uploadFileService.save(request.getImgFile());
+            log.info("sdfsdf " + uploadFileDto.getPath());
+        }
 
         Diary diary = Diary.builder()
                 .content(request.getContent())

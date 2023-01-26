@@ -1,6 +1,6 @@
 package site.gonggangam.gonggangam_server.config.cloud;
 
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.io.File;
 @Slf4j
 public class AmazonS3ResourceStorage {
 
-    private final AmazonS3Client amazonS3Client;
+    private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -26,11 +26,17 @@ public class AmazonS3ResourceStorage {
     public void store(String fullPath, MultipartFile multipartFile) throws GeneralException {
         File file = new File(MultipartUtil.getLocalHomeDirectory(), fullPath);
 
+        if (!file.exists() && !file.mkdirs()) {
+            // 경로가 존재하지 않고, 폴도 생성에 실패한 경우
+            throw new GeneralException(ResponseCode.FILE_IO_ERROR);
+        }
+
         try {
             multipartFile.transferTo(file);
-            amazonS3Client.putObject(new PutObjectRequest(bucket, fullPath, file)
+            amazonS3.putObject(new PutObjectRequest(bucket, fullPath, file)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (Exception e) {
+            log.error(String.format("[%s] File upload failed. nested exception is %s", getClass(), e));
             throw new GeneralException(ResponseCode.FILE_UPLOAD_ERROR);
         } finally {
             if (!file.exists() && !file.delete()) {
