@@ -5,8 +5,6 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 import site.gonggangam.gonggangam_server.config.cloud.MultipartUtil;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 public class UploadFileDto {
@@ -15,11 +13,12 @@ public class UploadFileDto {
     private final String format;
     private final String path;
     private final Long bytes;
-    private final LocalDateTime createdAt;
+    private String uploadedUrl;
 
     public static UploadFileDto of(MultipartFile multipartFile) {
         final String fileId = MultipartUtil.createFileId();
         final String format = MultipartUtil.getFormat(multipartFile.getContentType());
+
         return UploadFileDto.builder()
                 .id(fileId)
                 .name(multipartFile.getOriginalFilename())

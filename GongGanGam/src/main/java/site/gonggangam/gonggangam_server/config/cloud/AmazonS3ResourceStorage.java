@@ -23,7 +23,10 @@ public class AmazonS3ResourceStorage {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public void store(String fullPath, MultipartFile multipartFile) throws GeneralException {
+    @Value("${cloud.aws.base-url}")
+    private String baseUrl;
+
+    public String store(String fullPath, MultipartFile multipartFile) throws GeneralException {
         File file = new File(MultipartUtil.getLocalHomeDirectory(), fullPath);
 
         if (!file.exists() && !file.mkdirs()) {
@@ -35,6 +38,9 @@ public class AmazonS3ResourceStorage {
             multipartFile.transferTo(file);
             amazonS3.putObject(new PutObjectRequest(bucket, fullPath, file)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
+
+            return baseUrl + fullPath;
+
         } catch (Exception e) {
             log.error(String.format("[%s] File upload failed. nested exception is %s", getClass(), e));
             throw new GeneralException(ResponseCode.FILE_UPLOAD_ERROR);

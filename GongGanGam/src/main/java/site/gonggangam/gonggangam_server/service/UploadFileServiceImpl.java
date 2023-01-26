@@ -16,7 +16,8 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     public UploadFileDto save(MultipartFile multipartFile) throws GeneralException {
         UploadFileDto uploadFileDto = UploadFileDto.of(multipartFile);
-        amazonS3ResourceStorage.store(uploadFileDto.getPath(), multipartFile);
+        String url = amazonS3ResourceStorage.store(uploadFileDto.getPath(), multipartFile);
+        uploadFileDto.setUploadedUrl(url);
         return uploadFileDto;
     }
 }

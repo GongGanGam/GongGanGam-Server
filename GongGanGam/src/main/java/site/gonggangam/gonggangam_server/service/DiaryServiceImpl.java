@@ -46,10 +46,8 @@ public class DiaryServiceImpl implements DiaryService {
 
         UploadFileDto uploadFileDto = null;
 
-        // TODO : S3 저장된 경로 반환하도록
         if (request.getImgFile() != null) {
             uploadFileDto = uploadFileService.save(request.getImgFile());
-            log.info("sdfsdf " + uploadFileDto.getPath());
         }
 
         Diary diary = Diary.builder()
@@ -59,6 +57,7 @@ public class DiaryServiceImpl implements DiaryService {
                 .shareAgreed(request.getShareAgreed())
                 .writer(writer)
                 .writingDate(request.getDate())
+                .imgUrl(uploadFileDto != null ? uploadFileDto.getUploadedUrl() : null)
                 .build();
 
         diaryRepository.save(diary);
