@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 
@@ -18,16 +19,19 @@ public class ApnsConfig {
 
     private final ApnsKeyProvider apnsKeyProvider;
 
+    @Profile("dev")
     @Bean
     public ApnsClient devApnsClient() throws SSLException, GeneralException {
         return getSignedApnsClient(ApnsClientBuilder.DEVELOPMENT_APNS_HOST);
     }
 
+    @Profile("prod")
     @Bean
     public ApnsClient prodApnsClient() throws SSLException, GeneralException {
         return getSignedApnsClient(ApnsClientBuilder.PRODUCTION_APNS_HOST);
     }
 
+    // TODO : token 만료 후 갱신처리
     private ApnsClient getSignedApnsClient(String hostname) throws SSLException, GeneralException {
         try {
             return new ApnsClientBuilder()

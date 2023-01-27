@@ -14,13 +14,13 @@ import java.io.InputStream;
 @Slf4j
 public class ApnsKeyProvider {
 
-    @Value("${apns.team-id}")
+    @Value("${notification.apns.team-id}")
     private String teamId;
 
-    @Value("${apns.key.id}")
+    @Value("${notification.apns.key.id}")
     private String keyId;
 
-    @Value("${apns.key.file-name}")
+    @Value("${notification.apns.key.file-name}")
     private String keyFileName;
 
     public ApnsSigningKey getKey() throws GeneralException {
