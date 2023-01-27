@@ -68,8 +68,11 @@ dependencies {
     // jwt
     implementation 'com.auth0:java-jwt:4.2.1'
 
-    // netty -> auth
+    // netty
     implementation 'io.netty:netty-all:4.1.73.Final'
+
+    // pushy for apns
+    implementation 'com.turo:pushy:0.12.0'
 
 }
 

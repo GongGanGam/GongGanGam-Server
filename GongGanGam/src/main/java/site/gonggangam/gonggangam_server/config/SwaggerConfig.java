@@ -43,20 +43,13 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .type(SecurityScheme.Type.APIKEY)
                 .in(SecurityScheme.In.HEADER);
 
-        SecurityScheme refreshTokenScheme = new SecurityScheme()
-                .name(JwtProvider.REFRESH_TOKEN_HEADER)
-                .type(SecurityScheme.Type.APIKEY)
-                .in(SecurityScheme.In.HEADER);
-
         return OpenApi -> OpenApi
                 .addSecurityItem(
                         new SecurityRequirement()
                                 .addList(JwtProvider.ACCESS_TOKEN_HEADER)
-                                .addList(JwtProvider.REFRESH_TOKEN_HEADER)
                 )
                 .getComponents()
-                    .addSecuritySchemes(JwtProvider.ACCESS_TOKEN_HEADER, accessTokenScheme)
-                    .addSecuritySchemes(JwtProvider.REFRESH_TOKEN_HEADER, refreshTokenScheme);
+                    .addSecuritySchemes(JwtProvider.ACCESS_TOKEN_HEADER, accessTokenScheme);
     }
 
 }
