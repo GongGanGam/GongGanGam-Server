@@ -16,7 +16,6 @@ import site.gonggangam.gonggangam_server.domain.repository.ShareDiaryRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -39,7 +38,7 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
      * 전체 공유 허용 사용자는 동일 설정 사용자끼리 공유합니다.
      */
     @Override
-    @Scheduled(cron = "0 0 21 * * ?")
+    @Scheduled(cron = "0 32 23 * * ?")
     public void shareAllDiaries() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusDays(1).plusSeconds(1);

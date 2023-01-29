@@ -35,7 +35,7 @@ public class Reply extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(name = "IS_VISIBLE", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
+    @Column(name = "IS_VISIBLE", columnDefinition = "BIT(1) DEFAULT TRUE", nullable = false)
     protected Boolean isVisible;
 
     @Builder

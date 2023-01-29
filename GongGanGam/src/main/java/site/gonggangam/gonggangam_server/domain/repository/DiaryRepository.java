@@ -38,15 +38,17 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         FROM Diary d
                         WHERE d.writer.userId = :userId
                         AND
-                        d.writingDate = :date
+                        d.diaryDate = :date
                         AND
                         d.isVisible = true
             """)
     List<Diary> getByUserIdAndDate(@Param("userId") Long userId,
-                                          @Param("date") LocalDate date);
+                                   @Param("date") LocalDate date);
 
     /**
      * 작성자와 날짜 범위에 따른 일기 조회
+     * <p>
+     * 일기 대상 일자에 따라 정렬됩니다.
      * @param userId 작성자 id
      * @param start 조회 시작 시간
      * @param end 조회 끝 시간
@@ -57,9 +59,10 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         FROM Diary d
                         WHERE d.writer.userId = :userId
                         AND
-                        d.writingDate BETWEEN :start AND :end
+                        d.diaryDate BETWEEN :start AND :end
                         AND
                         d.isVisible = true
+                        ORDER BY d.diaryDate
             """)
     List<Diary> getByUserIdAndBetweenDate(@Param("userId") Long userId,
                                           @Param("start") LocalDate start,
@@ -83,11 +86,11 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         JOIN FETCH wr.settings se
                         WHERE d.createdAt BETWEEN :dateStart AND :dateEnd
                         AND
-                        d.shareAgreed = TRUE
+                        d.shareAgreed = true
                         AND
                         se.shareType = :shareType
                         AND
-                        d.isVisible = TRUE
+                        d.isVisible = true
             """)
     List<Diary> getByShareTypeAndCreatedBetween(@Param("shareType") ShareType shareType,
                                                 @Param("dateStart") LocalDateTime dateStart,
@@ -114,13 +117,13 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         JOIN FETCH wr.settings se
                         WHERE d.createdAt BETWEEN :dateStart AND :dateEnd
                         AND
-                        d.shareAgreed = TRUE
+                        d.shareAgreed = true
                         AND
                         ui.birthYear BETWEEN :birthStart AND :birthEnd
                         AND
                         se.shareType = :shareType
                         AND
-                        d.isVisible = TRUE
+                        d.isVisible = true
             """)
     List<Diary> getByShareTypeAndAgeGroupAndCreatedBetween(@Param("shareType") ShareType shareType,
                                                            @Param("birthStart") Integer birthStart,

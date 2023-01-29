@@ -21,7 +21,7 @@ public class DiaryPreviewResponseDto {
     public static DiaryPreviewResponseDto of(Diary entity) {
         return DiaryPreviewResponseDto.builder()
                 .diaryId(entity.getDiaryId())
-                .date(entity.getWritingDate())
+                .date(entity.getDiaryDate())
                 .emoji(entity.getEmoji())
                 .build();
     }

@@ -27,7 +27,7 @@ public class DiaryResponseDto {
     public static DiaryResponseDto of(Diary entity) {
         return DiaryResponseDto.builder()
                 .diaryId(entity.getDiaryId())
-                .date(entity.getWritingDate())
+                .date(entity.getDiaryDate())
                 .emoji(entity.getEmoji())
                 .content(entity.getContent())
                 .imgUrl(entity.getImgUrl())
