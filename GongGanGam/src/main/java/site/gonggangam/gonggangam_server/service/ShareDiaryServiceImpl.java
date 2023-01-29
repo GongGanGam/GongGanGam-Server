@@ -87,7 +87,9 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
             Users receiver = diaries.get((idx + offset) % size).getWriter();
             shareDiary(dest, receiver);
 
-            notifyDiaryShared(receiver);
+            if (receiver.getSettings().getNotifyDiary()) {
+                notifyDiaryShared(receiver);
+            }
         }
     }
 
