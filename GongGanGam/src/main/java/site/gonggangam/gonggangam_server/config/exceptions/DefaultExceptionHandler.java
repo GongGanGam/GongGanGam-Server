@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
 
+import javax.net.ssl.SSLException;
+
 
 @Slf4j
 @ControllerAdvice
@@ -51,6 +53,11 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException e, WebRequest request) {
         return handleExceptionInternal(e, ResponseCode.PERMISSION_DENIED, request);
+    }
+
+    @ExceptionHandler(value = {SSLException.class})
+    public ResponseEntity<Object> handleSSLException(SSLException e, WebRequest request) {
+        return handleExceptionInternal(e, ResponseCode.SSL_ERROR, request);
     }
 
     @Override

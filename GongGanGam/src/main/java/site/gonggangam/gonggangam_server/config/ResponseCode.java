@@ -38,7 +38,11 @@ public enum ResponseCode {
     INTERNAL_ERROR(-50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
     DATA_ACCESS_ERROR(-50001, HttpStatus.INTERNAL_SERVER_ERROR, "데이터 접근 중 오류가 발생했습니다."),
     FILE_UPLOAD_ERROR(-50002, HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드 중 문제가 발생했습니다."),
-    FILE_IO_ERROR(-50003, HttpStatus.INTERNAL_SERVER_ERROR, "IO 과정에서 문제가 발생했습니다.");
+    FILE_IO_ERROR(-50003, HttpStatus.INTERNAL_SERVER_ERROR, "IO 과정에서 문제가 발생했습니다."),
+    APNS_SIGNING_ERROR(-50004, HttpStatus.INTERNAL_SERVER_ERROR, "APNS 서명 생성 중 오류가 발생했습니다."),
+    APNS_AUTHENTICATION_ERROR(-50005, HttpStatus.INTERNAL_SERVER_ERROR, "APNS TLS 자격 증명 중 오류가 발생했습니다."),
+    SSL_ERROR(-50005, HttpStatus.INTERNAL_SERVER_ERROR, "SSL 서명 과정에서 오류가 발생했습니다.")
+    ;
 
     public String getMessage(Throwable e) {
         return this.getMessage(this.getMessage() + " - " + e.getMessage());

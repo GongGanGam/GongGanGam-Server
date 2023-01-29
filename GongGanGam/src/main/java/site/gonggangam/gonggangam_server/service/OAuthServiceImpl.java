@@ -71,6 +71,7 @@ public class OAuthServiceImpl implements OAuthService {
         if (provider == Provider.KAKAO) {
             Map<String, Object> userAttributes = getUserAttributesByToken(provider.OAUTH_URI, request.getToken());
             KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userAttributes);
+
             String kakaoId = kakaoUserInfo.getId().toString();
             String email = kakaoUserInfo.getEmail();
             String nickname = kakaoUserInfo.getNickname();
@@ -84,6 +85,7 @@ public class OAuthServiceImpl implements OAuthService {
                         .identification(kakaoId)
                         .email(email)
                         .deviceToken(request.getDeviceToken())
+                        .deviceType(request.getDeviceType())
                         .role(Role.USER)
                         .userStatus(UserStatus.NORMAL)
                         .provider(ProviderType.KAKAO)
