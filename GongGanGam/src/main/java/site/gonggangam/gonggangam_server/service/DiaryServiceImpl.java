@@ -37,6 +37,7 @@ public class DiaryServiceImpl implements DiaryService {
     private final DiaryRepository diaryRepository;
     private final ShareDiaryRepository shareDiaryRepository;
 
+
     @Override
     @Transactional
     public DiaryResponseDto postDiary(Long userId, DiaryRequestDto.PostDiary request) throws GeneralException {
@@ -84,6 +85,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
+    @Transactional
     public CalendarResponseDto getDiaries(Long userId, Integer year, Integer month) {
         LocalDate dest = LocalDate.of(year, month, 1);
         LocalDate start = dest.minusWeeks(CALENDAR_SCOPE_WEEKS);
@@ -98,7 +100,7 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
     }
 
-    private static List<DiaryPreviewResponseDto> getCalendarResponseByMonth(List<Diary> diaries, int month) {
+    private List<DiaryPreviewResponseDto> getCalendarResponseByMonth(List<Diary> diaries, int month) {
         return diaries
                 .stream()
                 .filter(diary -> diary.getWritingDate().getMonthValue() == month)
@@ -107,7 +109,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.PutDiary request) throws GeneralException{
+    public DiaryResponseDto putDiary(Long diaryId, DiaryRequestDto.PutDiary request) throws GeneralException {
         Diary diary = diaryRepository.getByDiaryId(diaryId)
                 .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
@@ -125,4 +127,5 @@ public class DiaryServiceImpl implements DiaryService {
         diary.delete();
         diaryRepository.save(diary);
     }
+
 }

@@ -5,10 +5,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import site.gonggangam.gonggangam_server.domain.BaseTimeEntity;
-import site.gonggangam.gonggangam_server.domain.users.types.ProviderType;
-import site.gonggangam.gonggangam_server.domain.users.types.GenderType;
-import site.gonggangam.gonggangam_server.domain.users.types.Role;
-import site.gonggangam.gonggangam_server.domain.users.types.UserStatus;
+import site.gonggangam.gonggangam_server.domain.users.types.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,6 +38,10 @@ public class Users extends BaseTimeEntity implements UserDetails {
     @Column(name = "DEVICE_TOKEN", columnDefinition = "TEXT", nullable = true)
     private String deviceToken;
 
+    @Convert(converter = DeviceType.Converter.class)
+    @Column(name = "DEVICE_TYPE", columnDefinition = "CHAR(1)", length = 1, nullable = false)
+    private DeviceType deviceType;
+
     @Convert(converter = Role.Converter.class)
     @Column(name = "ROLE", columnDefinition = "CHAR(1) DEFAULT 'U'", length = 1, nullable = false)
     private Role role;
@@ -58,12 +59,22 @@ public class Users extends BaseTimeEntity implements UserDetails {
     private UserInfo userInfo;
 
     @Builder
-    public Users(String identification, String profImg, String email, ProviderType provider, String deviceToken, Role role, UserStatus userStatus, UserSettings settings, UserInfo userInfo) {
+    public Users(String identification,
+                 String profImg,
+                 String email,
+                 ProviderType provider,
+                 String deviceToken,
+                 DeviceType deviceType,
+                 Role role,
+                 UserStatus userStatus,
+                 UserSettings settings,
+                 UserInfo userInfo) {
         this.identification = identification;
         this.profImg = profImg;
         this.email = email;
         this.provider = provider;
         this.deviceToken = deviceToken;
+        this.deviceType = deviceType;
         this.role = role;
         this.userStatus = userStatus;
         this.settings = settings;
@@ -72,6 +83,9 @@ public class Users extends BaseTimeEntity implements UserDetails {
 
     public void updateDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
+    }
+    public void updateDeviceType(DeviceType deviceType) {
+        this.deviceType = deviceType;
     }
 
     @Override
