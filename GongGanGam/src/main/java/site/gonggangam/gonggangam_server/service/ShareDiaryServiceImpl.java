@@ -38,7 +38,7 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
      * 전체 공유 허용 사용자는 동일 설정 사용자끼리 공유합니다.
      */
     @Override
-    @Scheduled(cron = "0 32 23 * * ?")
+    @Scheduled(cron = "0 0 21 * * ?")
     public void shareAllDiaries() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusDays(1).plusSeconds(1);
@@ -77,6 +77,7 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
 
         try {
             offset = createOffset(size);
+            log.info("group offset selected " + offset);
         } catch (IllegalArgumentException e) {
             log.info("group size is smaller than 2. diary share terminates.");
             return;
@@ -108,7 +109,7 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
         do {
             double ratio = Math.random() * 0.8 + 0.1;
             offset = (int) (size * ratio) + 1;
-        } while (offset < size);
+        } while (offset >= size);
 
         return offset;
     }
