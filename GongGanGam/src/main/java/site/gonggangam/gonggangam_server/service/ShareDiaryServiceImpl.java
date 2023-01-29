@@ -7,11 +7,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.diary.ShareDiary;
 import site.gonggangam.gonggangam_server.domain.users.Users;
-import site.gonggangam.gonggangam_server.domain.users.types.DeviceType;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
 import site.gonggangam.gonggangam_server.repository.DiaryRepository;
 import site.gonggangam.gonggangam_server.repository.ShareDiaryRepository;
@@ -74,13 +72,12 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
             return;
         }
 
-        for (int idx = 0; idx < size / 2; idx++) {
+        for (int idx = 0; idx < size; idx++) {
             Diary from = diaries.get(idx);
-            Diary dest = diaries.get((idx + offset) % size);
-            matchingDairies(from, dest);
+            Users dest = diaries.get((idx + offset) % size).getWriter();
+            shareDiary(from, dest);
 
-            notifyDiaryShared(from.getWriter());
-            notifyDiaryShared(dest.getWriter());
+            notifyDiaryShared(dest);
         }
     }
 
@@ -105,26 +102,17 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
     }
 
     /**
-     * 1:1로 매칭된 두 일기를 서로 공유합니다.
-     * <p>
-     * 트랜잭션으로 실행됩니다.
-     * @param diary1 일기 1
-     * @param diary2 일기 2
+     * 일기를 공유합니다.
+     * @param diary 공유할 일기
+     * @param receiver 공유받을 사용자
      */
-    @Transactional
-    public void matchingDairies(Diary diary1, Diary diary2) {
-        ShareDiary shareDiary1 = ShareDiary.builder()
-                .diary(diary1)
-                .receiver(diary2.getWriter())
+    public void shareDiary(Diary diary, Users receiver) {
+        ShareDiary shareDiary = ShareDiary.builder()
+                .diary(diary)
+                .receiver(receiver)
                 .build();
 
-        ShareDiary shareDiary2 = ShareDiary.builder()
-                .diary(diary2)
-                .receiver(diary1.getWriter())
-                .build();
-
-        shareDiaryRepository.save(shareDiary1);
-        shareDiaryRepository.save(shareDiary2);
+        shareDiaryRepository.save(shareDiary);
     }
 
     @Async
