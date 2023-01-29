@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
-import site.gonggangam.gonggangam_server.domain.dto.diary.DiaryWithWriterDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -78,10 +77,10 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
      * @return 조건에 해당하는 일기 목록과 작성자 정보
      */
     @Query(value = """
-                        SELECT new site.gonggangam.gonggangam_server.domain.dto.diary.DiaryWithWriterDto(d, wr, se)
+                        SELECT d
                         FROM Diary d
-                        JOIN d.writer wr
-                        JOIN wr.settings se
+                        JOIN FETCH d.writer wr
+                        JOIN FETCH wr.settings se
                         WHERE d.createdAt BETWEEN :start AND :end
                         AND
                         d.shareAgreed = true
@@ -90,7 +89,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         AND
                         d.isVisible = true
             """)
-    List<DiaryWithWriterDto> getByShareTypeAndCreatedBetween(@Param("shareType") ShareType shareType,
+    List<Diary> getByShareTypeAndCreatedBetween(@Param("shareType") ShareType shareType,
                                                              @Param("start") LocalDateTime start,
                                                              @Param("end") LocalDateTime end);
 
@@ -107,11 +106,11 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
      * @return 조건에 해당하는 일기 목록과 작성자 정보
      */
     @Query(value = """
-                        SELECT new site.gonggangam.gonggangam_server.domain.dto.diary.DiaryWithWriterDto(d, wr, se)
+                        SELECT d
                         FROM Diary d
-                        JOIN d.writer wr
-                        JOIN wr.userInfo ui
-                        JOIN wr.settings se
+                        JOIN FETCH d.writer wr
+                        JOIN FETCH wr.userInfo ui
+                        JOIN FETCH wr.settings se
                         WHERE d.createdAt BETWEEN :start AND :end
                         AND
                         d.shareAgreed = true
@@ -122,7 +121,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         AND
                         d.isVisible = true
             """)
-    List<DiaryWithWriterDto> getByShareTypeAndAgeGroupAndCreatedBetween(@Param("shareType") ShareType shareType,
+    List<Diary> getByShareTypeAndAgeGroupAndCreatedBetween(@Param("shareType") ShareType shareType,
                                                            @Param("ageGroup") Integer ageGroup,
                                                            @Param("start") LocalDateTime start,
                                                            @Param("end") LocalDateTime end);
