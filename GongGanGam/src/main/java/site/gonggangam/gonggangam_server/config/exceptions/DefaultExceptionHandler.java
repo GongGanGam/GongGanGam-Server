@@ -17,7 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
-import site.gonggangam.gonggangam_server.controller.dto.ErrorResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.ErrorResponseDto;
 
 import javax.net.ssl.SSLException;
 

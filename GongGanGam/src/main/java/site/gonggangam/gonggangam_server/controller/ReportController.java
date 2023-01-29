@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import site.gonggangam.gonggangam_server.config.HttpServletUtil;
-import site.gonggangam.gonggangam_server.controller.dto.DataResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.report.ReportRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.report.ReportResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.report.ReportRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.report.ReportResponseDto;
 import site.gonggangam.gonggangam_server.service.ReportService;
 
 import javax.servlet.http.HttpServletRequest;

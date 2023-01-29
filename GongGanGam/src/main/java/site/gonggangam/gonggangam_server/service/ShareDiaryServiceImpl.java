@@ -11,8 +11,9 @@ import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.diary.ShareDiary;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
-import site.gonggangam.gonggangam_server.repository.DiaryRepository;
-import site.gonggangam.gonggangam_server.repository.ShareDiaryRepository;
+import site.gonggangam.gonggangam_server.domain.dto.diary.DiaryWithWriterDto;
+import site.gonggangam.gonggangam_server.domain.repository.DiaryRepository;
+import site.gonggangam.gonggangam_server.domain.repository.ShareDiaryRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,10 +45,10 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
         log.info(String.format("[%s] Diary share task start for %s ~ %s", getClass(), start, end));
 
         for (int ageGroup = 0; ageGroup <= 90; ageGroup += 10) {
-            List<Diary> simAgeShare = diaryRepository.getByShareTypeAndAgeGroupAndCreatedBetween(ShareType.SIMILAR, ageGroup, start, end);
+            List<DiaryWithWriterDto> simAgeShare = diaryRepository.getByShareTypeAndAgeGroupAndCreatedBetween(ShareType.SIMILAR, ageGroup, start, end);
             shareGroupedDiaries(simAgeShare);
         }
-        List<Diary> allAgeShare = diaryRepository.getByShareTypeAndCreatedBetween(ShareType.ALL, start, end);
+        List<DiaryWithWriterDto> allAgeShare = diaryRepository.getByShareTypeAndCreatedBetween(ShareType.ALL, start, end);
         shareGroupedDiaries(allAgeShare);
 
         log.info(String.format("[%s] Diary share end", getClass()));
@@ -62,7 +63,7 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
      * @see #createOffset(int)
      * @param diaries 공유하고자 하는 그룹화된 일기 목록
      */
-    private void shareGroupedDiaries(List<Diary> diaries) {
+    private void shareGroupedDiaries(List<DiaryWithWriterDto> diaries) {
         int offset;
         final int size = diaries.size();
 
@@ -73,7 +74,7 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
         }
 
         for (int idx = 0; idx < size; idx++) {
-            Diary from = diaries.get(idx);
+            Diary from = diaries.get(idx).getDiary();
             Users dest = diaries.get((idx + offset) % size).getWriter();
             shareDiary(from, dest);
 

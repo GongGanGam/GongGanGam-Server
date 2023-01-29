@@ -1,7 +1,7 @@
 package site.gonggangam.gonggangam_server.service;
 
-import site.gonggangam.gonggangam_server.controller.dto.report.ReportRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.report.ReportResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.report.ReportRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.report.ReportResponseDto;
 
 import java.util.List;
 

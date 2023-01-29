@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.users.UserSettings;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
-import site.gonggangam.gonggangam_server.controller.dto.auth.OAuthRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.auth.OAuthResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.users.UserSettingsRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.users.UsersRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.auth.OAuthRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.auth.OAuthResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UserSettingsRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UsersRequestDto;
 import site.gonggangam.gonggangam_server.domain.users.Users;
-import site.gonggangam.gonggangam_server.controller.dto.users.UsersResponseDto;
-import site.gonggangam.gonggangam_server.repository.UserInfoRepository;
-import site.gonggangam.gonggangam_server.repository.UserSettingsRepository;
-import site.gonggangam.gonggangam_server.repository.UsersRepository;
+import site.gonggangam.gonggangam_server.service.dto.users.UsersResponseDto;
+import site.gonggangam.gonggangam_server.domain.repository.UserInfoRepository;
+import site.gonggangam.gonggangam_server.domain.repository.UserSettingsRepository;
+import site.gonggangam.gonggangam_server.domain.repository.UsersRepository;
 
 import javax.transaction.Transactional;
 

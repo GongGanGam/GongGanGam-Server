@@ -10,10 +10,10 @@ import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.notice.Notice;
 import site.gonggangam.gonggangam_server.domain.users.Users;
-import site.gonggangam.gonggangam_server.controller.dto.notice.NoticeRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.notice.NoticeResponseDto;
-import site.gonggangam.gonggangam_server.repository.NoticeRepository;
-import site.gonggangam.gonggangam_server.repository.UsersRepository;
+import site.gonggangam.gonggangam_server.service.dto.notice.NoticeRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.notice.NoticeResponseDto;
+import site.gonggangam.gonggangam_server.domain.repository.NoticeRepository;
+import site.gonggangam.gonggangam_server.domain.repository.UsersRepository;
 
 import java.util.stream.Collectors;
 

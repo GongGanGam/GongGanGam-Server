@@ -20,10 +20,10 @@ import site.gonggangam.gonggangam_server.domain.oauth.KakaoUserInfo;
 import site.gonggangam.gonggangam_server.domain.users.UserSettings;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.domain.users.types.*;
-import site.gonggangam.gonggangam_server.controller.dto.auth.OAuthRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.auth.OAuthResponseDto;
-import site.gonggangam.gonggangam_server.repository.UserSettingsRepository;
-import site.gonggangam.gonggangam_server.repository.UsersRepository;
+import site.gonggangam.gonggangam_server.service.dto.auth.OAuthRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.auth.OAuthResponseDto;
+import site.gonggangam.gonggangam_server.domain.repository.UserSettingsRepository;
+import site.gonggangam.gonggangam_server.domain.repository.UsersRepository;
 
 import java.util.Map;
 import java.util.Optional;

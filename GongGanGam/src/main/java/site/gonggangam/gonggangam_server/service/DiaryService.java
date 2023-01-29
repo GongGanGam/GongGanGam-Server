@@ -2,10 +2,10 @@ package site.gonggangam.gonggangam_server.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import site.gonggangam.gonggangam_server.controller.dto.diary.CalendarResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.diary.DiaryRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.diary.DiaryResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.diary.SharedDiaryResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.diary.CalendarResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.diary.DiaryRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.diary.DiaryResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.diary.SharedDiaryResponseDto;
 
 public interface DiaryService {
 

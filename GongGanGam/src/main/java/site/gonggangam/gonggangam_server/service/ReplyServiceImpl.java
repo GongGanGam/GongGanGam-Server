@@ -8,12 +8,12 @@ import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.reply.Reply;
 import site.gonggangam.gonggangam_server.domain.users.Users;
-import site.gonggangam.gonggangam_server.controller.dto.reply.ReplyPreviewResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.reply.ReplyRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.reply.ReplyResponseDto;
-import site.gonggangam.gonggangam_server.repository.DiaryRepository;
-import site.gonggangam.gonggangam_server.repository.ReplyRepository;
-import site.gonggangam.gonggangam_server.repository.UsersRepository;
+import site.gonggangam.gonggangam_server.service.dto.reply.ReplyPreviewResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.reply.ReplyRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.reply.ReplyResponseDto;
+import site.gonggangam.gonggangam_server.domain.repository.DiaryRepository;
+import site.gonggangam.gonggangam_server.domain.repository.ReplyRepository;
+import site.gonggangam.gonggangam_server.domain.repository.UsersRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

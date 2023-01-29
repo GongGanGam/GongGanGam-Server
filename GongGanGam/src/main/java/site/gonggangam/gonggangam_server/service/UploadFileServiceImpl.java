@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import site.gonggangam.gonggangam_server.config.cloud.AmazonS3ResourceStorage;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
-import site.gonggangam.gonggangam_server.controller.dto.upload_file.UploadFileDto;
+import site.gonggangam.gonggangam_server.service.dto.upload_file.UploadFileDto;
 
 @Service
 @RequiredArgsConstructor

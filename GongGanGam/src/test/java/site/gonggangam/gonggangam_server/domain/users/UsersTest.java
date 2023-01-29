@@ -12,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import site.gonggangam.gonggangam_server.domain.users.types.*;
-import site.gonggangam.gonggangam_server.repository.UserSettingsRepository;
-import site.gonggangam.gonggangam_server.repository.UsersRepository;
+import site.gonggangam.gonggangam_server.domain.repository.UserSettingsRepository;
+import site.gonggangam.gonggangam_server.domain.repository.UsersRepository;
 
 import javax.transaction.Transactional;
 

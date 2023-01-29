@@ -1,9 +1,9 @@
 package site.gonggangam.gonggangam_server.service;
 
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
-import site.gonggangam.gonggangam_server.controller.dto.users.UserSettingsRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.users.UsersRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.users.UsersResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UserSettingsRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UsersRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UsersResponseDto;
 
 public interface UsersService {
 

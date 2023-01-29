@@ -11,13 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import site.gonggangam.gonggangam_server.controller.dto.DataResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.ErrorResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.ResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.users.UserSettingsRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.users.UserSettingsResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.users.UsersRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.users.UsersResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.ErrorResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.ResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UserSettingsRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UserSettingsResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UsersRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.users.UsersResponseDto;
 
 @Tag(name = "user", description = "사용자 관련 API")
 @RestController

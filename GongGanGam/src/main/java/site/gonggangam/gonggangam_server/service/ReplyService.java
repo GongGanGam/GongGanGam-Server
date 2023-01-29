@@ -1,8 +1,8 @@
 package site.gonggangam.gonggangam_server.service;
 
-import site.gonggangam.gonggangam_server.controller.dto.reply.ReplyPreviewResponseDto;
-import site.gonggangam.gonggangam_server.controller.dto.reply.ReplyRequestDto;
-import site.gonggangam.gonggangam_server.controller.dto.reply.ReplyResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.reply.ReplyPreviewResponseDto;
+import site.gonggangam.gonggangam_server.service.dto.reply.ReplyRequestDto;
+import site.gonggangam.gonggangam_server.service.dto.reply.ReplyResponseDto;
 
 import java.util.List;
 
