@@ -28,7 +28,25 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Optional<Diary> getByDiaryId(@Param("diaryId") Long diaryId);
 
     /**
-     * 작성자와 일기 날짜에 따른 조회
+     * 작성자와 날짜에 따른 일기 조회
+     * @param userId 작성자 id
+     * @param date 조회할 날짜
+     * @return 조건에 해당하는 일기 목록
+     */
+    @Query(value = """
+                        SELECT d
+                        FROM Diary d
+                        WHERE d.writer.userId = :userId
+                        AND
+                        d.writingDate = :date
+                        AND
+                        d.isVisible = true
+            """)
+    List<Diary> getByUserIdAndDate(@Param("userId") Long userId,
+                                          @Param("date") LocalDate date);
+
+    /**
+     * 작성자와 날짜 범위에 따른 일기 조회
      * @param userId 작성자 id
      * @param start 조회 시작 시간
      * @param end 조회 끝 시간

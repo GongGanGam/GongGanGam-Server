@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DiaryServiceImpl implements DiaryService {
 
-    // TODO : 이후 날짜 작성 방지 & 중복 날짜 방지 추가
-
     private static final Long CALENDAR_SCOPE_WEEKS = 2L;
 
     private final UploadFileService uploadFileService;
@@ -44,6 +42,8 @@ public class DiaryServiceImpl implements DiaryService {
         Users writer = usersRepository.findById(userId).orElseThrow(() -> {
             throw new GeneralException(ResponseCode.NOT_FOUND_USER);
         });
+
+        validateDiaryDate(request.getDate(), writer);
 
         UploadFileDto uploadFileDto = null;
 
@@ -63,6 +63,20 @@ public class DiaryServiceImpl implements DiaryService {
 
         diaryRepository.save(diary);
         return DiaryResponseDto.of(diary);
+    }
+
+    private void validateDiaryDate(LocalDate date, Users writer) throws GeneralException {
+        LocalDate today = LocalDate.now();
+
+        // 오늘 이후의 날짜에 작성하려는 경우
+        if (date.isAfter(today)) {
+            throw new GeneralException(ResponseCode.DIARY_DATE_INVALID);
+        }
+
+        // 이미 작성된 일기가 있는 날짜인 경우
+        if (!diaryRepository.getByUserIdAndDate(writer.getUserId(), date).isEmpty()) {
+            throw new GeneralException(ResponseCode.DIARY_DATE_CONFLICT);
+        }
     }
 
     @Override
