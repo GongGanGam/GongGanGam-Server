@@ -48,7 +48,10 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                                           @Param("end") LocalDate end);
 
     /**
-     * 일기 공유 설정과 실제로 일기를 작성한 시각에 따른 조회
+     * 사용자의 연령대 지정 설정과 실제로 일기를 작성한 시각에 따른 조회
+     * <p>
+     * 공유 허용된 일기만 조회됩니다.
+     * <p>
      * ex) 비슷한 연령대 공유를 설정한 작성자들이 2023.01.01 21:00:01 ~ 2023.01.02 21:00:00에 작성한 일기 목록
      * @param shareType 공유 설정
      * @param start 조회할 시작 시간
@@ -60,6 +63,8 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         FROM Diary d
                         WHERE d.createdAt BETWEEN :start AND :end
                         AND
+                        d.shareAgreed = true
+                        AND
                         d.writer.settings.shareType = :shareType
                         AND
                         d.isVisible = true
@@ -70,6 +75,9 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     /**
      * 일기 공유 설정, 연령대, 실제 일기 작성한 시각에 따른 조회
+     * <p>
+     * 공유 허용된 일기만 조회됩니다.
+     * <p>
      * ex) 비슷한 연령대 공유를 설정한 20대 사용자가 작성한 일기 중 2023.01.01 21:00:01 ~ 2023.01.02 21:00:00에 작성한 일기 목록
      * @param shareType 공유 설정
      * @param ageGroup 연령대 (ex. 20)
@@ -81,6 +89,8 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         SELECT d
                         FROM Diary d
                         WHERE d.createdAt BETWEEN :start AND :end
+                        AND
+                        d.shareAgreed = true
                         AND
                         d.writer.userInfo.birthYear BETWEEN :ageGroup AND :ageGroup + 9
                         AND
