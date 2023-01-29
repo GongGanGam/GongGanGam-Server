@@ -14,7 +14,9 @@ import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
 import site.gonggangam.gonggangam_server.domain.repository.DiaryRepository;
 import site.gonggangam.gonggangam_server.domain.repository.ShareDiaryRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -32,22 +34,30 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
     /**
      * 매일 21:00:00 일기 공유 작업을 실행합니다.
      * <p>
-     * 비슷한 연령대 공유 사용자는 0-9, 10-19, 20-29, ..., 90-99 세까지 나누며, 해당 연령층 그룹별로 공유합니다.
+     * 비슷한 연령대 공유 사용자는 10-19, 20-29, ..., 90-99 세까지 나누며, 해당 연령층 그룹별로 공유합니다.
      * <p>
      * 전체 공유 허용 사용자는 동일 설정 사용자끼리 공유합니다.
      */
     @Override
     @Scheduled(cron = "0 0 21 * * ?")
     public void shareAllDiaries() {
-        LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start = end.minusDays(1).plusSeconds(1);
-        log.info(String.format("[%s] Diary share task start for %s ~ %s", getClass(), start, end));
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.minusDays(1).plusSeconds(1);
+        log.info(String.format("[%s] Diary share task start for %s ~ %s", getClass(), start, now));
 
-        for (int ageGroup = 0; ageGroup <= 90; ageGroup += 10) {
-            List<Diary> simAgeShare = diaryRepository.getByShareTypeAndAgeGroupAndCreatedBetween(ShareType.SIMILAR, ageGroup, start, end);
+        for (int ageGroup = 10; ageGroup <= 90; ageGroup += 10) {
+            LocalDate birthEnd = LocalDate.now().minusYears(ageGroup - 1);
+            LocalDate birthStart = birthEnd.minusYears(9);
+
+            List<Diary> simAgeShare = diaryRepository.getByShareTypeAndAgeGroupAndCreatedBetween(
+                    ShareType.SIMILAR,
+                    birthStart.getYear(),
+                    birthEnd.getYear(),
+                    start,
+                    now);
             shareGroupedDiaries(simAgeShare);
         }
-        List<Diary> allAgeShare = diaryRepository.getByShareTypeAndCreatedBetween(ShareType.ALL, start, end);
+        List<Diary> allAgeShare = diaryRepository.getByShareTypeAndCreatedBetween(ShareType.ALL, start, now);
         shareGroupedDiaries(allAgeShare);
 
         log.info(String.format("[%s] Diary share end", getClass()));
@@ -69,6 +79,7 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
         try {
             offset = createOffset(size);
         } catch (IllegalArgumentException e) {
+            log.info("group size is smaller than 2. diary share terminates.");
             return;
         }
 

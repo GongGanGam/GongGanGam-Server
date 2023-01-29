@@ -35,13 +35,13 @@ public class Diary extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WRITER_ID", referencedColumnName = "USER_ID")
-    protected Users writer;
+    private Users writer;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(name = "IS_VISIBLE", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
-    protected Boolean isVisible;
+    @Column(name = "IS_VISIBLE", columnDefinition = "BIT(1) DEFAULT TRUE", nullable = false)
+    private Boolean isVisible;
 
     @Builder
     public Diary(LocalDate writingDate, String emoji, String imgUrl, Boolean shareAgreed, Users writer, String content, Boolean isVisible) {

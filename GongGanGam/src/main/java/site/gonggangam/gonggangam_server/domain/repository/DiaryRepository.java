@@ -72,8 +72,8 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
      * <p>
      * ex) 비슷한 연령대 공유를 설정한 작성자들이 2023.01.01 21:00:01 ~ 2023.01.02 21:00:00에 작성한 일기 목록
      * @param shareType 공유 설정
-     * @param start 조회할 시작 시간
-     * @param end 조회할 끝 시간
+     * @param dateStart 조회할 시작 시간
+     * @param dateEnd 조회할 끝 시간
      * @return 조건에 해당하는 일기 목록과 작성자 정보
      */
     @Query(value = """
@@ -81,17 +81,17 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         FROM Diary d
                         JOIN FETCH d.writer wr
                         JOIN FETCH wr.settings se
-                        WHERE d.createdAt BETWEEN :start AND :end
+                        WHERE d.createdAt BETWEEN :dateStart AND :dateEnd
                         AND
-                        d.shareAgreed = true
+                        d.shareAgreed = TRUE
                         AND
                         se.shareType = :shareType
                         AND
-                        d.isVisible = true
+                        d.isVisible = TRUE
             """)
     List<Diary> getByShareTypeAndCreatedBetween(@Param("shareType") ShareType shareType,
-                                                             @Param("start") LocalDateTime start,
-                                                             @Param("end") LocalDateTime end);
+                                                @Param("dateStart") LocalDateTime dateStart,
+                                                @Param("dateEnd") LocalDateTime dateEnd);
 
     /**
      * 일기 공유 설정, 연령대, 실제 일기 작성한 시각에 따른 조회
@@ -100,9 +100,10 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
      * <p>
      * ex) 비슷한 연령대 공유를 설정한 20대 사용자가 작성한 일기 중 2023.01.01 21:00:01 ~ 2023.01.02 21:00:00에 작성한 일기 목록
      * @param shareType 공유 설정
-     * @param ageGroup 연령대 (ex. 20)
-     * @param start 조회할 시작 시간
-     * @param end 조회할 끝 시간
+     * @param birthStart 사용자 생년 시작
+     * @param birthEnd 사용자 생년 끝
+     * @param dateStart 조회할 시작 시간
+     * @param dateEnd 조회할 끝 시간
      * @return 조건에 해당하는 일기 목록과 작성자 정보
      */
     @Query(value = """
@@ -111,19 +112,20 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         JOIN FETCH d.writer wr
                         JOIN FETCH wr.userInfo ui
                         JOIN FETCH wr.settings se
-                        WHERE d.createdAt BETWEEN :start AND :end
+                        WHERE d.createdAt BETWEEN :dateStart AND :dateEnd
                         AND
-                        d.shareAgreed = true
+                        d.shareAgreed = TRUE
                         AND
-                        ui.birthYear BETWEEN :ageGroup AND :ageGroup + 9
+                        ui.birthYear BETWEEN :birthStart AND :birthEnd
                         AND
                         se.shareType = :shareType
                         AND
-                        d.isVisible = true
+                        d.isVisible = TRUE
             """)
     List<Diary> getByShareTypeAndAgeGroupAndCreatedBetween(@Param("shareType") ShareType shareType,
-                                                           @Param("ageGroup") Integer ageGroup,
-                                                           @Param("start") LocalDateTime start,
-                                                           @Param("end") LocalDateTime end);
+                                                           @Param("birthStart") Integer birthStart,
+                                                           @Param("birthEnd") Integer birthEnd,
+                                                           @Param("dateStart") LocalDateTime dateStart,
+                                                           @Param("dateEnd") LocalDateTime dateEnd);
 
 }
