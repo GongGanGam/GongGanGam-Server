@@ -79,65 +79,92 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
      * @param diaries 그룹화된 일기 목록
      */
     private void shareGroupedDiaries(List<Diary> diaries) {
-        final int size = diaries.size();
+        Set<Users> diarySharedUsers = new HashSet<>();
+        List<PackedDiaries> packedByWriter = packByWriterId(diaries);
+
+        final int size = packedByWriter.size();
         if (size <= 1) return;
 
         int offset = createOffset(size);
-        Set<Long> diarySharedUsers = new HashSet<>();
-        MultiValueMap<Long, DiaryWithIdx> packedByWriter = packByWriterId(diaries);
 
-        for (int idx = 0; idx < diaries.size(); idx++) {
-            Diary diary = diaries.get(idx);
-            Long writerId = diary.getWriter().getUserId();
+        for (int idx = 0; idx < size; idx++) {
+            sharePackedDiaries(size, offset, idx, packedByWriter, diarySharedUsers, diaries);
+        }
+    }
 
-            Set<Integer> blacklist = packedByWriter.get(writerId)
-                    .stream()
-                    .map(DiaryWithIdx::index)
-                    .collect(Collectors.toSet());
+    /**
+     * 한 작성자가 쓴 일기들을 공유합니다.
+     * @param size 공유그룹 내 작성자 수
+     * @param offset {@link #createOffset(int)} 으로부터 생성된 offset
+     * @param idx {@code PackedDiaries}의 위치
+     * @param packedByWriters 작성자로 패킹된 일기 목록
+     * @param sharedUsers 이미 공유한 사용자
+     * @param diaries 공유그룹 내 전체 일기 목록
+     */
+    private void sharePackedDiaries(final int size,
+                                    final int offset,
+                                    final int idx,
+                                    final List<PackedDiaries> packedByWriters,
+                                    final Set<Users> sharedUsers,
+                                    final List<Diary> diaries) {
 
+        PackedDiaries packedDiaries = packedByWriters.get(idx);
+
+        for (DiaryWithIdx diaryInfo : packedDiaries.diaries) {
             Users receiver;
 
             // 아직 한번도 공유를 못한 사용자는 offset 으로 처리
-            if (!diarySharedUsers.contains(writerId)) {
-                receiver = diaries.get((idx + offset) % size).getWriter();
+            if (!sharedUsers.contains(packedDiaries.writer)) {
+                receiver = packedByWriters.get((idx + offset) % size).getWriter();
             }
-            // 한번 공유를 한 사용자는 랜덤 index 생성으로 처리
+            // 한번 공유를 한 사용자는 전체 일기 목록 중에서 랜덤 index 생성으로 처리
             else {
-                int destIdx = createDestIndex(blacklist, size);
-                receiver = diaries.get(destIdx).getWriter();
+                Set<Integer> blacklist = packedDiaries.getDiaries()
+                        .stream()
+                        .map(DiaryWithIdx::index)
+                        .collect(Collectors.toSet());
+                int destDiaryIdx = createDestIndex(blacklist, size);
+                receiver = diaries.get(destDiaryIdx).getWriter();
             }
 
             // 일기 공유
-            shareDiary(diary, receiver);
-            diarySharedUsers.add(writerId);
+            shareDiary(diaryInfo.diary, receiver);
+            sharedUsers.add(packedDiaries.writer);
 
             // 알림 설정 되어 있을 경우에만 푸시알림
             if (receiver.getSettings().getNotifyDiary()) {
                 notifyDiaryShared(receiver);
             }
         }
+
     }
 
     /**
-     * 작성자 id로 Map을 생성합니다.
+     * 작성자 id로 일기를 묶어서 반환합니다.
      * @param diaries 일기 목록
      * @return 작성자로 구분된 일기목록
      */
-    private MultiValueMap<Long, DiaryWithIdx> packByWriterId(List<Diary> diaries) {
-        MultiValueMap<Long, DiaryWithIdx> packedByWriter = new LinkedMultiValueMap<>();
+    private List<PackedDiaries> packByWriterId(List<Diary> diaries) {
+        List<PackedDiaries> packedDiaries = new ArrayList<>();
+        MultiValueMap<Users, DiaryWithIdx> packedByWriter = new LinkedMultiValueMap<>();
 
         for (int idx = 0; idx < diaries.size(); idx++) {
             Diary diary = diaries.get(idx);
-            packedByWriter.add(diary.getWriter().getUserId(), new DiaryWithIdx(diary, idx));
+            packedByWriter.add(diary.getWriter(), new DiaryWithIdx(diary, idx));
         }
-        return packedByWriter;
+
+        packedByWriter.forEach((writer, diaryWithIdxes) -> {
+            packedDiaries.add(new PackedDiaries(writer, diaryWithIdxes));
+        });
+
+        return packedDiaries;
     }
 
     /**
      * 1) 0.1 ~ 0.9 사이의 임의의 비율 ratio 를 생성합니다.
      * <p>
      * 2) offset 은 (size) * (ratio) + 1 로 결정됩니다.
-     * @param size 일기 그룹의 크기
+     * @param size 일기 공유그룹 내 작성자의 수
      * @return size 보다 작게 생성된 offset
      * @throws IllegalStateException 그룹의 크기가 1이하일 때 예외 발생
      */
@@ -208,5 +235,10 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
 
     }
 
-    private record DiaryWithIdx(Diary diary, Integer index) { }
+    @Data
+    private final static class PackedDiaries {
+        private final Users writer;
+        private final List<DiaryWithIdx> diaries;
+    }
+    private record DiaryWithIdx(Diary diary, Integer index) {}
 }
