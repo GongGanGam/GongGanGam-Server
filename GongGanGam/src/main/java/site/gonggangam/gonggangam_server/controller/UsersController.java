@@ -8,19 +8,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import site.gonggangam.gonggangam_server.dto.DataResponseDto;
-import site.gonggangam.gonggangam_server.dto.ErrorResponseDto;
-import site.gonggangam.gonggangam_server.dto.ResponseDto;
-import site.gonggangam.gonggangam_server.dto.users.UserSettingsRequestDto;
-import site.gonggangam.gonggangam_server.dto.users.UserSettingsResponseDto;
-import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
-import site.gonggangam.gonggangam_server.dto.users.UsersResponseDto;
+import site.gonggangam.gonggangam_server.controller.dto.DataResponseDto;
+import site.gonggangam.gonggangam_server.controller.dto.ErrorResponseDto;
+import site.gonggangam.gonggangam_server.controller.dto.ResponseDto;
+import site.gonggangam.gonggangam_server.controller.dto.users.UserSettingsRequestDto;
+import site.gonggangam.gonggangam_server.controller.dto.users.UserSettingsResponseDto;
+import site.gonggangam.gonggangam_server.controller.dto.users.UsersRequestDto;
+import site.gonggangam.gonggangam_server.controller.dto.users.UsersResponseDto;
 
 @Tag(name = "user", description = "사용자 관련 API")
 @RestController

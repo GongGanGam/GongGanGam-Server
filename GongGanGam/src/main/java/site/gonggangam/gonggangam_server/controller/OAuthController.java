@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import site.gonggangam.gonggangam_server.dto.DataResponseDto;
-import site.gonggangam.gonggangam_server.dto.auth.OAuthRequestDto;
-import site.gonggangam.gonggangam_server.dto.auth.OAuthResponseDto;
-import site.gonggangam.gonggangam_server.dto.users.UsersRequestDto;
+import site.gonggangam.gonggangam_server.controller.dto.DataResponseDto;
+import site.gonggangam.gonggangam_server.controller.dto.auth.OAuthRequestDto;
+import site.gonggangam.gonggangam_server.controller.dto.auth.OAuthResponseDto;
+import site.gonggangam.gonggangam_server.controller.dto.users.UsersRequestDto;
 import site.gonggangam.gonggangam_server.service.OAuthService;
 
 @Tag(name = "auth", description = "인증 관련 API")

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
+import site.gonggangam.gonggangam_server.service.dto.diary.DiaryWithWriterDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -74,10 +75,10 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
      * @param shareType 공유 설정
      * @param start 조회할 시작 시간
      * @param end 조회할 끝 시간
-     * @return 조건에 해당하는 일기 목록
+     * @return 조건에 해당하는 일기 목록과 작성자 정보
      */
     @Query(value = """
-                        SELECT d
+                        SELECT new site.gonggangam.gonggangam_server.service.dto.diary.DiaryWithWriterDto(d, d.writer, d.writer.settings)
                         FROM Diary d
                         WHERE d.createdAt BETWEEN :start AND :end
                         AND
@@ -87,9 +88,9 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         AND
                         d.isVisible = true
             """)
-    List<Diary> getByShareTypeAndCreatedBetween(@Param("shareType") ShareType shareType,
-                                                @Param("start") LocalDateTime start,
-                                                @Param("end") LocalDateTime end);
+    List<DiaryWithWriterDto> getByShareTypeAndCreatedBetween(@Param("shareType") ShareType shareType,
+                                                             @Param("start") LocalDateTime start,
+                                                             @Param("end") LocalDateTime end);
 
     /**
      * 일기 공유 설정, 연령대, 실제 일기 작성한 시각에 따른 조회
@@ -101,10 +102,10 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
      * @param ageGroup 연령대 (ex. 20)
      * @param start 조회할 시작 시간
      * @param end 조회할 끝 시간
-     * @return 조건에 해당하는 일기 목록
+     * @return 조건에 해당하는 일기 목록과 작성자 정보
      */
     @Query(value = """
-                        SELECT d
+                        SELECT new site.gonggangam.gonggangam_server.service.dto.diary.DiaryWithWriterDto(d, d.writer, d.writer.settings)
                         FROM Diary d
                         WHERE d.createdAt BETWEEN :start AND :end
                         AND
@@ -116,7 +117,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         AND
                         d.isVisible = true
             """)
-    List<Diary> getByShareTypeAndAgeGroupAndCreatedBetween(@Param("shareType") ShareType shareType,
+    List<DiaryWithWriterDto> getByShareTypeAndAgeGroupAndCreatedBetween(@Param("shareType") ShareType shareType,
                                                            @Param("ageGroup") Integer ageGroup,
                                                            @Param("start") LocalDateTime start,
                                                            @Param("end") LocalDateTime end);

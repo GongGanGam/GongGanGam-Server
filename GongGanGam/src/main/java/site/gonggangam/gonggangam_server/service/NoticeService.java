@@ -2,8 +2,8 @@ package site.gonggangam.gonggangam_server.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import site.gonggangam.gonggangam_server.dto.notice.NoticeRequestDto;
-import site.gonggangam.gonggangam_server.dto.notice.NoticeResponseDto;
+import site.gonggangam.gonggangam_server.controller.dto.notice.NoticeRequestDto;
+import site.gonggangam.gonggangam_server.controller.dto.notice.NoticeResponseDto;
 
 
 public interface NoticeService {
