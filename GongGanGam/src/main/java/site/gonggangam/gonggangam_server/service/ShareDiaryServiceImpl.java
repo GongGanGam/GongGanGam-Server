@@ -129,14 +129,20 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
 
     @Async
     public void notifyDiaryShared(Users receiver) {
-        if (receiver.getDeviceType() == DeviceType.IOS) {
-            notifyApnsDiaryShared(receiver);
+        switch (receiver.getDeviceType()) {
+            case IOS -> notifyApnsDiaryShared(receiver);
+            case ANDROID -> notifyFcmDiaryShared(receiver);
         }
     }
 
     @Async
     public void notifyApnsDiaryShared(Users receiver) {
         apnsService.notifySharedDiary(receiver.getDeviceToken());
+    }
+
+    @Async
+    public void notifyFcmDiaryShared(Users receiver) {
+
     }
 
 }
