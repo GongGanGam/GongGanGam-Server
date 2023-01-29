@@ -29,7 +29,7 @@ public class SharedDiaryResponseDto {
     public static SharedDiaryResponseDto of(ShareDiary entity) {
         return SharedDiaryResponseDto.builder()
                 .diaryId(entity.getDiary().getDiaryId())
-                .date(entity.getDiary().getWritingDate())
+                .date(entity.getDiary().getDiaryDate())
                 .emoji(entity.getDiary().getEmoji())
                 .content(entity.getDiary().getContent())
                 .imgUrl(entity.getDiary().getImgUrl())
@@ -40,7 +40,7 @@ public class SharedDiaryResponseDto {
     public static SharedDiaryResponseDto of(Diary entity) {
         return SharedDiaryResponseDto.builder()
                 .diaryId(entity.getDiaryId())
-                .date(entity.getWritingDate())
+                .date(entity.getDiaryDate())
                 .emoji(entity.getEmoji())
                 .content(entity.getContent())
                 .imgUrl(entity.getImgUrl())

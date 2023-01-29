@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.users.types.ShareType;
-import site.gonggangam.gonggangam_server.domain.dto.diary.DiaryWithWriterDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,15 +38,17 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         FROM Diary d
                         WHERE d.writer.userId = :userId
                         AND
-                        d.writingDate = :date
+                        d.diaryDate = :date
                         AND
                         d.isVisible = true
             """)
     List<Diary> getByUserIdAndDate(@Param("userId") Long userId,
-                                          @Param("date") LocalDate date);
+                                   @Param("date") LocalDate date);
 
     /**
      * 작성자와 날짜 범위에 따른 일기 조회
+     * <p>
+     * 일기 대상 일자에 따라 정렬됩니다.
      * @param userId 작성자 id
      * @param start 조회 시작 시간
      * @param end 조회 끝 시간
@@ -58,9 +59,10 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         FROM Diary d
                         WHERE d.writer.userId = :userId
                         AND
-                        d.writingDate BETWEEN :start AND :end
+                        d.diaryDate BETWEEN :start AND :end
                         AND
                         d.isVisible = true
+                        ORDER BY d.diaryDate
             """)
     List<Diary> getByUserIdAndBetweenDate(@Param("userId") Long userId,
                                           @Param("start") LocalDate start,
@@ -73,16 +75,16 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
      * <p>
      * ex) 비슷한 연령대 공유를 설정한 작성자들이 2023.01.01 21:00:01 ~ 2023.01.02 21:00:00에 작성한 일기 목록
      * @param shareType 공유 설정
-     * @param start 조회할 시작 시간
-     * @param end 조회할 끝 시간
+     * @param dateStart 조회할 시작 시간
+     * @param dateEnd 조회할 끝 시간
      * @return 조건에 해당하는 일기 목록과 작성자 정보
      */
     @Query(value = """
-                        SELECT new site.gonggangam.gonggangam_server.domain.dto.diary.DiaryWithWriterDto(d, wr, se)
+                        SELECT d
                         FROM Diary d
-                        JOIN d.writer wr
-                        JOIN wr.settings se
-                        WHERE d.createdAt BETWEEN :start AND :end
+                        JOIN FETCH d.writer wr
+                        JOIN FETCH wr.settings se
+                        WHERE d.createdAt BETWEEN :dateStart AND :dateEnd
                         AND
                         d.shareAgreed = true
                         AND
@@ -90,9 +92,9 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
                         AND
                         d.isVisible = true
             """)
-    List<DiaryWithWriterDto> getByShareTypeAndCreatedBetween(@Param("shareType") ShareType shareType,
-                                                             @Param("start") LocalDateTime start,
-                                                             @Param("end") LocalDateTime end);
+    List<Diary> getByShareTypeAndCreatedBetween(@Param("shareType") ShareType shareType,
+                                                @Param("dateStart") LocalDateTime dateStart,
+                                                @Param("dateEnd") LocalDateTime dateEnd);
 
     /**
      * 일기 공유 설정, 연령대, 실제 일기 작성한 시각에 따른 조회
@@ -101,30 +103,32 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
      * <p>
      * ex) 비슷한 연령대 공유를 설정한 20대 사용자가 작성한 일기 중 2023.01.01 21:00:01 ~ 2023.01.02 21:00:00에 작성한 일기 목록
      * @param shareType 공유 설정
-     * @param ageGroup 연령대 (ex. 20)
-     * @param start 조회할 시작 시간
-     * @param end 조회할 끝 시간
+     * @param birthStart 사용자 생년 시작
+     * @param birthEnd 사용자 생년 끝
+     * @param dateStart 조회할 시작 시간
+     * @param dateEnd 조회할 끝 시간
      * @return 조건에 해당하는 일기 목록과 작성자 정보
      */
     @Query(value = """
-                        SELECT new site.gonggangam.gonggangam_server.domain.dto.diary.DiaryWithWriterDto(d, wr, se)
+                        SELECT d
                         FROM Diary d
-                        JOIN d.writer wr
-                        JOIN wr.userInfo ui
-                        JOIN wr.settings se
-                        WHERE d.createdAt BETWEEN :start AND :end
+                        JOIN FETCH d.writer wr
+                        JOIN FETCH wr.userInfo ui
+                        JOIN FETCH wr.settings se
+                        WHERE d.createdAt BETWEEN :dateStart AND :dateEnd
                         AND
                         d.shareAgreed = true
                         AND
-                        ui.birthYear BETWEEN :ageGroup AND :ageGroup + 9
+                        ui.birthYear BETWEEN :birthStart AND :birthEnd
                         AND
                         se.shareType = :shareType
                         AND
                         d.isVisible = true
             """)
-    List<DiaryWithWriterDto> getByShareTypeAndAgeGroupAndCreatedBetween(@Param("shareType") ShareType shareType,
-                                                           @Param("ageGroup") Integer ageGroup,
-                                                           @Param("start") LocalDateTime start,
-                                                           @Param("end") LocalDateTime end);
+    List<Diary> getByShareTypeAndAgeGroupAndCreatedBetween(@Param("shareType") ShareType shareType,
+                                                           @Param("birthStart") Integer birthStart,
+                                                           @Param("birthEnd") Integer birthEnd,
+                                                           @Param("dateStart") LocalDateTime dateStart,
+                                                           @Param("dateEnd") LocalDateTime dateEnd);
 
 }

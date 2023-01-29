@@ -57,7 +57,7 @@ public class DiaryServiceImpl implements DiaryService {
                 .isVisible(true)
                 .shareAgreed(request.getShareAgreed())
                 .writer(writer)
-                .writingDate(request.getDate())
+                .diaryDate(request.getDate())
                 .imgUrl(uploadFileDto != null ? uploadFileDto.getUploadedUrl() : null)
                 .build();
 
@@ -117,7 +117,7 @@ public class DiaryServiceImpl implements DiaryService {
     private List<DiaryPreviewResponseDto> getCalendarResponseByMonth(List<Diary> diaries, int month) {
         return diaries
                 .stream()
-                .filter(diary -> diary.getWritingDate().getMonthValue() == month)
+                .filter(diary -> diary.getDiaryDate().getMonthValue() == month)
                 .map(DiaryPreviewResponseDto::of)
                 .toList();
     }

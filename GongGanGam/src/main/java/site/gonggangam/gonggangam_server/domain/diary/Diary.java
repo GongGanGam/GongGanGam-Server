@@ -21,8 +21,8 @@ public class Diary extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryId;
 
-    @Column(name = "WRITING_DATE", nullable = false)
-    private LocalDate writingDate;
+    @Column(name = "DIARY_DATE", nullable = false)
+    private LocalDate diaryDate;
 
     @Column(columnDefinition = "CHAR(10)", length = 10, nullable = false)
     private String emoji;
@@ -35,17 +35,17 @@ public class Diary extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WRITER_ID", referencedColumnName = "USER_ID")
-    protected Users writer;
+    private Users writer;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(name = "IS_VISIBLE", columnDefinition = "BOOLEAN DEFAULT TRUE", nullable = false)
-    protected Boolean isVisible;
+    @Column(name = "IS_VISIBLE", columnDefinition = "BIT(1) DEFAULT TRUE", nullable = false)
+    private Boolean isVisible;
 
     @Builder
-    public Diary(LocalDate writingDate, String emoji, String imgUrl, Boolean shareAgreed, Users writer, String content, Boolean isVisible) {
-        this.writingDate = writingDate;
+    public Diary(LocalDate diaryDate, String emoji, String imgUrl, Boolean shareAgreed, Users writer, String content, Boolean isVisible) {
+        this.diaryDate = diaryDate;
         this.emoji = emoji;
         this.imgUrl = imgUrl;
         this.shareAgreed = shareAgreed;
