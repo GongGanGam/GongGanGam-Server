@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import site.gonggangam.gonggangam_server.config.HttpServletUtil;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
+import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCode;
 import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.ErrorResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.ResponseDto;

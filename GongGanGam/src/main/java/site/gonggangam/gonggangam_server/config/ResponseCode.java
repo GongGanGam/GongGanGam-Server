@@ -1,5 +1,7 @@
 package site.gonggangam.gonggangam_server.config;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import java.util.function.Predicate;
 @Getter
 @AllArgsConstructor
 public enum ResponseCode {
+    @ApiResponse()
     OK(20000, HttpStatus.OK, "요청이 완료되었습니다."),
     CREATED(20100, HttpStatus.CREATED, "요청이 완료되었습니다."),
 
