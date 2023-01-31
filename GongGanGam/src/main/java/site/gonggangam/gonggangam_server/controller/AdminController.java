@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import site.gonggangam.gonggangam_server.config.HttpServletUtil;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
-import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCode;
 import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.ErrorResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.ResponseDto;
@@ -38,6 +37,7 @@ public class AdminController {
     @Operation(summary = "공지사항 작성", description = "관리자 계정만 이용 가능합니다.")
     @ApiResponses(
             value = {
+                    @ApiResponse(ref = ResponseCode.Constants.APNS_AUTHENTICATION_ERROR_VALUE),
                     @ApiResponse(responseCode = "201", description = "작성 성공"),
                     @ApiResponse(responseCode = "401", description = "인증에 실패했습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
                     @ApiResponse(responseCode = "403", description = "권한이 없습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),

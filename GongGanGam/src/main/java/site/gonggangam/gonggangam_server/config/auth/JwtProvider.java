@@ -48,7 +48,7 @@ public class JwtProvider {
         } catch (TokenExpiredException ex) {
             throw new GeneralException(ResponseCode.TOKEN_EXPIRED);
         } catch (JWTDecodeException ex) {
-            throw new GeneralException(ResponseCode.TOKEN_CANT_NOT_DECODE);
+            throw new GeneralException(ResponseCode.TOKEN_CAN_NOT_DECODE);
         } catch (JWTVerificationException ex) {
             throw new GeneralException(ResponseCode.TOKEN_INVALID);
         }
