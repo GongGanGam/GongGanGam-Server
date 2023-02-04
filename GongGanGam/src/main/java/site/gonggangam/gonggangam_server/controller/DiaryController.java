@@ -38,9 +38,10 @@ public class DiaryController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "작성 성공"),
-                    @ApiResponse(responseCode = "400", description = "이미 일기가 작성된 날짜입니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
                     @ApiResponse(responseCode = "401", description = "인증에 실패했습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
-                    @ApiResponse(responseCode = "403", description = "만료된 토큰입니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+                    @ApiResponse(responseCode = "403", description = "만료된 토큰입니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "409", description = "이미 일기가 작성된 날짜입니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "409", description = "오늘 이후 날짜에 작성할 수 없습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
             }
     )
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})

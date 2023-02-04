@@ -4,6 +4,7 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
@@ -13,23 +14,15 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.auth.JwtProvider;
-import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
-import site.gonggangam.gonggangam_server.service.dto.ErrorResponseDto;
-import site.gonggangam.gonggangam_server.service.dto.ResponseDto;
-import site.gonggangam.gonggangam_server.service.dto.SuccessResponseDto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
+@Slf4j
 @Configuration
 public class SwaggerConfig implements WebMvcConfigurer {
 
@@ -40,11 +33,12 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public static final String VERSION = "0.3.2";
 
     @Bean
-    public GroupedOpenApi publicApi() {
+    public GroupedOpenApi publicApi(OperationCustomizerWithEnums operationCustomizerWithEnums) {
         return GroupedOpenApi.builder()
                 .group("v1-definition")
                 .pathsToMatch("/api/**")
                 .addOpenApiCustomiser(buildSecurityOpenApi())
+                .addOperationCustomizer(operationCustomizerWithEnums)
                 .build();
     }
 
@@ -56,36 +50,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .version(VERSION);
 
         return new OpenAPI()
-                .info(info)
-                .components(getResponseComponents());
-    }
-
-    @SuppressWarnings("rawtypes")
-    private Components getResponseComponents() {
-        Components components = new Components();
-        Schema errorEntitySchema = ModelConverters.getInstance()
-                .resolveAsResolvedSchema(new AnnotatedType(ErrorResponseDto.class)).schema;
-
-        for (ResponseCode code : ResponseCode.values()) {
-            if (code.getCode() < 0) {
-                components.addResponses(code.name(), convertErrorResponse(errorEntitySchema, code));
-            }
-        }
-
-        return components;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private ApiResponse convertErrorResponse(Schema schema, ResponseCode code) {
-        return new ApiResponse()
-                .content(
-                    new Content().addMediaType(
-                        APPLICATION_JSON_VALUE,
-                        new MediaType()
-                                .schema(schema.description(code.getMessage()))
-                                .addExamples(code.name(), new Example().value(ErrorResponseDto.of(code)))
-                )).description(code.getMessage())
-                ;
+                .info(info);
     }
 
 
