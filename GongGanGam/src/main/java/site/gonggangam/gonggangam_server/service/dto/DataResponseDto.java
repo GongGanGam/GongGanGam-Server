@@ -4,9 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 
+import java.lang.reflect.Type;
+import java.util.Arrays;
+
 @Getter
 @Schema(description = "데이터가 포함된 응답")
 public class DataResponseDto<T> extends ResponseDto {
+
     private final T data;
 
     private DataResponseDto(T data) {

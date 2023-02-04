@@ -10,7 +10,6 @@ import static java.lang.annotation.ElementType.*;
 @Target({METHOD, TYPE, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface ApiResponseCodes {
+public @interface ApiResponseCodeGroup {
     ApiResponseCode[] value() default {};
-    ApiResponseCodeGroup[] groups() default {};
 }

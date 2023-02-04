@@ -14,5 +14,5 @@ import static java.lang.annotation.ElementType.METHOD;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiResponseCode {
     ResponseCode value();
-    Schema schema();
+    Schema[] schema() default {};
 }

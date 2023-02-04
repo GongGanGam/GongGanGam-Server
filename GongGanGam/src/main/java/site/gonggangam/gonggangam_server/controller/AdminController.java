@@ -14,6 +14,7 @@ import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCode;
 import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCodes;
 import site.gonggangam.gonggangam_server.config.swagger.SwaggerConfig;
+import site.gonggangam.gonggangam_server.config.swagger.groups.ApiAuthenticated;
 import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.ErrorResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.ResponseDto;
@@ -38,21 +39,19 @@ public class AdminController {
     private final ReportService reportService;
 
     @Operation(summary = "공지사항 작성", description = "관리자 계정만 이용 가능합니다.")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "201", description = "작성 성공"),
-//                    @ApiResponse(responseCode = "401", description = "인증에 실패했습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
-//                    @ApiResponse(responseCode = "403", description = "권한이 없습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
-//                    @ApiResponse(responseCode = "403", description = "만료된 토큰입니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
-//            }
-//    )
-    @ApiResponseCodes(
+    @ApiResponses(
             value = {
-                    @ApiResponseCode(ResponseCode.CREATED),
-                    @ApiResponseCode(ResponseCode.TOKEN_EXPIRED),
-                    @ApiResponseCode(ResponseCode.PERMISSION_DENIED)
+                    @ApiResponse(responseCode = "201", description = "작성 성공"),
+                    @ApiResponse(responseCode = "401", description = "인증에 실패했습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "권한이 없습니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "만료된 토큰입니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
             }
     )
+    @ApiResponseCodes(value = {
+            @ApiResponseCode(ResponseCode.CREATED),
+            @ApiResponseCode(ResponseCode.TOKEN_EXPIRED),
+            @ApiResponseCode(ResponseCode.PERMISSION_DENIED)
+    })
     @PostMapping("/notice")
     public DataResponseDto<NoticeResponseDto> postNotice(
             HttpServletRequest request,
@@ -66,6 +65,10 @@ public class AdminController {
 
     @Operation(summary = "공지사항 수정", description = "관리자 계정만 이용 가능합니다.")
     @PutMapping("/notice/{noticeId}")
+    @ApiResponseCodes(value = {
+            @ApiResponseCode(ResponseCode.OK),
+            @ApiResponseCode(ResponseCode.TOKEN_EXPIRED)
+    })
     public DataResponseDto<NoticeResponseDto> putNotice(
             @PathVariable("noticeId") Long noticeId,
             @RequestBody NoticeRequestDto.PutNotice body
@@ -84,6 +87,9 @@ public class AdminController {
 
     @Operation(summary = "신고 처리상태 변경", description = "신고 내역의 처리 상태를 변경합니다. 관리자 계정만 이용 가능합니다. 처리 상태 progress = { before, processing, completed }")
     @PutMapping("/report/{reportId}")
+    @ApiResponseCodes(value = {
+            @ApiResponseCode(ResponseCode.OK)
+    })
     public ResponseDto putReport(
             @RequestBody ReportRequestDto.PutReport body
     ) {
