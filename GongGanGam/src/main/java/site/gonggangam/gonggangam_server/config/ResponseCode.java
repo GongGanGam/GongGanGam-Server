@@ -37,6 +37,8 @@ public enum ResponseCode {
 
     DIARY_DATE_INVALID(-40901, HttpStatus.CONFLICT, "아직 일기를 작성할 수 없는 날짜입니다."),
     DIARY_DATE_CONFLICT(-40902, HttpStatus.CONFLICT, "이미 일기를 작성한 날짜입니다."),
+    REPLY_CONFLICT(-40903, HttpStatus.CONFLICT, "이미 답장을 작성한 일기입니다."),
+    REPLY_REJECT_CONFLICT(-40904, HttpStatus.CONFLICT, "이미 거절한 답장입니다."),
 
     INTERNAL_ERROR(-50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
     DATA_ACCESS_ERROR(-50001, HttpStatus.INTERNAL_SERVER_ERROR, "데이터 접근 중 오류가 발생했습니다."),
