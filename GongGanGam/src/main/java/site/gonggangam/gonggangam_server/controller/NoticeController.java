@@ -8,6 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
+import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCode;
+import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCodes;
 import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.notice.NoticeResponseDto;
 import site.gonggangam.gonggangam_server.service.NoticeService;
@@ -21,6 +24,11 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @Operation(summary = "공지사항 조회", description = "공지사항 목록을 조회합니다.")
+    @ApiResponseCodes(
+            value = {
+                    @ApiResponseCode(ResponseCode.OK)
+            }
+    )
     @GetMapping
     public DataResponseDto<Page<NoticeResponseDto>> getNoticeList(
             @ParameterObject
