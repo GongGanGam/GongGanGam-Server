@@ -1,15 +1,31 @@
 package site.gonggangam.gonggangam_server.config.swagger;
 
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import static site.gonggangam.gonggangam_server.config.ResponseCode.*;
 
-import static java.lang.annotation.ElementType.*;
+public enum ApiResponseCodeGroup {
+    @ApiResponseCodes(value = {
+            @ApiResponseCode(TOKEN_INVALID),
+            @ApiResponseCode(TOKEN_EXPIRED),
+            @ApiResponseCode(TOKEN_IS_NULL),
+            @ApiResponseCode(TOKEN_CAN_NOT_DECODE),
+            @ApiResponseCode(AUTHENTICATION_INVALID_USER),
+            @ApiResponseCode(REQUIRED_SIGNUP)
+    })
+    AUTHENTICATED,
 
-@Target({METHOD, TYPE, ANNOTATION_TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Inherited
-public @interface ApiResponseCodeGroup {
-    ApiResponseCode[] value() default {};
+    @ApiResponseCodes(value = {
+            @ApiResponseCode(PERMISSION_DENIED)
+    })
+    PERMITTED,
+
+    @ApiResponseCodes(value = {
+            @ApiResponseCode(NOT_FOUND)
+    })
+    OPTIONAL,
+
+    @ApiResponseCodes(value = {
+            @ApiResponseCode(WRONG_OAUTH_TOKEN),
+            @ApiResponseCode(REQUIRE_OAUTH_EMAIL)
+    })
+    OAUTH_SIGN_IN
 }

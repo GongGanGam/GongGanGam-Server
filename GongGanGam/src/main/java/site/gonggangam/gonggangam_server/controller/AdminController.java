@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import site.gonggangam.gonggangam_server.config.HttpServletUtil;
 import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCode;
+import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCodeGroup;
 import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCodes;
-import site.gonggangam.gonggangam_server.config.swagger.SwaggerConfig;
-import site.gonggangam.gonggangam_server.config.swagger.groups.ApiAuthenticated;
 import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.ErrorResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.ResponseDto;
@@ -47,11 +46,13 @@ public class AdminController {
                     @ApiResponse(responseCode = "403", description = "만료된 토큰입니다.", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
             }
     )
-    @ApiResponseCodes(value = {
-            @ApiResponseCode(ResponseCode.CREATED),
-            @ApiResponseCode(ResponseCode.TOKEN_EXPIRED),
-            @ApiResponseCode(ResponseCode.PERMISSION_DENIED)
-    })
+    @ApiResponseCodes(
+            value = {
+                    @ApiResponseCode(ResponseCode.CREATED)},
+            groups = {
+                    ApiResponseCodeGroup.AUTHENTICATED
+            }
+    )
     @PostMapping("/notice")
     public DataResponseDto<NoticeResponseDto> postNotice(
             HttpServletRequest request,

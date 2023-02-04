@@ -35,14 +35,32 @@ public class OperationCustomizerWithEnums implements OperationCustomizer {
         apiResponses.clear();
         Type dtoType = handlerMethod.getReturnType().getGenericParameterType();
 
-        ApiResponseCodes responseCodes = handlerMethod.getMethodAnnotation(ApiResponseCodes.class);
-        if (responseCodes != null) {
-            Arrays.stream(responseCodes.value()).forEach(
+        ApiResponseCodes apiResponseCodes = handlerMethod.getMethodAnnotation(ApiResponseCodes.class);
+        if (apiResponseCodes != null) {
+            Arrays.stream(apiResponseCodes.value()).forEach(
                     code -> putApiResponseCode(apiResponses, code.value(), dtoType)
+            );
+
+            Arrays.stream(apiResponseCodes.groups()).forEach(
+                    group -> putApiResponseCodeGroup(apiResponses, group, dtoType)
             );
         }
 
         return operation;
+    }
+
+    private void putApiResponseCodeGroup(ApiResponses apiResponses, ApiResponseCodeGroup group, Type dtoType) {
+        try {
+            log.info("test " + Arrays.toString(ApiResponseCodeGroup.class.getField(group.name())
+                    .getAnnotation(ApiResponseCodes.class).value()));
+
+            Arrays.stream(ApiResponseCodeGroup.class.getField(group.name())
+                    .getAnnotation(ApiResponseCodes.class).value()).forEach(apiResponseCode -> {
+                            putApiResponseCode(apiResponses, apiResponseCode.value(), dtoType);
+            });
+        } catch (NoSuchFieldException e) {
+            log.error(String.format("[%s] can not put ApiResponseCodeGroup [%s]", getClass(), e));
+        }
     }
 
     private void putApiResponseCode(ApiResponses apiResponses, ResponseCode code, Type dtoType) {
