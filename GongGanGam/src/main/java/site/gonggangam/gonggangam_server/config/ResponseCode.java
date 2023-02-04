@@ -24,7 +24,7 @@ public enum ResponseCode {
     TOKEN_INVALID(-40100, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     TOKEN_EXPIRED(-40101, HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
     TOKEN_IS_NULL(-40102, HttpStatus.UNAUTHORIZED, "토큰이 없습니다."),
-    TOKEN_CANT_NOT_DECODE(-40103, HttpStatus.UNAUTHORIZED, "올바르지 않은 토큰 형식입니다."),
+    TOKEN_CAN_NOT_DECODE(-40103, HttpStatus.UNAUTHORIZED, "올바르지 않은 토큰 형식입니다."),
     AUTHENTICATION_INVALID_USER(-40104, HttpStatus.UNAUTHORIZED, "이용할 수 없는 사용자입니다."),
 
     PERMISSION_DENIED(-40300, HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
@@ -37,6 +37,8 @@ public enum ResponseCode {
 
     DIARY_DATE_INVALID(-40901, HttpStatus.CONFLICT, "아직 일기를 작성할 수 없는 날짜입니다."),
     DIARY_DATE_CONFLICT(-40902, HttpStatus.CONFLICT, "이미 일기를 작성한 날짜입니다."),
+    REPLY_CONFLICT(-40903, HttpStatus.CONFLICT, "이미 답장을 작성한 일기입니다."),
+    REPLY_REJECT_CONFLICT(-40904, HttpStatus.CONFLICT, "이미 거절한 답장입니다."),
 
     INTERNAL_ERROR(-50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
     DATA_ACCESS_ERROR(-50001, HttpStatus.INTERNAL_SERVER_ERROR, "데이터 접근 중 오류가 발생했습니다."),
@@ -46,7 +48,6 @@ public enum ResponseCode {
     APNS_AUTHENTICATION_ERROR(-50005, HttpStatus.INTERNAL_SERVER_ERROR, "APNS TLS 자격 증명 중 오류가 발생했습니다."),
     SSL_ERROR(-50005, HttpStatus.INTERNAL_SERVER_ERROR, "SSL 서명 과정에서 오류가 발생했습니다.")
     ;
-
     public String getMessage(Throwable e) {
         return this.getMessage(this.getMessage() + " - " + e.getMessage());
     }
@@ -72,6 +73,10 @@ public enum ResponseCode {
                 });
     }
 
+    @Override
+    public String toString() {
+        return this.httpStatus.value() + " " + this.name();
+    }
 
     private final Integer code;
     private final HttpStatus httpStatus;
