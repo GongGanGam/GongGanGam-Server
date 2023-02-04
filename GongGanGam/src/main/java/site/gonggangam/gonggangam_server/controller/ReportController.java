@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import site.gonggangam.gonggangam_server.config.HttpServletUtil;
+import site.gonggangam.gonggangam_server.config.ResponseCode;
+import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCode;
+import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCodeGroup;
+import site.gonggangam.gonggangam_server.config.swagger.ApiResponseCodes;
 import site.gonggangam.gonggangam_server.service.dto.DataResponseDto;
 import site.gonggangam.gonggangam_server.service.dto.report.ReportRequestDto;
 import site.gonggangam.gonggangam_server.service.dto.report.ReportResponseDto;
@@ -22,6 +26,16 @@ public class ReportController {
     private final ReportService reportService;
 
     @Operation(summary = "신고 등록", description = "type = { diary, reply, chat }. chat일 경우 chatRoomId를 입력해주세요.")
+    @ApiResponseCodes(
+            value = {
+                    @ApiResponseCode(ResponseCode.CREATED),
+                    @ApiResponseCode(ResponseCode.BAD_REQUEST)
+            },
+            groups = {
+                    ApiResponseCodeGroup.OPTIONAL,
+                    ApiResponseCodeGroup.AUTHENTICATED
+            }
+    )
     @PostMapping
     public DataResponseDto<ReportResponseDto> postReport(
             HttpServletRequest request,
@@ -31,7 +45,5 @@ public class ReportController {
                 reportService.postReport(HttpServletUtil.getUserId(request), body)
         );
     }
-
-
 
 }
