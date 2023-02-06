@@ -11,6 +11,8 @@ import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.config.exceptions.GeneralException;
 import site.gonggangam.gonggangam_server.domain.diary.Diary;
 import site.gonggangam.gonggangam_server.domain.diary.ShareDiary;
+import site.gonggangam.gonggangam_server.domain.reply.Reply;
+import site.gonggangam.gonggangam_server.domain.repository.ReplyRepository;
 import site.gonggangam.gonggangam_server.domain.users.Users;
 import site.gonggangam.gonggangam_server.service.dto.diary.*;
 import site.gonggangam.gonggangam_server.service.dto.upload_file.UploadFileDto;
@@ -20,6 +22,7 @@ import site.gonggangam.gonggangam_server.domain.repository.UsersRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +36,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     private final UsersRepository usersRepository;
     private final DiaryRepository diaryRepository;
+    private final ReplyRepository replyRepository;
     private final ShareDiaryRepository shareDiaryRepository;
 
 
@@ -95,6 +99,11 @@ public class DiaryServiceImpl implements DiaryService {
         Diary diary = diaryRepository.getByDiaryId(diaryId)
                 .orElseThrow(() -> new GeneralException(ResponseCode.NOT_FOUND));
 
+        Optional<Reply> reply = replyRepository.getReplyByDiaryId(diaryId);
+        if (reply.isPresent()) {
+            return DiaryResponseDto.of(diary, reply.get());
+        }
+
         return DiaryResponseDto.of(diary);
     }
 
@@ -114,11 +123,11 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
     }
 
-    private List<DiaryResponseDto> getCalendarResponseByMonth(List<Diary> diaries, int month) {
+    private List<DiaryContentDto> getCalendarResponseByMonth(List<Diary> diaries, int month) {
         return diaries
                 .stream()
                 .filter(diary -> diary.getDiaryDate().getMonthValue() == month)
-                .map(DiaryResponseDto::of)
+                .map(DiaryContentDto::of)
                 .toList();
     }
 

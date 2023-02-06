@@ -30,7 +30,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     private static final String TEMP_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWNhdGlvbiI6IjIzNTQ2NDg4MjQiLCJyb2xlIjpbIlJPTEVfQURNSU4iXSwiaXNzIjoiZ29uZ2dhbmdhbSIsImlkIjoxLCJleHAiOjE3MDY1OTM4MDgsImlhdCI6MTY3NTA1NzgwOH0.jW_oJxRo02_rqRzkonUzGk6nWFpZNV0HFlnOOxPWAIc";
     public static final String DESCRIPTION = String.format("GongGanGam API 명세서입니다. refreshToken은 현재 아무거나 입력하시면 됩니다. 테스트용 계정 (userId = 1) accessToken: %s", TEMP_ACCESS_TOKEN);
-    public static final String VERSION = "0.3.2";
+    public static final String VERSION = "0.3.5";
 
     @Bean
     public GroupedOpenApi publicApi(OperationCustomizerWithEnums operationCustomizerWithEnums) {
