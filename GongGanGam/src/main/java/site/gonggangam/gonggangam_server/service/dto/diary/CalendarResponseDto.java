@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @Schema(description = "연도, 월로 조회한 일기 목록")
 public class CalendarResponseDto {
-    private final List<DiaryPreviewResponseDto> prevMonth;
-    private final List<DiaryPreviewResponseDto> destMonth;
-    private final List<DiaryPreviewResponseDto> nextMonth;
+    private final List<DiaryContentDto> prevMonth;
+    private final List<DiaryContentDto> destMonth;
+    private final List<DiaryContentDto> nextMonth;
 }

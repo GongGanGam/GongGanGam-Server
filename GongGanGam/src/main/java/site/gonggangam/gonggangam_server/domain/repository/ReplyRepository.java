@@ -30,6 +30,14 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     @Query(value = """
                         SELECT r
                         FROM Reply r
+                        WHERE r.diary.diaryId = :diaryId
+                        AND r.isVisible = true
+            """)
+    Optional<Reply> getReplyByDiaryId(@Param("diaryId") Long diaryId);
+
+    @Query(value = """
+                        SELECT r
+                        FROM Reply r
                         WHERE r.diary.writer.userId = :userId
                         AND r.isVisible = true
                         AND r.rejected = false
