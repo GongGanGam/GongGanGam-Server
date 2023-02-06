@@ -36,6 +36,8 @@ public record DiaryContentDto(
                         .content(entity.getContent())
                         .imgUrl(entity.getImgUrl())
                         .shareAgreed(entity.getShareAgreed())
+                        .createdAt(entity.getCreatedAt())
+                        .updatedAt(entity.getUpdatedAt())
                         .build();
         }
 }
