@@ -114,11 +114,11 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
     }
 
-    private List<DiaryPreviewResponseDto> getCalendarResponseByMonth(List<Diary> diaries, int month) {
+    private List<DiaryResponseDto> getCalendarResponseByMonth(List<Diary> diaries, int month) {
         return diaries
                 .stream()
                 .filter(diary -> diary.getDiaryDate().getMonthValue() == month)
-                .map(DiaryPreviewResponseDto::of)
+                .map(DiaryResponseDto::of)
                 .toList();
     }
 
