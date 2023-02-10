@@ -51,9 +51,6 @@ public class OperationCustomizerWithEnums implements OperationCustomizer {
 
     private void putApiResponseCodeGroup(ApiResponses apiResponses, ApiResponseCodeGroup group, Type dtoType) {
         try {
-            log.info("test " + Arrays.toString(ApiResponseCodeGroup.class.getField(group.name())
-                    .getAnnotation(ApiResponseCodes.class).value()));
-
             Arrays.stream(ApiResponseCodeGroup.class.getField(group.name())
                     .getAnnotation(ApiResponseCodes.class).value()).forEach(apiResponseCode -> {
                             putApiResponseCode(apiResponses, apiResponseCode.value(), dtoType);
