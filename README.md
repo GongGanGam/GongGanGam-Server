@@ -9,6 +9,7 @@
 
 ## Development Server
 > 🌍 Base Uri : http://18.189.150.89:8080/
+> 
 > 📜 API Docs : http://18.189.150.89:8080/swagger-ui/index.html
 
 
