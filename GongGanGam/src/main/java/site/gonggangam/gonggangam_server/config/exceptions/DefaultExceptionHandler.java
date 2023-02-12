@@ -20,6 +20,7 @@ import site.gonggangam.gonggangam_server.config.ResponseCode;
 import site.gonggangam.gonggangam_server.service.dto.ErrorResponseDto;
 
 import javax.net.ssl.SSLException;
+import java.time.LocalDateTime;
 
 
 @Slf4j
@@ -77,7 +78,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<Object> handleUnexpectedException(Exception e, WebRequest request) {
-        log.error("server internal error occurred: " + e + " request = " + request);
+        log.error(String.format("Server internal error occurred at %s. Request = %s", request, LocalDateTime.now()), e);
         return handleExceptionInternal(e, ResponseCode.INTERNAL_ERROR, request);
     }
 

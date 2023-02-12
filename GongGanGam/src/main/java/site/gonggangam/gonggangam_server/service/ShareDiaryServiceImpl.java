@@ -42,11 +42,11 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
      * 전체 공유 허용 사용자는 동일 설정 사용자끼리 공유합니다.
      */
     @Override
-    @Scheduled(cron = "0 0 21 * * ?")
+    @Scheduled(cron = "0 15 0 * * ?")
     public void shareAllDiaries() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusDays(1).plusSeconds(1);
-        log.info(String.format("[%s] Diary share task start for %s ~ %s", getClass(), start, now));
+        log.info(String.format("Diary share task start for %s ~ %s", start, now));
 
         for (int ageGroup = 10; ageGroup <= 90; ageGroup += 10) {
             LocalDate birthEnd = LocalDate.now().minusYears(ageGroup - 1);
@@ -63,7 +63,7 @@ public class ShareDiaryServiceImpl implements ShareDiaryService {
         List<Diary> allAgeShare = diaryRepository.getByShareTypeAndCreatedBetween(ShareType.ALL, start, now);
         shareGroupedDiaries(allAgeShare);
 
-        log.info(String.format("[%s] Diary share end", getClass()));
+        log.info(String.format("Diary share end at %s", LocalDateTime.now()));
     }
 
     /**

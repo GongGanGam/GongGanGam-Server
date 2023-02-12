@@ -42,11 +42,11 @@ public class AmazonS3ResourceStorage {
             return baseUrl + fullPath;
 
         } catch (Exception e) {
-            log.error(String.format("[%s] File upload failed. nested exception is %s", getClass(), e));
+            log.error(String.format("File upload failed. nested exception is %s", e));
             throw new GeneralException(ResponseCode.FILE_UPLOAD_ERROR);
         } finally {
             if (!file.exists() && !file.delete()) {
-                log.warn(String.format("[%s] File %s is not deleted.", getClass(), file));
+                log.warn(String.format("File %s is not deleted.", file));
             }
         }
     }
